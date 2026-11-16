@@ -513,7 +513,13 @@ and four destinations that Word writes without `\*` although they hold
 only fallback copies or settings: `\nonesttables` (the text of a nested
 table repeated for old readers), `\shprslt` (the shape rendered as a
 metafile), `\nonshppict` and `\mmathPr` (all seen 2026-11-16). Any other
-`\*` destination is skipped by the general rule.
+`\*` destination is skipped by the general rule, with these exceptions,
+all parts of constructs the reader models (builder, 2026-11-16): `\*\datafield`
+inside a field, `\*\falt`, `\*\panose` and `\*\fname` inside the font table
+and the `\*` children of `\info` are skipped without a warning; `\*\cs` and
+`\*\ts` inside the stylesheet are style entries. A `\fldrslt`, `\result`,
+`\shptxt`, `\listtext` or `\pntext` group found outside its container is
+read as a formatting group, so its text survives.
 
 ### Text decoding
 
@@ -530,7 +536,8 @@ metafile), `\nonshppict` and `\mmathPr` (all seen 2026-11-16). Any other
   convention, so a viewer can still pick a symbol font; one
   `symbol_font` warning.
 - `\uN`: N below 0 is N + 65536. Two consecutive escapes that form a
-  surrogate pair become one code point. After the escape the reader skips
+  surrogate pair become one code point; a pair split by a brace or by any
+  other control word becomes two U+FFFD. After the escape the reader skips
   the current `\uc` count of fallback units, where a unit is one text
   byte or one `\'hh`; the skip stops early at a brace or a control word.
 - `\ucN` sets the count for the current group and its children. The
@@ -545,6 +552,13 @@ The end of a header, footer, footnote, cell or field group ends the
 paragraph it was building. A paragraph with no runs that exists only
 because a destination closed is dropped unless it is the only content of
 its container.
+
+Inside a field result or a list text, `\par`, `\cell`, `\row` and `\sect`
+become line breaks, and the document gets one `field_result_flattened`
+warning: Word writes table-of-contents results as many paragraphs, and the
+model holds a field's result as inlines (builder, 2026-11-16). A header,
+footer, footnote, shape text or object result starts with default
+paragraph and character state, as if `\pard\plain` had been written.
 
 ### Tables
 
@@ -563,7 +577,11 @@ and cells are assembled as the specification and Word's output require:
   definition. Fewer cells than definitions: the missing cells are empty.
 - Nested tables (`\itapN` with N above 1, `\nestcell`, `\nestrow`,
   `{\*\nesttableprops ... \nestrow}`) become `Table` blocks inside the
-  cell of the enclosing level. Depth is bounded by the group cap.
+  cell of the enclosing level. Depth is bounded by the group cap and by a
+  table nesting cap of 32 levels (`kMaxTableNesting`; a larger `\itap` is
+  read as 32), which keeps a stray huge `\itap` cheap (builder,
+  2026-11-16). Tab stops are capped at 64 per paragraph for the same
+  reason.
 - Consecutive rows form one `Table` block. A non-table paragraph, a
   section break or a change of nesting level ends the table. Two tables
   separated only by a row-less `\trowd` stay one table.
@@ -594,7 +612,9 @@ the current section's properties to those values, then `\pgwsxn`,
 `\sectd` does not start a section and does not drop headers already read:
 Word writes it three times for one section, around its footnote separator
 groups (seen 2026-11-16). `\sect` closes the section; the next one starts
-with the same properties and no headers. A document with no `\sect` has
+with the same properties and no headers. A `\sect` inside a header, footer,
+footnote, shape text or object result acts as `\par`. `\pgnrestart`
+without `\pgnstarts` records a start of 1 (builder, 2026-11-16). A document with no `\sect` has
 one section. A header or footer group attaches to the section being read
 when it appears, which for Word and SAS is right after `\sectd`.
 `landscape` is a flag only: both producers write the swapped paper size

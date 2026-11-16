@@ -109,6 +109,7 @@ One warning per code and name per document unless stated. `offset` is the byte o
 | `unknown_picture_format` | `\pict` without a known format word | none |
 | `object_data_dropped` | `\*\objdata` skipped | none |
 | `shape_geometry_dropped` | a `\shp` read; only its text and picture are kept | none |
+| `field_result_flattened` | a `\par`, `\cell`, `\row` or `\sect` inside a field result or list text became a line break (added during Task 6) | none |
 
 ## The text projection
 
