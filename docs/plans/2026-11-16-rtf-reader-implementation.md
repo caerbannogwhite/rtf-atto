@@ -750,14 +750,16 @@ static void runs_follow_character_properties() {
   CHECK_EQ(run(p, 3).text, std::string("de"));
 }
 static void char_props_and_plain() {
-  auto doc = parse_ok(R"({\rtf1 {\f1\fs18\ul\strike\super\up6\cf1\highlight7\caps\v\lang1033 x}{\b\plain y}{\ul0 z}\par})");
+  auto doc = parse_ok(R"({\rtf1 {\f1\fs18\ul\strike\super\up6\cf1\highlight7\caps\v\lang1033 x}{\b\plain y}{\i\ul\ul0 z}\par})");
   const auto& p = body_paragraph(doc, 0, 0);
   const auto& x = run(p, 0).props;
   CHECK_EQ(*x.font, 1); CHECK_EQ(*x.size, 18); CHECK(*x.underline == rtf::Underline::Single); CHECK(x.strike);
   CHECK(*x.script == rtf::Script::Super); CHECK_EQ(*x.offset, 6); CHECK_EQ(*x.color, 1); CHECK_EQ(*x.highlight, 7);
   CHECK(x.caps); CHECK(x.hidden); CHECK_EQ(*x.language, 1033);
   CHECK(!run(p, 1).props.bold);
-  CHECK(!run(p, 2).props.underline.has_value());
+  CHECK_EQ(p.runs.size(), std::size_t(3));   // y and z differ in italic, so they stay two runs
+  CHECK(run(p, 2).props.italic);
+  CHECK(!run(p, 2).props.underline.has_value());   // \ul then \ul0 clears it
 }
 static void paragraph_props_apply_at_par() {
   auto doc = parse_ok(R"({\rtf1\pard\qc\li288\fi-360\sb10\sa0\sl278\slmult1\keepn\s1\ls1\ilvl0\widctlpar one\par{\qr two}\par})");
