@@ -14,7 +14,7 @@ endif()
 option(RTF_BUILD_TESTS "Build the tests" ${RTF_IS_TOP_LEVEL})
 option(RTF_BUILD_TOOLS "Build the command line tools" ON)
 option(RTF_SANITIZE "Build with AddressSanitizer and UBSan" OFF)
-option(RTF_FUZZ "Build the fuzz targets (not used yet)" OFF)
+option(RTF_FUZZ "Build the libFuzzer target (needs Clang)" OFF)
 
 # Flags shared by the library, the tools and the tests.
 add_library(rtf_atto_flags INTERFACE)
@@ -62,6 +62,21 @@ if(RTF_BUILD_TESTS)
   rtf_add_test(json)
   rtf_add_test(tables)
   rtf_add_test(goldens ${CMAKE_SOURCE_DIR}/test/fixtures)
+  rtf_add_test(mutation ${CMAKE_SOURCE_DIR}/test/fixtures)
+  set_tests_properties(mutation PROPERTIES TIMEOUT 900)
+  rtf_add_test(large)
+  set_tests_properties(large PROPERTIES TIMEOUT 300)
+endif()
+
+# The libFuzzer target, for long runs on a developer's machine. CI does not build it.
+if(RTF_FUZZ)
+  if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "RTF_FUZZ needs Clang")
+  endif()
+  add_executable(fuzz_parse test/fuzz/fuzz_parse.cpp)
+  target_link_libraries(fuzz_parse PRIVATE rtf_atto)
+  target_compile_options(fuzz_parse PRIVATE -fsanitize=fuzzer,address)
+  target_link_options(fuzz_parse PRIVATE -fsanitize=fuzzer,address)
 endif()
 
 # The text projection of the C++ reader is compared with an independent
