@@ -611,6 +611,7 @@ class Reader {
   void picture_text(std::string_view text, std::size_t offset);
   void picture_binary(std::string_view bytes);
   void frame_word(FrameOp op);
+  void flatten_break();
 
   // One handler per destination kind.
   void dispatch_word(const Token& tok, const WordInfo* info);
@@ -1082,9 +1083,10 @@ bool Reader::open_destination(const Token& tok, DestKind kind) {
 // ---------------------------------------------------------------------------
 
 // Opens one of the text containers or pictures. They belong to the body
-// text; inside the document tables they are skipped. A part found outside
-// its container (\fldrslt outside \field, \sv outside \shp) is skipped
-// silently.
+// text; inside the document tables they are skipped. A \fldrslt, \result
+// or \shptxt found outside its container is read as a formatting group,
+// so its text stays in the enclosing paragraph. Other parts found outside
+// their container (\*\fldinst, \sn, \sv, \*\objclass) are skipped silently.
 bool Reader::open_structure(const Token& tok, DestKind kind) {
   GroupState& g = top();
   if (g.dest != Dest::Body) {
@@ -1107,7 +1109,7 @@ bool Reader::open_structure(const Token& tok, DestKind kind) {
       g.target = TextTarget::FieldInstruction;
       return true;
     case DestKind::FieldResult:
-      if (g.target != TextTarget::Field) break;
+      if (g.target != TextTarget::Field) return false;  // stray: a formatting group, so its text stays
       g.target = TextTarget::FieldResult;
       return true;
     case DestKind::Footnote:
@@ -1145,7 +1147,7 @@ bool Reader::open_structure(const Token& tok, DestKind kind) {
       g.target = TextTarget::Shape;
       return true;
     case DestKind::ShapeText:
-      if (g.target != TextTarget::Shape || g.frame >= shapes_.size()) break;
+      if (g.target != TextTarget::Shape || g.frame >= shapes_.size()) return false;  // stray: text stays
       open_sink(&shapes_[g.frame].shape.blocks);
       g.target = TextTarget::Paragraph;
       return true;
@@ -1177,7 +1179,7 @@ bool Reader::open_structure(const Token& tok, DestKind kind) {
                 base_ + tok.offset);
       break;
     case DestKind::ObjectResult:
-      if (g.target != TextTarget::Object || g.frame >= objects_.size()) break;
+      if (g.target != TextTarget::Object || g.frame >= objects_.size()) return false;  // stray: text stays
       open_sink(&objects_[g.frame].result);
       g.target = TextTarget::Paragraph;
       return true;
@@ -1361,6 +1363,17 @@ void Reader::frame_word(FrameOp op) {
   }
 }
 
+// A field result and list text hold inlines, not paragraphs. A paragraph,
+// cell or row break there becomes a line break, so the lines of a TOC
+// result stay apart. Other targets drop the break.
+void Reader::flatten_break() {
+  const TextTarget t = top().target;
+  if (t != TextTarget::FieldResult && t != TextTarget::ListText) return;
+  emit_inline(Inline{LineBreak{}});
+  warn_once(once_seen_, "field_result_flattened", "field_result_flattened",
+            "paragraph or cell breaks inside a field result or list text became line breaks", offset_);
+}
+
 // ---------------------------------------------------------------------------
 // Sections (design, "Sections and page setup")
 // ---------------------------------------------------------------------------
@@ -1461,10 +1474,14 @@ void Reader::body_word(const Token& tok, const WordInfo* info) {
     case Family::Picture: picture_word(tok, op_of<PictOp>(*info)); break;
     case Family::Frame: frame_word(op_of<FrameOp>(*info)); break;
     case Family::Table: {
-      // Cells and rows hold paragraphs; a field instruction, a picture or
-      // list text cannot end one.
-      if (top().target != TextTarget::Paragraph) break;
+      // Cells and rows hold paragraphs. In a field result or list text a
+      // cell or row end becomes a line break; elsewhere outside a
+      // paragraph it is dropped.
       const auto op = op_of<TableOp>(*info);
+      if (top().target != TextTarget::Paragraph) {
+        if (op != TableOp::Trowd && op != TableOp::Cellx) flatten_break();
+        break;
+      }
       if (op == TableOp::Trowd) {
         start_row_definition();
       } else if (op == TableOp::Cellx) {
@@ -1744,6 +1761,8 @@ void Reader::special_word(SpecialOp op) {
     case SpecialOp::Par:
       if (in_paragraph) {
         sink().end_paragraph(top().para.props, table_level(top().para), doc_.warnings, offset_);
+      } else {
+        flatten_break();
       }
       return;
     case SpecialOp::Line: emit_inline(Inline{LineBreak{}}); return;

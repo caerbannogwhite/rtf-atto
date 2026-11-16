@@ -130,6 +130,33 @@ static void lists_as_text() {
   CHECK_EQ(q.listText.size(), std::size_t(2)); CHECK_EQ(run_text(q), std::string("second"));
   CHECK_EQ(count_warnings(doc, "skipped_destination"), std::size_t(2));   // listtable and pn, one warning each
 }
+static void par_inside_field_result_becomes_line_break() {
+  auto doc = parse_ok(R"({\rtf1 {\field{\*\fldinst TOC}{\fldrslt {Intro\tab 1\par}{Methods\tab 2\par}}}\par})");
+  const auto& f = std::get<rtf::Field>(body_paragraph(doc, 0, 0).runs[0].value);
+  CHECK_EQ(f.result.size(), std::size_t(8));
+  if (f.result.size() == 8) {
+    CHECK_EQ(std::get<rtf::TextRun>(f.result[0].value).text, std::string("Intro"));
+    CHECK(std::holds_alternative<rtf::Tab>(f.result[1].value));
+    CHECK_EQ(std::get<rtf::TextRun>(f.result[2].value).text, std::string("1"));
+    CHECK(std::holds_alternative<rtf::LineBreak>(f.result[3].value));
+    CHECK_EQ(std::get<rtf::TextRun>(f.result[4].value).text, std::string("Methods"));
+    CHECK(std::holds_alternative<rtf::Tab>(f.result[5].value));
+    CHECK_EQ(std::get<rtf::TextRun>(f.result[6].value).text, std::string("2"));
+    CHECK(std::holds_alternative<rtf::LineBreak>(f.result[7].value));
+  }
+  CHECK_EQ(count_warnings(doc, "field_result_flattened"), std::size_t(1));
+}
+static void stray_container_parts_keep_their_text() {
+  auto doc = parse_ok(R"({\rtf1 a{\fldrslt b}{\result c}{\shptxt d}e\par})");
+  CHECK_EQ(run_text(body_paragraph(doc, 0, 0)), std::string("abcde"));
+  CHECK(!has_warning(doc, "unknown_destination"));
+  CHECK(!has_warning(doc, "skipped_destination"));
+}
+static void field_instruction_keeps_escaped_symbols() {
+  auto doc = parse_ok(R"({\rtf1 {\field{\*\fldinst HYPERLINK "a\\b\{c\}"}{\fldrslt r}}\par})");
+  const auto& f = std::get<rtf::Field>(body_paragraph(doc, 0, 0).runs[0].value);
+  CHECK_EQ(f.instruction, std::string("HYPERLINK \"a\\b{c}\""));
+}
 
 int main() {
   sas_page_setup_and_sections();
@@ -143,5 +170,8 @@ int main() {
   shapes_word_style();
   objects();
   lists_as_text();
+  par_inside_field_result_becomes_line_break();
+  stray_container_parts_keep_their_text();
+  field_instruction_keeps_escaped_symbols();
   return rtf_test::result();
 }
