@@ -1031,7 +1031,7 @@ static void row_not_closed() {
   - `\*\shppict` is transparent; `\nonshppict` is skipped (`skipped_destination`).
   - `\shp`: a shape frame; `\*\shpinst` is transparent for its `\sp` children: `{\sp{\sn NAME}{\sv VALUE}}` sets the frame's picture when NAME is `pib` and VALUE holds a `\pict`, and is skipped otherwise; `\shptxt` opens a `BlockSink` on the frame's blocks; `\shprslt` is skipped with `skipped_destination`; every `\shp*` control word is ignored. On close a `Shape` inline goes to the enclosing paragraph when it has blocks or a picture, and `shape_geometry_dropped` is added once per document in every case.
   - `\object`: `\*\objclass` text is `className`; `\*\objdata` is skipped with `object_data_dropped`; `\result` opens a `BlockSink` on `result`; on close the `EmbeddedObject` goes to the enclosing paragraph.
-  - `\listtext` and `\pntext` set the inline target to the current paragraph's `listText` (opening a paragraph if none); `\*\pn` is skipped silently.
+  - `\listtext` and `\pntext` set the inline target to the current paragraph's `listText` (opening a paragraph if none); `\*\pn` is skipped with `skipped_destination`, as the spec's list says.
 
 - [ ] **Step 1: Write the failing tests** in `test/cpp/test_reader_structure.cpp`:
 
@@ -1157,7 +1157,7 @@ static void lists_as_text() {
   CHECK_EQ(run_text(p), std::string("item")); CHECK_EQ(p.props.list->id, 1);
   const auto& q = body_paragraph(doc, 0, 1);
   CHECK_EQ(q.listText.size(), std::size_t(2)); CHECK_EQ(run_text(q), std::string("second"));
-  CHECK_EQ(count_warnings(doc, "skipped_destination"), std::size_t(1));   // listtable; \*\pn is silent
+  CHECK_EQ(count_warnings(doc, "skipped_destination"), std::size_t(2));   // listtable and pn, one warning each
 }
 ```
 
