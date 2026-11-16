@@ -1563,11 +1563,14 @@ void Reader::char_word(const Token& tok, CharOp op) {
     case CharOp::Up:
     case CharOp::Down: {
       // \upN raises by N half-points, \dnN lowers; the default N is 6.
-      const int n = param_or(tok, 6);
+      // The negation is done in 64 bits and clamped, because INT_MIN has
+      // no int negation.
+      const std::int64_t n = param_or(tok, 6);
       if (n == 0) {
         c.offset.reset();
       } else {
-        c.offset = op == CharOp::Up ? n : -n;
+        const std::int64_t v = op == CharOp::Up ? n : -n;
+        c.offset = static_cast<int>(std::min<std::int64_t>(v, std::numeric_limits<int>::max()));
       }
       break;
     }

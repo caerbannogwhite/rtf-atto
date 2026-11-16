@@ -216,6 +216,16 @@ static void flattened_group_is_transparent() {
   CHECK(!has_warning(r.document, "unknown_destination"));
   CHECK(!has_warning(r.document, "unbalanced_group"));
 }
+static void offset_at_int_min() {
+  // \dn negates its parameter. INT_MIN has no int negation, so it clamps.
+  auto doc = parse_ok(R"({\rtf1 {\dn-2147483648 x}{\up-2147483648 y}\par})");
+  const auto& p = body_paragraph(doc, 0, 0);
+  CHECK_EQ(p.runs.size(), std::size_t(2));
+  CHECK(run(p, 0).props.offset.has_value());
+  CHECK_EQ(run(p, 0).props.offset.value_or(0), 2147483647);
+  CHECK(run(p, 1).props.offset.has_value());
+  CHECK_EQ(run(p, 1).props.offset.value_or(0), -2147483647 - 1);
+}
 
 int main() {
   parses_minimal();
@@ -239,5 +249,6 @@ int main() {
   many_groups_after_tabs();
   tab_alignment_is_group_state();
   flattened_group_is_transparent();
+  offset_at_int_min();
   return rtf_test::result();
 }
