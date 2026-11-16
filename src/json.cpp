@@ -645,21 +645,23 @@ void write_row_props(W& w, const RowProps& v) {
   w.end_object();
 }
 
+void write_row(W& w, const Row& row) {
+  w.begin_object();
+  w.key("cells");
+  w.begin_array();
+  for (const Cell& c : row.cells) write_cell(w, c);
+  w.end_array();
+  w.key("props");
+  write_row_props(w, row.props);
+  w.end_object();
+}
+
 void write_table(W& w, const Table& v) {
   w.begin_object();
   str_member(w, "kind", "table");
   w.key("rows");
   w.begin_array();
-  for (const Row& row : v.rows) {
-    w.begin_object();
-    w.key("cells");
-    w.begin_array();
-    for (const Cell& c : row.cells) write_cell(w, c);
-    w.end_array();
-    w.key("props");
-    write_row_props(w, row.props);
-    w.end_object();
-  }
+  for (const Row& row : v.rows) write_row(w, row);
   w.end_array();
   w.end_object();
 }
@@ -763,6 +765,61 @@ void write_document(W& w, const RtfDocument& d) {
   w.end_object();
 }
 
+// ---- logical tables (every field is always written) ----
+
+void write_logical_cell(W& w, const LogicalCell& v) {
+  w.begin_object();
+  int_member(w, "column", v.column);
+  int_member(w, "span", v.span);
+  str_member(w, "text", v.text);
+  w.end_object();
+}
+
+void write_logical_row(W& w, const LogicalRow& v) {
+  w.begin_object();
+  w.key("cells");
+  w.begin_array();
+  for (const LogicalCell& c : v.cells) write_logical_cell(w, c);
+  w.end_array();
+  int_member(w, "indent", v.indent);
+  w.key("spacer");
+  w.boolean(v.spacer);
+  w.end_object();
+}
+
+void write_logical_table(W& w, const LogicalTable& v) {
+  w.begin_object();
+  w.key("columnNames");
+  w.begin_array();
+  for (const std::string& name : v.columnNames) w.string(name);
+  w.end_array();
+  w.key("edges");
+  w.begin_array();
+  for (int edge : v.edges) w.integer(edge);
+  w.end_array();
+  int_member(w, "firstSection", v.firstSection);
+  w.key("headerRows");
+  w.begin_array();
+  for (const Row& row : v.headerRows) write_row(w, row);
+  w.end_array();
+  int_member(w, "id", v.id);
+  int_member(w, "lastSection", v.lastSection);
+  w.key("parts");
+  w.begin_array();
+  for (const TablePart& part : v.parts) {
+    w.begin_object();
+    int_member(w, "block", part.block);
+    int_member(w, "section", part.section);
+    w.end_object();
+  }
+  w.end_array();
+  w.key("rows");
+  w.begin_array();
+  for (const LogicalRow& row : v.rows) write_logical_row(w, row);
+  w.end_array();
+  w.end_object();
+}
+
 }  // namespace
 }  // namespace rtf::detail
 
@@ -772,6 +829,20 @@ std::string to_json(const RtfDocument& doc) {
   std::string out;
   detail::JsonWriter writer(out);
   detail::write_document(writer, doc);
+  out += '\n';
+  return out;
+}
+
+}  // namespace rtf
+
+namespace rtf {
+
+std::string to_json(const std::vector<LogicalTable>& tables) {
+  std::string out;
+  detail::JsonWriter writer(out);
+  writer.begin_array();
+  for (const LogicalTable& table : tables) detail::write_logical_table(writer, table);
+  writer.end_array();
   out += '\n';
   return out;
 }
