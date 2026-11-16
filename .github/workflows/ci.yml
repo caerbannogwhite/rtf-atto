@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RTF_MUTATIONS: "2000"
-      RTF_LARGE_SECONDS: "300"
+      RTF_LARGE_SECONDS: "240"
     steps:
       - uses: actions/checkout@v4
       - name: Configure

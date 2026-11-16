@@ -100,13 +100,21 @@ while IFS= read -r file; do
     continue
   fi
 
-  "$RTF2JSON" --text "$file" > "$tmp/a.txt" 2> /dev/null
-  "$PYTHON" "$root/test/tools/rtf_text.py" "$file" > "$tmp/b.txt" 2> /dev/null
-  if result=$("$PYTHON" "$root/test/tools/compare_text.py" "$tmp/a.txt" "$tmp/b.txt"); then
+  if ! "$RTF2JSON" --text "$file" > "$tmp/a.txt" 2> /dev/null; then
+    echo "text $name: tool failed (rtf2json)"
+    failed=$((failed + 1))
+    continue
+  fi
+  if ! "$PYTHON" "$root/test/tools/rtf_text.py" "$file" > "$tmp/b.txt" 2> /dev/null; then
+    echo "text $name: tool failed (rtf_text.py)"
+    failed=$((failed + 1))
+    continue
+  fi
+  # --quiet keeps the text of the private files out of the output.
+  if result=$("$PYTHON" "$root/test/tools/compare_text.py" --quiet "$tmp/a.txt" "$tmp/b.txt"); then
     echo "text $name: same"
   else
-    echo "text $name: differ"
-    echo "$result"
+    echo "text $name: $result"
     failed=$((failed + 1))
   fi
 done < "$tmp/files"
