@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdio>
 #include <string>
+#include <type_traits>
 
 namespace rtf_test {
 
@@ -11,9 +12,8 @@ inline int& failures() {
   return count;
 }
 
-inline std::string to_string(int v) { return std::to_string(v); }
-inline std::string to_string(long v) { return std::to_string(v); }
-inline std::string to_string(std::size_t v) { return std::to_string(v); }
+template <class T, class = typename std::enable_if<std::is_integral<T>::value && !std::is_same<T, bool>::value>::type>
+std::string to_string(T v) { return std::to_string(v); }
 inline std::string to_string(bool v) { return v ? "true" : "false"; }
 inline std::string to_string(const std::string& v) { return "\"" + v + "\""; }
 inline std::string to_string(const char* v) { return std::string("\"") + v + "\""; }
