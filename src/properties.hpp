@@ -1,6 +1,7 @@
 #pragma once
 // Internal header. The formatting state that each RTF group carries.
 // Character properties use the model's CharProps as they are.
+#include <cstddef>
 #include <optional>
 
 #include "rtf/model.hpp"
@@ -13,7 +14,15 @@ struct ParaState {
   ParagraphProps props;
   bool inTable = false;  // \intbl
   int itap = 0;          // \itapN, the table nesting level
+  // The alignment and leader words come before the \tx they apply to.
+  // They are group state, so '}' restores them.
+  TabAlign pendingTabAlign = TabAlign::Left;
+  TabLeader pendingTabLeader = TabLeader::None;
 };
+
+// Word keeps at most 64 tab stops per paragraph. The cap also bounds the
+// copy of the paragraph state that each '{' makes.
+constexpr std::size_t kMaxTabStops = 64;
 
 // The properties of the section being read. \sectd resets them to the
 // document's page setup (design, "Sections and page setup").

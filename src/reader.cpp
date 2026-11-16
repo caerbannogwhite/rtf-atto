@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
+#include <deque>
 #include <optional>
 #include <set>
 #include <string>
@@ -471,6 +472,10 @@ class Reader {
   std::size_t max_depth_;
   RtfDocument doc_;
   std::vector<GroupState> stack_;
+  // Sections are built in a deque. Adding a section does not move the
+  // others, so BlockSink targets into bodies, headers and footers stay
+  // valid. finish_document moves them into doc_.sections.
+  std::deque<Section> sections_;
   std::vector<BlockSink> sinks_;
   SectionState section_;
   bool section_defined_ = false;  // Task 6 sets it on \sectd
@@ -500,18 +505,14 @@ class Reader {
   bool info_has_year_ = false;
   int info_parts_[6] = {0, 0, 0, 0, 0, 0};
 
-  // Paragraph tab stops: the alignment and leader words come before \tx.
-  TabAlign pending_tab_align_ = TabAlign::Left;
-  TabLeader pending_tab_leader_ = TabLeader::None;
-
   // Warnings given once per key.
   std::set<std::string> unknown_seen_, skipped_seen_, param_seen_, code_page_seen_, once_seen_;
 };
 
 Reader::Reader(const unsigned char* data, std::size_t size, std::size_t base, const ParseOptions& options)
     : tokenizer_(data, size), base_(base), max_depth_(options.maxDepth > 0 ? options.maxDepth : 1) {
-  doc_.sections.emplace_back();
-  sinks_.emplace_back(&doc_.sections.back().body);
+  sections_.emplace_back();
+  sinks_.emplace_back(&sections_.back().body);
   section_.reset(doc_.page);
 }
 
@@ -580,6 +581,9 @@ void Reader::on_group_open(const Token& tok) {
   if (stack_.size() >= max_depth_) {
     // Deeper groups are flattened into the current one (design, "Group state").
     ++overflow_;
+    // The flattened group is transparent: its first word must not decide
+    // the destination of the group it is flattened into.
+    top().first = false;
     warn_once(once_seen_, "depth_limit", "depth_limit", "groups nested deeper than the limit are flattened",
               base_ + tok.offset);
     return;
@@ -645,12 +649,14 @@ void Reader::finish_document(const GroupState& root) {
     close_sink(sinks_.back(), root.para.props);
     sinks_.pop_back();
   }
-  Section& s = doc_.sections.back();
+  Section& s = sections_.back();
   s.page = section_.page;
   s.break_ = section_.break_;
   s.columns = section_.columns;
   s.titlePage = section_.titlePage;
   s.pageNumberStart = section_.pageNumberStart;
+  doc_.sections.assign(std::make_move_iterator(sections_.begin()), std::make_move_iterator(sections_.end()));
+  sections_.clear();
   finished_ = true;
 }
 
@@ -951,9 +957,18 @@ void Reader::para_word(const Token& tok, ParaOp op) {
   ParagraphProps& p = g.para.props;
   // A tab stop: \tqc, \tqr, \tqdec and the leader words come before \txN.
   auto add_tab = [&](TabAlign align) {
-    p.tabs.push_back(TabStop{param_or(tok, 0), align, pending_tab_leader_});
-    pending_tab_align_ = TabAlign::Left;
-    pending_tab_leader_ = TabLeader::None;
+    const TabStop stop{param_or(tok, 0), align, g.para.pendingTabLeader};
+    g.para.pendingTabAlign = TabAlign::Left;
+    g.para.pendingTabLeader = TabLeader::None;
+    // A stop at a position already listed replaces it. Stops beyond
+    // kMaxTabStops are dropped without a warning.
+    for (TabStop& t : p.tabs) {
+      if (t.position == stop.position) {
+        t = stop;
+        return;
+      }
+    }
+    if (p.tabs.size() < kMaxTabStops) p.tabs.push_back(stop);
   };
   auto shading = [&]() -> Shading& {
     if (!p.shading) p.shading.emplace();
@@ -963,8 +978,6 @@ void Reader::para_word(const Token& tok, ParaOp op) {
     case ParaOp::Pard:
       g.para = ParaState{};
       g.border = BorderTarget{};
-      pending_tab_align_ = TabAlign::Left;
-      pending_tab_leader_ = TabLeader::None;
       break;
     case ParaOp::Ql: p.align = Align::Left; break;
     case ParaOp::Qc: p.align = Align::Center; break;
@@ -995,23 +1008,23 @@ void Reader::para_word(const Token& tok, ParaOp op) {
     case ParaOp::LtrPar: p.rtl = false; break;
     case ParaOp::InTbl: g.para.inTable = true; break;
     case ParaOp::Itap: g.para.itap = param_or(tok, 0); break;
-    case ParaOp::Tx: add_tab(pending_tab_align_); break;
+    case ParaOp::Tx: add_tab(g.para.pendingTabAlign); break;
     case ParaOp::Tb:
       // \tbN is a bar tab at N; written without N it marks the next \tx.
       if (tok.hasParam) {
         add_tab(TabAlign::Bar);
       } else {
-        pending_tab_align_ = TabAlign::Bar;
+        g.para.pendingTabAlign = TabAlign::Bar;
       }
       break;
-    case ParaOp::Tqc: pending_tab_align_ = TabAlign::Center; break;
-    case ParaOp::Tqr: pending_tab_align_ = TabAlign::Right; break;
-    case ParaOp::Tqdec: pending_tab_align_ = TabAlign::Decimal; break;
-    case ParaOp::TlDot: pending_tab_leader_ = TabLeader::Dots; break;
-    case ParaOp::TlHyph: pending_tab_leader_ = TabLeader::Hyphens; break;
-    case ParaOp::TlUl: pending_tab_leader_ = TabLeader::Underline; break;
-    case ParaOp::TlTh: pending_tab_leader_ = TabLeader::Thick; break;
-    case ParaOp::TlEq: pending_tab_leader_ = TabLeader::Equal; break;
+    case ParaOp::Tqc: g.para.pendingTabAlign = TabAlign::Center; break;
+    case ParaOp::Tqr: g.para.pendingTabAlign = TabAlign::Right; break;
+    case ParaOp::Tqdec: g.para.pendingTabAlign = TabAlign::Decimal; break;
+    case ParaOp::TlDot: g.para.pendingTabLeader = TabLeader::Dots; break;
+    case ParaOp::TlHyph: g.para.pendingTabLeader = TabLeader::Hyphens; break;
+    case ParaOp::TlUl: g.para.pendingTabLeader = TabLeader::Underline; break;
+    case ParaOp::TlTh: g.para.pendingTabLeader = TabLeader::Thick; break;
+    case ParaOp::TlEq: g.para.pendingTabLeader = TabLeader::Equal; break;
     case ParaOp::Shading: shading().percent = param_or(tok, 0); break;
     case ParaOp::CbPat: shading().background = param_or(tok, 0); break;
     case ParaOp::CfPat: shading().foreground = param_or(tok, 0); break;

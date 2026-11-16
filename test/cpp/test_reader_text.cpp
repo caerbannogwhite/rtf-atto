@@ -174,6 +174,48 @@ static void tokenizer_warnings_reach_the_document() {
   auto b = parse_ok("{\\rtf1 x\\");
   CHECK(has_warning(b, "truncated_control"));
 }
+static void tab_stops_are_capped() {
+  std::string input = "{\\rtf1\\pard";
+  for (int i = 1; i <= 100; ++i) input += "\\tx" + std::to_string(i * 10);
+  input += "\\tqc\\tx10 x\\par}";   // a repeated position replaces its stop
+  auto doc = parse_ok(input);
+  const auto& tabs = body_paragraph(doc, 0, 0).props.tabs;
+  CHECK_EQ(tabs.size(), std::size_t(64));
+  std::size_t at10 = 0;
+  for (const auto& t : tabs) {
+    if (t.position == 10) ++at10;
+  }
+  CHECK_EQ(at10, std::size_t(1));
+  CHECK(!tabs.empty() && tabs[0].align == rtf::TabAlign::Center);
+}
+static void many_groups_after_tabs() {
+  // Each '{' copies the paragraph state; the tab cap keeps that copy small.
+  std::string input = "{\\rtf1\\pard";
+  for (int i = 1; i <= 20000; ++i) input += "\\tx" + std::to_string(i);
+  for (int i = 0; i < 20000; ++i) input += "{}";
+  input += "x\\par}";
+  auto r = rtf::parse(std::string_view(input));
+  CHECK(r.ok);
+  CHECK_EQ(body_paragraph(r.document, 0, 0).props.tabs.size(), std::size_t(64));
+}
+static void tab_alignment_is_group_state() {
+  auto doc = parse_ok(R"({\rtf1 {\tqc}\tx100 x\par})");
+  const auto& tabs = body_paragraph(doc, 0, 0).props.tabs;
+  CHECK_EQ(tabs.size(), std::size_t(1));
+  CHECK(!tabs.empty() && tabs[0].align == rtf::TabAlign::Left);
+}
+static void flattened_group_is_transparent() {
+  // Depth 3: the root, then two groups; the third '{' is flattened. Its \*\foo
+  // must not turn the group it is flattened into a skipped destination, so
+  // its text stays and the braces still match.
+  auto r = rtf::parse(std::string_view(R"({\rtf1 {{{\*\foo lost}kept}}after\par})"), rtf::ParseOptions{3});
+  CHECK(r.ok);
+  CHECK_EQ(r.document.sections[0].body.size(), std::size_t(1));
+  CHECK_EQ(run_text(body_paragraph(r.document, 0, 0)), std::string("lostkeptafter"));
+  CHECK_EQ(count_warnings(r.document, "depth_limit"), std::size_t(1));
+  CHECK(!has_warning(r.document, "unknown_destination"));
+  CHECK(!has_warning(r.document, "unbalanced_group"));
+}
 
 int main() {
   parses_minimal();
@@ -193,5 +235,9 @@ int main() {
   unbalanced_groups_and_depth();
   paragraph_ends_and_empty_paragraphs();
   tokenizer_warnings_reach_the_document();
+  tab_stops_are_capped();
+  many_groups_after_tabs();
+  tab_alignment_is_group_state();
+  flattened_group_is_transparent();
   return rtf_test::result();
 }
