@@ -1,0 +1,160 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 192,
+      "g": 192,
+      "r": 192
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "1": {
+      "charset": 0,
+      "family": "modern",
+      "name": "Courier New",
+      "pitch": "fixed"
+    }
+  },
+  "info": {
+    "author": "Fixture Writer",
+    "creatim": "2026-11-16T09:00:00",
+    "operator": "Fixture Writer",
+    "title": "Invented Disposition Table",
+    "version": "1"
+  },
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 11905,
+    "landscape": false,
+    "marginBottom": 360,
+    "marginLeft": 1080,
+    "marginRight": 1080,
+    "marginTop": 1080,
+    "width": 16837
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": []
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 360,
+        "headerDistance": 1080,
+        "height": 11905,
+        "landscape": true,
+        "marginBottom": 360,
+        "marginLeft": 1080,
+        "marginRight": 1080,
+        "marginTop": 1080,
+        "width": 16837
+      }
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    }
+  ],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "unbalanced_group",
+      "message": "missing } at the end of the input",
+      "offset": 1000
+    }
+  ]
+}

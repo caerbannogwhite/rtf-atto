@@ -1,0 +1,58 @@
+{
+  "codePage": 1252,
+  "colors": [],
+  "defaultFont": 0,
+  "fonts": {},
+  "info": {},
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1800,
+    "marginRight": 1800,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "x"
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 720,
+        "headerDistance": 720,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1800,
+        "marginRight": 1800,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    }
+  ],
+  "styles": [],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "depth_limit",
+      "message": "groups nested deeper than the limit are flattened",
+      "offset": 1030
+    }
+  ]
+}

@@ -36,6 +36,11 @@ add_library(rtf_atto STATIC src/version.cpp src/tokenizer.cpp src/encodings.cpp
 target_include_directories(rtf_atto PUBLIC include PRIVATE src)
 target_link_libraries(rtf_atto PUBLIC rtf_atto_flags)
 
+if(RTF_BUILD_TOOLS)
+  add_executable(rtf2json tools/rtf2json.cpp)
+  target_link_libraries(rtf2json PRIVATE rtf_atto rtf_atto_flags)
+endif()
+
 if(RTF_BUILD_TESTS)
   enable_testing()
 
@@ -56,4 +61,5 @@ if(RTF_BUILD_TESTS)
   rtf_add_test(reader_structure)
   rtf_add_test(json)
   rtf_add_test(tables)
+  rtf_add_test(goldens ${CMAKE_SOURCE_DIR}/test/fixtures)
 endif()

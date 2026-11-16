@@ -1,0 +1,222 @@
+[
+  {
+    "columnNames": [
+      "column_1",
+      "column_2",
+      "column_3",
+      "column_4"
+    ],
+    "edges": [
+      -108,
+      2203,
+      4514,
+      6825,
+      9136
+    ],
+    "firstSection": 0,
+    "headerRows": [],
+    "id": 1,
+    "lastSection": 0,
+    "parts": [
+      {
+        "block": 1,
+        "section": 0
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Name"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Arm"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "Visit"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "Status"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Ann"
+          },
+          {
+            "column": 1,
+            "span": 2,
+            "text": "Wide cell over two columns"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "Merged down"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Ben"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Shaded"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "Week 2"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Merged across"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "Week 3"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "Done"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      }
+    ]
+  },
+  {
+    "columnNames": [
+      "column_1",
+      "column_2"
+    ],
+    "edges": [
+      -108,
+      4514,
+      9136
+    ],
+    "firstSection": 0,
+    "headerRows": [],
+    "id": 2,
+    "lastSection": 0,
+    "parts": [
+      {
+        "block": 3,
+        "section": 0
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Outer left"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Inner one\tInner two\t\n"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      }
+    ]
+  },
+  {
+    "columnNames": [
+      "column_1",
+      "column_2"
+    ],
+    "edges": [
+      -108,
+      4514,
+      9136
+    ],
+    "firstSection": 0,
+    "headerRows": [],
+    "id": 3,
+    "lastSection": 0,
+    "parts": [
+      {
+        "block": 5,
+        "section": 0
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "First"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Closed"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Second"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Not closed"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,1988 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 192,
+      "g": 192,
+      "r": 192
+    },
+    {
+      "b": 170,
+      "g": 102,
+      "r": 0
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "1": {
+      "charset": 0,
+      "family": "modern",
+      "name": "Courier",
+      "pitch": "fixed"
+    }
+  },
+  "info": {
+    "author": "SAS Version 9.4",
+    "creatim": "2026-11-10T10:19:28",
+    "operator": "SAS Version 9.4",
+    "title": "Version 9.4 SAS System Output",
+    "version": "1"
+  },
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 11905,
+    "landscape": false,
+    "marginBottom": 360,
+    "marginLeft": 1080,
+    "marginRight": 1080,
+    "marginTop": 1080,
+    "width": 16837
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "table",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "bookmark",
+                          "name": "IDX",
+                          "position": "start"
+                        },
+                        {
+                          "kind": "bookmark",
+                          "name": "IDX",
+                          "position": "end"
+                        },
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Category"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 8,
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "color": 8,
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "color": 8,
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "top": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 5214
+                }
+              ],
+              "props": {
+                "align": "center",
+                "header": true,
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 576,
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Subcategory"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "X"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Y"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Total"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "header": true,
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 8670
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Screened"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "30"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 8670
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Failed screening"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "8 (26.7%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 8670
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Informed consent"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "21 (70.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 8670
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Enrolled"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "11 (36.7%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "10 (33.3%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "21 (70.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 8670
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Completed the study"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "9 (81.8%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "8 (80.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "17 (81.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "center",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 8670
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Withdrawn"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "2 (18.2%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "2 (20.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "4 (19.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 288,
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Death"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "1 (10.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "1 (4.8%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 288,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Lost to follow-up"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "2 (18.2%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 5194,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "1 (10.0%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 6932,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "3 (14.3%)"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 8670,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 1738
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {
+        "default": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "center"
+            },
+            "runs": []
+          },
+          {
+            "kind": "table",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Reference: All screened"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14626,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 14626
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              },
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Program: T_Disposition.SAS"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 7308,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 7308
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "right",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": []
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14626,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 7318
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "headers": {
+        "default": [
+          {
+            "kind": "table",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": "***SPONSOR***"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 4862,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4862
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "center",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": "Confidential"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 9802,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4940
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "right",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": "Page "
+                          },
+                          {
+                            "instruction": "PAGE",
+                            "kind": "field",
+                            "result": []
+                          },
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": " of "
+                          },
+                          {
+                            "instruction": "NUMPAGES",
+                            "kind": "field",
+                            "result": []
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14674,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4872
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              },
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Protocol: ***PROTOCOL***"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 4862,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4862
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "center",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Draft v1"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 9802,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4940
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "center",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": []
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14674,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4872
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              },
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Table 04MAR2025 - 14.1.1 (Disposition)"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14674,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 14674
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              }
+            ]
+          },
+          {
+            "kind": "paragraph",
+            "props": {},
+            "runs": []
+          }
+        ]
+      },
+      "page": {
+        "footerDistance": 360,
+        "headerDistance": 1080,
+        "height": 11905,
+        "landscape": true,
+        "marginBottom": 360,
+        "marginLeft": 1080,
+        "marginRight": 1080,
+        "marginTop": 1080,
+        "width": 16837
+      }
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    }
+  ],
+  "version": 1,
+  "warnings": []
+}

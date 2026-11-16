@@ -1,0 +1,746 @@
+[
+  {
+    "columnNames": [
+      "column_1",
+      "Treatment group Placebo (N=20)",
+      "Treatment group Drug A (N=21)",
+      "Treatment group Total (N=41)"
+    ],
+    "edges": [
+      0,
+      3456,
+      5194,
+      6932,
+      8670
+    ],
+    "firstSection": 0,
+    "headerRows": [
+      {
+        "cells": [
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "bookmark",
+                    "name": "IDX",
+                    "position": "start"
+                  },
+                  {
+                    "kind": "bookmark",
+                    "name": "IDX",
+                    "position": "end"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 3456,
+            "shading": {
+              "background": 8
+            },
+            "verticalAlign": "bottom",
+            "width": 3456
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "center",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Treatment group"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 8670,
+            "shading": {
+              "background": 8
+            },
+            "verticalAlign": "bottom",
+            "width": 5214
+          }
+        ],
+        "props": {
+          "align": "center",
+          "header": true,
+          "keep": true
+        }
+      },
+      {
+        "cells": [
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": []
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 3456,
+            "shading": {
+              "background": 8
+            },
+            "verticalAlign": "bottom",
+            "width": 3456
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "center",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Placebo"
+                  },
+                  {
+                    "kind": "lineBreak"
+                  },
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "(N=20)"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 5194,
+            "shading": {
+              "background": 8
+            },
+            "verticalAlign": "bottom",
+            "width": 1738
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "center",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Drug A"
+                  },
+                  {
+                    "kind": "lineBreak"
+                  },
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "(N=21)"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 6932,
+            "shading": {
+              "background": 8
+            },
+            "verticalAlign": "bottom",
+            "width": 1738
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "center",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Total"
+                  },
+                  {
+                    "kind": "lineBreak"
+                  },
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "(N=41)"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 8670,
+            "shading": {
+              "background": 8
+            },
+            "verticalAlign": "bottom",
+            "width": 1738
+          }
+        ],
+        "props": {
+          "align": "center",
+          "header": true,
+          "keep": true
+        }
+      }
+    ],
+    "id": 1,
+    "lastSection": 2,
+    "parts": [
+      {
+        "block": 0,
+        "section": 0
+      },
+      {
+        "block": 0,
+        "section": 1
+      },
+      {
+        "block": 0,
+        "section": 2
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Randomised"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "20"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "21"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "41"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Completed study"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "15 (75.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "17 (81.0%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "32 (78.0%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Discontinued"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "5 (25.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "4 (19.0%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "9 (22.0%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Adverse event"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "2 (10.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "1 (4.8%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "3 (7.3%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Withdrew consent"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "1 (5.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "2 (9.5%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "3 (7.3%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Lost to follow-up"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "1 (5.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "0"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "1 (2.4%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Other"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "1 (5.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "1 (4.8%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "2 (4.9%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Moved away"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "1 (5.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "0"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "1 (2.4%)"
+          }
+        ],
+        "indent": 576,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Schedule conflict"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "0"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "1 (4.8%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "1 (2.4%)"
+          }
+        ],
+        "indent": 576,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Completed treatment"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "16 (80.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "18 (85.7%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "34 (82.9%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Ongoing at data cut"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "0"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "0"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "0"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Randomised by site"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "20"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "21"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "41"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Site 01"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "12 (60.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "11 (52.4%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "23 (56.1%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Site 02"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "8 (40.0%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "10 (47.6%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "18 (43.9%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      }
+    ]
+  }
+]

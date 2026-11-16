@@ -1,0 +1,1144 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 97,
+      "g": 71,
+      "r": 15
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "0": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31506": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos",
+      "pitch": "default"
+    }
+  },
+  "generator": "Microsoft Word-like text",
+  "info": {
+    "author": "Fixture Writer",
+    "nofpages": "1",
+    "operator": "Fixture Writer",
+    "title": "Word Tables Fixture",
+    "vern": "27",
+    "version": "1"
+  },
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1440,
+    "marginRight": 1440,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "A table with merged cells follows."
+            }
+          ]
+        },
+        {
+          "kind": "table",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Name"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "dotted",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "double",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "dashed",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 2203,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Arm"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "triple",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "hairline",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "none",
+                      "width": 0
+                    },
+                    "top": {
+                      "style": "thick",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 4514,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Visit"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 6825,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Status"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                }
+              ],
+              "props": {
+                "borders": {
+                  "bottom": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "left": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "right": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "top": {
+                    "style": "single",
+                    "width": 10
+                  }
+                },
+                "gapHalf": 108,
+                "height": 300,
+                "heightRule": "atLeast",
+                "left": -108,
+                "padding": {
+                  "left": 108,
+                  "right": 108
+                }
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Ann"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 2203,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Wide cell over two columns"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 6825,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Merged down"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "mergeVertical": "first",
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "center",
+                  "width": 2311
+                }
+              ],
+              "props": {
+                "gapHalf": 108,
+                "left": -108
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Ben"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 2203,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Shaded"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 4514,
+                  "shading": {
+                    "background": 5
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Week 2"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 6825,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "mergeVertical": "continued",
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "center",
+                  "width": 2311
+                }
+              ],
+              "props": {
+                "gapHalf": 108,
+                "height": 400,
+                "heightRule": "exact",
+                "left": -108
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Merged across"
+                        }
+                      ]
+                    }
+                  ],
+                  "mergeHorizontal": "first",
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 2203,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "mergeHorizontal": "continued",
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 4514,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Week 3"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 6825,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Done"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 2311
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 2311
+                }
+              ],
+              "props": {
+                "gapHalf": 108,
+                "left": -108
+              }
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "A table inside a table cell follows."
+            }
+          ]
+        },
+        {
+          "kind": "table",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Outer left"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 4514,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "table",
+                      "rows": [
+                        {
+                          "cells": [
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "Inner one"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 2200
+                              },
+                              "right": 2195,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 2200
+                            },
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "Inner two"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 2200
+                              },
+                              "right": 4395,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 2200
+                            }
+                          ],
+                          "props": {
+                            "gapHalf": 108,
+                            "left": -5
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                }
+              ],
+              "props": {
+                "gapHalf": 108,
+                "left": -108
+              }
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "The last table has a row without its row mark."
+            }
+          ]
+        },
+        {
+          "kind": "table",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "First"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 4514,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Closed"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                }
+              ],
+              "props": {
+                "gapHalf": 108,
+                "left": -108
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Second"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 4514,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "Not closed"
+                        }
+                      ]
+                    }
+                  ],
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 4622
+                  },
+                  "right": 9136,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 4622
+                }
+              ],
+              "props": {
+                "gapHalf": 108,
+                "left": -108
+              }
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": []
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 708,
+        "headerDistance": 708,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1440,
+        "marginRight": 1440,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    },
+    {
+      "index": 11,
+      "name": "Normal Table",
+      "next": 11,
+      "type": "table"
+    }
+  ],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "skipped_destination",
+      "message": "destination \\defchp skipped",
+      "offset": 623
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\rsidtbl skipped",
+      "offset": 1215
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\nonesttables skipped",
+      "offset": 8821
+    },
+    {
+      "code": "row_not_closed",
+      "message": "a table row of level 1 ends without \\row",
+      "offset": 11314
+    }
+  ]
+}

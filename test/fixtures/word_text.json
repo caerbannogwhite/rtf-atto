@@ -1,0 +1,254 @@
+{
+  "codePage": 1252,
+  "colors": [],
+  "defaultFont": 0,
+  "fonts": {
+    "0": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "default"
+    },
+    "3": {
+      "charset": 2,
+      "family": "roman",
+      "name": "Symbol",
+      "pitch": "default"
+    },
+    "5": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "default"
+    }
+  },
+  "info": {},
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1800,
+    "marginRight": 1800,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Euro sign: €"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Sigma with a fallback hex escape: σ"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "中text right after the character"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "中 after two fallback bytes"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Emoji as a surrogate pair: 😅"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Fallback that is a brace: €after"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Cyrillic escapes: "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 5
+              },
+              "text": "Аб"
+            },
+            {
+              "kind": "text",
+              "props": {},
+              "text": " and raw bytes: "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 5
+              },
+              "text": "Аб"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Symbol run: "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 3
+              },
+              "text": ""
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Raw bytes under the default font: éü"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Raw tab byte:"
+            },
+            {
+              "kind": "tab"
+            },
+            {
+              "kind": "text",
+              "props": {},
+              "text": "after"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Special words: •—–   ‘’“”‍‌"
+            },
+            {
+              "kind": "tab"
+            },
+            {
+              "kind": "lineBreak"
+            },
+            {
+              "kind": "text",
+              "props": {},
+              "text": "  ­ ‑ end"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Escaped symbols: { } \\ end"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "Binary outside a picture:  end"
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 720,
+        "headerDistance": 720,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1800,
+        "marginRight": 1800,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    }
+  ],
+  "styles": [],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "symbol_font",
+      "message": "Symbol font bytes mapped to U+F000 plus the byte",
+      "offset": 563
+    }
+  ]
+}

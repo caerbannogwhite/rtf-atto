@@ -1,0 +1,586 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 192,
+      "g": 192,
+      "r": 192
+    },
+    {
+      "b": 97,
+      "g": 71,
+      "r": 15
+    },
+    {
+      "b": 89,
+      "g": 89,
+      "r": 89
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "0": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31500": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31505": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31506": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos",
+      "pitch": "default"
+    },
+    "31507": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "42": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos",
+      "pitch": "default"
+    }
+  },
+  "generator": "Microsoft Word-like text",
+  "info": {
+    "author": "Fixture Writer",
+    "creatim": "2026-11-16T09:00:00",
+    "edmins": "0",
+    "nofpages": "1",
+    "nofwords": "10",
+    "operator": "Fixture Writer",
+    "title": "Minimal Word Fixture",
+    "vern": "27",
+    "version": "1"
+  },
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1440,
+    "marginRight": 1440,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "keepTogether": true,
+            "keepWithNext": true,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 80,
+            "spaceBefore": 360,
+            "style": 1,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "color": 17,
+                "language": 2057,
+                "size": 40
+              },
+              "text": "A heading in style one"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "Plain words, "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "bold": true,
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "bold words"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": ", "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "italic": true,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "italic words"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": " and "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24,
+                "underline": "single"
+              },
+              "text": "underlined words"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "."
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "color": 6,
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "Red words"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": ", "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "highlight": 7,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "highlighted words"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": ", "
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 28
+              },
+              "text": "larger words"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": ", spaced words"
+            },
+            {
+              "kind": "lineBreak"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "after a break."
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {
+        "right": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "right",
+              "indentLeft": 0,
+              "indentRight": 0,
+              "tabs": [
+                {
+                  "align": "center",
+                  "leader": "none",
+                  "position": 4513
+                },
+                {
+                  "align": "right",
+                  "leader": "none",
+                  "position": 9026
+                }
+              ],
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "language": 2057,
+                  "size": 24
+                },
+                "text": "Page "
+              },
+              {
+                "instruction": "PAGE   \\* MERGEFORMAT",
+                "kind": "field",
+                "result": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "font": 31506,
+                      "language": 1024,
+                      "size": 24
+                    },
+                    "text": "1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "headers": {
+        "right": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "left",
+              "indentLeft": 0,
+              "indentRight": 0,
+              "tabs": [
+                {
+                  "align": "center",
+                  "leader": "none",
+                  "position": 4513
+                },
+                {
+                  "align": "right",
+                  "leader": "none",
+                  "position": 9026
+                }
+              ],
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "language": 2057,
+                  "size": 24
+                },
+                "text": "Draft"
+              },
+              {
+                "kind": "tab"
+              },
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "language": 2057,
+                  "size": 24
+                },
+                "text": "Fixture header"
+              },
+              {
+                "kind": "tab"
+              },
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "language": 2057,
+                  "size": 24
+                },
+                "text": "Version 1"
+              }
+            ]
+          }
+        ]
+      },
+      "page": {
+        "footerDistance": 708,
+        "headerDistance": 708,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1440,
+        "marginRight": 1440,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 1,
+      "name": "heading 1",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    },
+    {
+      "index": 11,
+      "name": "Normal Table",
+      "next": 11,
+      "type": "table"
+    }
+  ],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "skipped_destination",
+      "message": "destination \\defchp skipped",
+      "offset": 1239
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\defpap skipped",
+      "offset": 1307
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\listtable skipped",
+      "offset": 2619
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\listoverridetable skipped",
+      "offset": 2919
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\rsidtbl skipped",
+      "offset": 2996
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\mmathPr skipped",
+      "offset": 3032
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\xmlnstbl skipped",
+      "offset": 3285
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\ftnsep skipped",
+      "offset": 3798
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\ftnsepc skipped",
+      "offset": 3818
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\aftnsep skipped",
+      "offset": 3840
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\aftnsepc skipped",
+      "offset": 3861
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\pnseclvl skipped",
+      "offset": 4923
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\themedata skipped",
+      "offset": 7406
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\colorschememapping skipped",
+      "offset": 7462
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\latentstyles skipped",
+      "offset": 7527
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\datastore skipped",
+      "offset": 7809
+    }
+  ]
+}

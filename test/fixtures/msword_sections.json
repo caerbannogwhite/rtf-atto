@@ -1,0 +1,2056 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 192,
+      "g": 192,
+      "r": 192
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 97,
+      "g": 71,
+      "r": 15
+    },
+    {
+      "b": 89,
+      "g": 89,
+      "r": 89
+    },
+    {
+      "b": 39,
+      "g": 39,
+      "r": 39
+    },
+    {
+      "b": 64,
+      "g": 64,
+      "r": 64
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "0": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31500": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31501": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31502": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos Display",
+      "pitch": "default"
+    },
+    "31503": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31504": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31505": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31506": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos",
+      "pitch": "default"
+    },
+    "31507": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "31508": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "31509": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "31511": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "31512": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "31513": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "31514": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "31515": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "31516": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "31518": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "31519": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "31521": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "31522": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "31523": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "31524": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "31525": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "31526": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "31538": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "31539": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "31541": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "31542": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "31543": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "31544": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "31545": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "31546": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "31548": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "31549": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "31551": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "31552": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "31553": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "31554": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "31555": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "31556": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "31558": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "31559": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "31561": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "31562": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "31563": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "31564": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "31565": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "31566": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "31578": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "31579": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "31581": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "31582": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "31583": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "31584": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "31585": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "31586": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "34": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Cambria Math",
+      "pitch": "variable"
+    },
+    "42": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos",
+      "pitch": "default"
+    },
+    "446": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Times New Roman CE",
+      "pitch": "variable"
+    },
+    "447": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Times New Roman Cyr",
+      "pitch": "variable"
+    },
+    "449": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Times New Roman Greek",
+      "pitch": "variable"
+    },
+    "450": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Times New Roman Tur",
+      "pitch": "variable"
+    },
+    "451": {
+      "charset": 177,
+      "family": "roman",
+      "name": "Times New Roman (Hebrew)",
+      "pitch": "variable"
+    },
+    "452": {
+      "charset": 178,
+      "family": "roman",
+      "name": "Times New Roman (Arabic)",
+      "pitch": "variable"
+    },
+    "453": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Times New Roman Baltic",
+      "pitch": "variable"
+    },
+    "454": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Times New Roman (Vietnamese)",
+      "pitch": "variable"
+    },
+    "456": {
+      "charset": 238,
+      "family": "roman",
+      "name": "Cambria Math CE",
+      "pitch": "variable"
+    },
+    "457": {
+      "charset": 204,
+      "family": "roman",
+      "name": "Cambria Math Cyr",
+      "pitch": "variable"
+    },
+    "459": {
+      "charset": 161,
+      "family": "roman",
+      "name": "Cambria Math Greek",
+      "pitch": "variable"
+    },
+    "460": {
+      "charset": 162,
+      "family": "roman",
+      "name": "Cambria Math Tur",
+      "pitch": "variable"
+    },
+    "463": {
+      "charset": 186,
+      "family": "roman",
+      "name": "Cambria Math Baltic",
+      "pitch": "variable"
+    },
+    "464": {
+      "charset": 163,
+      "family": "roman",
+      "name": "Cambria Math (Vietnamese)",
+      "pitch": "variable"
+    }
+  },
+  "info": {
+    "author": "Massimo Meneghello",
+    "creatim": "2026-11-16T11:20:00",
+    "edmins": "0",
+    "nofchars": "128",
+    "nofcharsws": "149",
+    "nofpages": "3",
+    "nofwords": "22",
+    "operator": "Massimo Meneghello",
+    "revtim": "2026-11-16T12:38:00",
+    "vern": "27",
+    "version": "3"
+  },
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 11906,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1440,
+    "marginRight": 1440,
+    "marginTop": 1440,
+    "width": 16838
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "table",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3080
+                  },
+                  "right": 2972,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3080
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3081
+                  },
+                  "right": 6053,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3081
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3081
+                  },
+                  "right": 9134,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3081
+                }
+              ],
+              "props": {
+                "borders": {
+                  "bottom": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "horizontal": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "left": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "right": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "top": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "vertical": {
+                    "style": "single",
+                    "width": 10
+                  }
+                },
+                "gapHalf": 108,
+                "left": -108,
+                "padding": {
+                  "left": 108,
+                  "right": 108
+                }
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "table",
+                      "rows": [
+                        {
+                          "cells": [
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "This"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 1424
+                              },
+                              "right": 1429,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 1424
+                            },
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "Is"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 1425
+                              },
+                              "right": 2854,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 1425
+                            }
+                          ],
+                          "props": {
+                            "borders": {
+                              "bottom": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "horizontal": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "left": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "right": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "top": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "vertical": {
+                                "style": "single",
+                                "width": 10
+                              }
+                            },
+                            "gapHalf": 108,
+                            "left": 5,
+                            "padding": {
+                              "left": 108,
+                              "right": 108
+                            }
+                          }
+                        },
+                        {
+                          "cells": [
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "A"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 1424
+                              },
+                              "right": 1429,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 1424
+                            },
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "Table"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 1425
+                              },
+                              "right": 2854,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 1425
+                            }
+                          ],
+                          "props": {
+                            "borders": {
+                              "bottom": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "horizontal": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "left": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "right": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "top": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "vertical": {
+                                "style": "single",
+                                "width": 10
+                              }
+                            },
+                            "gapHalf": 108,
+                            "left": 5,
+                            "padding": {
+                              "left": 108,
+                              "right": 108
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3080
+                  },
+                  "right": 2972,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3080
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "font": 31506,
+                            "language": 2057,
+                            "size": 24
+                          },
+                          "text": "This is just a cell"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3081
+                  },
+                  "right": 6053,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3081
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3081
+                  },
+                  "right": 9134,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3081
+                }
+              ],
+              "props": {
+                "borders": {
+                  "bottom": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "horizontal": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "left": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "right": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "top": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "vertical": {
+                    "style": "single",
+                    "width": 10
+                  }
+                },
+                "gapHalf": 108,
+                "left": -108,
+                "padding": {
+                  "left": 108,
+                  "right": 108
+                }
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3080
+                  },
+                  "right": 2972,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3080
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "indentLeft": 0,
+                        "indentRight": 0,
+                        "widowControl": true
+                      },
+                      "runs": []
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3081
+                  },
+                  "right": 6053,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3081
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "table",
+                      "rows": [
+                        {
+                          "cells": [
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "Inside"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 950
+                              },
+                              "right": 955,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 950
+                            },
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "A"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 950
+                              },
+                              "right": 1905,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 950
+                            },
+                            {
+                              "blocks": [
+                                {
+                                  "kind": "paragraph",
+                                  "props": {
+                                    "align": "left",
+                                    "indentLeft": 0,
+                                    "indentRight": 0,
+                                    "widowControl": true
+                                  },
+                                  "runs": [
+                                    {
+                                      "kind": "text",
+                                      "props": {
+                                        "font": 31506,
+                                        "language": 2057,
+                                        "size": 24
+                                      },
+                                      "text": "Table"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "borders": {
+                                "bottom": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "left": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "right": {
+                                  "style": "single",
+                                  "width": 10
+                                },
+                                "top": {
+                                  "style": "single",
+                                  "width": 10
+                                }
+                              },
+                              "preferredWidth": {
+                                "type": "twips",
+                                "value": 950
+                              },
+                              "right": 2855,
+                              "textDirection": "lrtb",
+                              "verticalAlign": "top",
+                              "width": 950
+                            }
+                          ],
+                          "props": {
+                            "borders": {
+                              "bottom": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "horizontal": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "left": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "right": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "top": {
+                                "style": "single",
+                                "width": 10
+                              },
+                              "vertical": {
+                                "style": "single",
+                                "width": 10
+                              }
+                            },
+                            "gapHalf": 108,
+                            "left": 5,
+                            "padding": {
+                              "left": 108,
+                              "right": 108
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "left": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "right": {
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "preferredWidth": {
+                    "type": "twips",
+                    "value": 3081
+                  },
+                  "right": 9134,
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3081
+                }
+              ],
+              "props": {
+                "borders": {
+                  "bottom": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "horizontal": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "left": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "right": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "top": {
+                    "style": "single",
+                    "width": 10
+                  },
+                  "vertical": {
+                    "style": "single",
+                    "width": 10
+                  }
+                },
+                "gapHalf": 108,
+                "left": -108,
+                "padding": {
+                  "left": 108,
+                  "right": 108
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": []
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": []
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": []
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 708,
+        "headerDistance": 708,
+        "height": 11906,
+        "landscape": true,
+        "marginBottom": 1440,
+        "marginLeft": 1440,
+        "marginRight": 1440,
+        "marginTop": 1440,
+        "width": 16838
+      }
+    },
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "This is a new section"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "Some more text"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "language": 2057,
+                "size": 24
+              },
+              "text": "This text requires some clarifications"
+            },
+            {
+              "blocks": [
+                {
+                  "kind": "paragraph",
+                  "props": {
+                    "align": "left",
+                    "indentLeft": 0,
+                    "indentRight": 0,
+                    "style": 36,
+                    "widowControl": true
+                  },
+                  "runs": [
+                    {
+                      "kind": "text",
+                      "props": {
+                        "font": 31506,
+                        "language": 2057,
+                        "size": 20
+                      },
+                      "text": " This is a footnote"
+                    }
+                  ]
+                }
+              ],
+              "kind": "footnote"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": []
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "pageBreak"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "indentLeft": 0,
+            "indentRight": 0,
+            "lineSpacing": 278,
+            "lineSpacingMultiple": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": []
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 708,
+        "headerDistance": 708,
+        "height": 11906,
+        "landscape": true,
+        "marginBottom": 1440,
+        "marginLeft": 1440,
+        "marginRight": 1440,
+        "marginTop": 1440,
+        "width": 16838
+      }
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 1,
+      "name": "heading 1",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 2,
+      "name": "heading 2",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 3,
+      "name": "heading 3",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 4,
+      "name": "heading 4",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 5,
+      "name": "heading 5",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 6,
+      "name": "heading 6",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 7,
+      "name": "heading 7",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 8,
+      "name": "heading 8",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 0,
+      "index": 9,
+      "name": "heading 9",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    },
+    {
+      "index": 11,
+      "name": "Normal Table",
+      "next": 11,
+      "type": "table"
+    },
+    {
+      "basedOn": 10,
+      "index": 15,
+      "name": "Heading 1 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 16,
+      "name": "Heading 2 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 17,
+      "name": "Heading 3 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 18,
+      "name": "Heading 4 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 19,
+      "name": "Heading 5 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 20,
+      "name": "Heading 6 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 21,
+      "name": "Heading 7 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 22,
+      "name": "Heading 8 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 23,
+      "name": "Heading 9 Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 0,
+      "index": 24,
+      "name": "Title",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 10,
+      "index": 25,
+      "name": "Title Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 0,
+      "index": 26,
+      "name": "Subtitle",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 10,
+      "index": 27,
+      "name": "Subtitle Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 0,
+      "index": 28,
+      "name": "Quote",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 10,
+      "index": 29,
+      "name": "Quote Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 0,
+      "index": 30,
+      "name": "List Paragraph",
+      "next": 30,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 10,
+      "index": 31,
+      "name": "Intense Emphasis",
+      "type": "character"
+    },
+    {
+      "basedOn": 0,
+      "index": 32,
+      "name": "Intense Quote",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 10,
+      "index": 33,
+      "name": "Intense Quote Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 34,
+      "name": "Intense Reference",
+      "type": "character"
+    },
+    {
+      "basedOn": 11,
+      "index": 35,
+      "name": "Table Grid",
+      "next": 35,
+      "type": "table"
+    },
+    {
+      "basedOn": 0,
+      "index": 36,
+      "name": "footnote text",
+      "next": 36,
+      "type": "paragraph"
+    },
+    {
+      "basedOn": 10,
+      "index": 37,
+      "name": "Footnote Text Char",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 38,
+      "name": "footnote reference",
+      "type": "character"
+    }
+  ],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "skipped_destination",
+      "message": "destination \\defchp skipped",
+      "offset": 6204
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\defpap skipped",
+      "offset": 6273
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\rsidtbl skipped",
+      "offset": 16005
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\mmathPr skipped",
+      "offset": 16079
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\xmlnstbl skipped",
+      "offset": 16438
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\wgrffmtfilter skipped",
+      "offset": 17408
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\ftnsep skipped",
+      "offset": 17466
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\ftnsepc skipped",
+      "offset": 17791
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\aftnsep skipped",
+      "offset": 18118
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\aftnsepc skipped",
+      "offset": 18444
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\pnseclvl skipped",
+      "offset": 18907
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\nonesttables skipped",
+      "offset": 22049
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\themedata skipped",
+      "offset": 32319
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\colorschememapping skipped",
+      "offset": 39324
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\latentstyles skipped",
+      "offset": 39984
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\datastore skipped",
+      "offset": 58000
+    }
+  ]
+}

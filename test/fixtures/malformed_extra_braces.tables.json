@@ -1,0 +1,272 @@
+[
+  {
+    "columnNames": [
+      "Subject",
+      "Criterion",
+      "Result"
+    ],
+    "edges": [
+      0,
+      3456,
+      6922,
+      10388
+    ],
+    "firstSection": 0,
+    "headerRows": [
+      {
+        "cells": [
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "bookmark",
+                    "name": "IDX",
+                    "position": "start"
+                  },
+                  {
+                    "kind": "bookmark",
+                    "name": "IDX",
+                    "position": "end"
+                  },
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Subject"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              },
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 3456,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 3456
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Criterion"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              },
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 6922,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 3466
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Result"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              },
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 10388,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 3466
+          }
+        ],
+        "props": {
+          "align": "center",
+          "header": true,
+          "keep": true
+        }
+      }
+    ],
+    "id": 1,
+    "lastSection": 0,
+    "parts": [
+      {
+        "block": 0,
+        "section": 0
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "1001"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Age 18 to 65"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "Met"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 3,
+            "text": "Comment: the subject brought the signed consent form to the second visit, so the site recorded the age check on that day instead of at screening."
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "1002"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "No prior treatment"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "Not met"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 3,
+            "text": "Comment: a course of an invented study drug was taken two years ago.\nThe investigator excluded the subject.\nNo further visits took place."
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "1003"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Age 18 to 65"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "Met"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 3,
+            "text": "Comment: none recorded for this subject, the form was complete at the first visit and the monitor signed it off without queries."
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      }
+    ]
+  }
+]

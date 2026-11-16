@@ -1,0 +1,791 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "0": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "variable"
+    },
+    "3": {
+      "charset": 2,
+      "family": "roman",
+      "name": "Symbol",
+      "pitch": "variable"
+    },
+    "31506": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Aptos",
+      "pitch": "default"
+    }
+  },
+  "generator": "Microsoft Word-like text",
+  "info": {
+    "author": "Fixture Writer",
+    "nofpages": "6",
+    "operator": "Fixture Writer",
+    "title": "Word Structure Fixture",
+    "vern": "27",
+    "version": "1"
+  },
+  "page": {
+    "facingPages": true,
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1440,
+    "marginRight": 1440,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "Section one starts on a new page."
+            },
+            {
+              "kind": "pageBreak"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "This text follows a page break inside the paragraph."
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "pageBreakBefore": true,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "This paragraph starts a page"
+            },
+            {
+              "blocks": [
+                {
+                  "kind": "paragraph",
+                  "props": {
+                    "align": "left",
+                    "widowControl": true
+                  },
+                  "runs": [
+                    {
+                      "kind": "text",
+                      "props": {
+                        "font": 31506,
+                        "size": 20
+                      },
+                      "text": " A footnote with invented text."
+                    }
+                  ]
+                }
+              ],
+              "kind": "footnote"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "."
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "A bookmark covers "
+            },
+            {
+              "kind": "bookmark",
+              "name": "b1",
+              "position": "start"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "these words"
+            },
+            {
+              "kind": "bookmark",
+              "name": "b1",
+              "position": "end"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": ". "
+            },
+            {
+              "instruction": "HYPERLINK \"https://example.com/report\"",
+              "kind": "field",
+              "result": [
+                {
+                  "kind": "text",
+                  "props": {
+                    "font": 31506,
+                    "size": 24
+                  },
+                  "text": "See page "
+                },
+                {
+                  "instruction": "PAGE",
+                  "kind": "field",
+                  "result": [
+                    {
+                      "kind": "text",
+                      "props": {
+                        "font": 31506,
+                        "size": 24
+                      },
+                      "text": "2"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "."
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "listText": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 3,
+                "size": 24
+              },
+              "text": ""
+            },
+            {
+              "kind": "tab"
+            }
+          ],
+          "props": {
+            "align": "left",
+            "indentFirst": -360,
+            "indentLeft": 720,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "An old style bullet item"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "listText": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 3,
+                "size": 24
+              },
+              "text": ""
+            },
+            {
+              "kind": "tab"
+            }
+          ],
+          "props": {
+            "align": "left",
+            "indentFirst": -360,
+            "indentLeft": 720,
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "A second old style bullet item"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "End of section one."
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {
+        "left": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "left",
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "size": 24
+                },
+                "text": "Left page footer"
+              }
+            ]
+          }
+        ],
+        "right": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "right",
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "size": 24
+                },
+                "text": "Right page footer"
+              }
+            ]
+          }
+        ]
+      },
+      "headers": {
+        "first": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "center",
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "size": 24
+                },
+                "text": "First page header"
+              }
+            ]
+          }
+        ],
+        "left": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "left",
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "size": 24
+                },
+                "text": "Left page header"
+              }
+            ]
+          }
+        ],
+        "right": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "right",
+              "widowControl": true
+            },
+            "runs": [
+              {
+                "kind": "text",
+                "props": {
+                  "font": 31506,
+                  "size": 24
+                },
+                "text": "Right page header"
+              }
+            ]
+          }
+        ]
+      },
+      "page": {
+        "facingPages": true,
+        "footerDistance": 708,
+        "headerDistance": 708,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1440,
+        "marginRight": 1440,
+        "marginTop": 1440,
+        "width": 12240
+      },
+      "titlePage": true
+    },
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "Section two runs on the same page in two columns."
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "listText": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 3,
+                "size": 24
+              },
+              "text": ""
+            },
+            {
+              "kind": "tab"
+            }
+          ],
+          "props": {
+            "align": "left",
+            "indentFirst": -360,
+            "indentLeft": 720,
+            "list": {
+              "id": 1,
+              "level": 0
+            },
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "A new style bullet item"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "listText": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 3,
+                "size": 24
+              },
+              "text": ""
+            },
+            {
+              "kind": "tab"
+            }
+          ],
+          "props": {
+            "align": "left",
+            "indentFirst": -360,
+            "indentLeft": 720,
+            "list": {
+              "id": 1,
+              "level": 0
+            },
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "Another new style bullet item"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "listText": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "a."
+            },
+            {
+              "kind": "tab"
+            }
+          ],
+          "props": {
+            "align": "left",
+            "indentFirst": -360,
+            "indentLeft": 1440,
+            "list": {
+              "id": 2,
+              "level": 1
+            },
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "A numbered item at level two"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "listText": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "b."
+            },
+            {
+              "kind": "tab"
+            }
+          ],
+          "props": {
+            "align": "left",
+            "indentFirst": -360,
+            "indentLeft": 1440,
+            "list": {
+              "id": 2,
+              "level": 1
+            },
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "A second numbered item"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "The first column ends here."
+            },
+            {
+              "kind": "columnBreak"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "The second column starts here"
+            },
+            {
+              "blocks": [
+                {
+                  "kind": "paragraph",
+                  "props": {
+                    "align": "left",
+                    "widowControl": true
+                  },
+                  "runs": [
+                    {
+                      "kind": "text",
+                      "props": {
+                        "font": 31506,
+                        "size": 20
+                      },
+                      "text": " An endnote with invented text."
+                    }
+                  ]
+                }
+              ],
+              "endnote": true,
+              "kind": "footnote"
+            },
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "."
+            }
+          ]
+        }
+      ],
+      "break": "none",
+      "columns": 2,
+      "footers": {},
+      "headers": {},
+      "page": {
+        "facingPages": true,
+        "footerDistance": 720,
+        "headerDistance": 720,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 2000,
+        "marginRight": 2000,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    },
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {
+            "align": "left",
+            "spaceAfter": 160,
+            "widowControl": true
+          },
+          "runs": [
+            {
+              "kind": "text",
+              "props": {
+                "font": 31506,
+                "size": 24
+              },
+              "text": "Section three starts on an even page in landscape, with page numbers from three."
+            }
+          ]
+        }
+      ],
+      "break": "even",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "facingPages": true,
+        "footerDistance": 720,
+        "headerDistance": 720,
+        "height": 12240,
+        "landscape": true,
+        "marginBottom": 1440,
+        "marginLeft": 1440,
+        "marginRight": 1440,
+        "marginTop": 1440,
+        "width": 15840
+      },
+      "pageNumberStart": 3
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    },
+    {
+      "basedOn": 10,
+      "index": 15,
+      "name": "footnote reference",
+      "type": "character"
+    }
+  ],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "skipped_destination",
+      "message": "destination \\listtable skipped",
+      "offset": 892
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\listoverridetable skipped",
+      "offset": 1591
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\rsidtbl skipped",
+      "offset": 1708
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\ftnsep skipped",
+      "offset": 2048
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\aftnsep skipped",
+      "offset": 2068
+    },
+    {
+      "code": "symbol_font",
+      "message": "Symbol font bytes mapped to U+F000 plus the byte",
+      "offset": 3662
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\pn skipped",
+      "offset": 3725
+    }
+  ]
+}

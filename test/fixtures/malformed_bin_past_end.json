@@ -1,0 +1,68 @@
+{
+  "codePage": 1252,
+  "colors": [],
+  "defaultFont": 0,
+  "fonts": {},
+  "info": {},
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1800,
+    "marginRight": 1800,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "data": "YWJ9",
+              "format": "png",
+              "kind": "picture"
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 720,
+        "headerDistance": 720,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1800,
+        "marginRight": 1800,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    }
+  ],
+  "styles": [],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "bin_truncated",
+      "message": "\\bin is longer than the rest of the input",
+      "offset": 21
+    },
+    {
+      "code": "unbalanced_group",
+      "message": "missing } at the end of the input",
+      "offset": 32
+    },
+    {
+      "code": "unbalanced_group",
+      "message": "missing } at the end of the input",
+      "offset": 32
+    }
+  ]
+}

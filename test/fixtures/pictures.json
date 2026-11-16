@@ -1,0 +1,222 @@
+{
+  "codePage": 1252,
+  "colors": [],
+  "defaultFont": 0,
+  "fonts": {
+    "0": {
+      "charset": 0,
+      "family": "roman",
+      "name": "Times New Roman",
+      "pitch": "default"
+    }
+  },
+  "info": {},
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 15840,
+    "landscape": false,
+    "marginBottom": 1440,
+    "marginLeft": 1800,
+    "marginRight": 1800,
+    "marginTop": 1440,
+    "width": 12240
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "A hex picture: "
+            },
+            {
+              "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAD0lEQVR4AQEEAPv/AP8AAAMBAQCNHeWCAAAAAElFTkSuQmCC",
+              "format": "png",
+              "goalHeight": 15,
+              "goalWidth": 15,
+              "height": 1,
+              "kind": "picture",
+              "width": 1
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "A picture with a metafile fallback: "
+            },
+            {
+              "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAD0lEQVR4AQEEAPv/AP8AAAMBAQCNHeWCAAAAAElFTkSuQmCC",
+              "format": "png",
+              "goalHeight": 15,
+              "goalWidth": 15,
+              "height": 1,
+              "kind": "picture",
+              "width": 1
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "An EMF stub: "
+            },
+            {
+              "data": "AQAAAA==",
+              "format": "emf",
+              "height": 100,
+              "kind": "picture",
+              "width": 100
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "A binary picture: "
+            },
+            {
+              "data": "/9h7fQ==",
+              "format": "jpeg",
+              "kind": "picture"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "A shape with a picture: "
+            },
+            {
+              "blocks": [],
+              "kind": "shape",
+              "picture": {
+                "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAD0lEQVR4AQEEAPv/AP8AAAMBAQCNHeWCAAAAAElFTkSuQmCC",
+                "format": "png",
+                "goalHeight": 15,
+                "goalWidth": 15,
+                "height": 1,
+                "kind": "picture",
+                "width": 1
+              }
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "A text box: "
+            },
+            {
+              "blocks": [
+                {
+                  "kind": "paragraph",
+                  "props": {},
+                  "runs": [
+                    {
+                      "kind": "text",
+                      "props": {},
+                      "text": "Text inside a shape"
+                    }
+                  ]
+                }
+              ],
+              "kind": "shape"
+            }
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "props": {},
+          "runs": [
+            {
+              "kind": "text",
+              "props": {},
+              "text": "An object: "
+            },
+            {
+              "className": "Excel.Sheet.12",
+              "kind": "object",
+              "result": [
+                {
+                  "kind": "paragraph",
+                  "props": {},
+                  "runs": [
+                    {
+                      "kind": "text",
+                      "props": {},
+                      "text": "Result text of the object"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {},
+      "headers": {},
+      "page": {
+        "footerDistance": 720,
+        "headerDistance": 720,
+        "height": 15840,
+        "landscape": false,
+        "marginBottom": 1440,
+        "marginLeft": 1800,
+        "marginRight": 1800,
+        "marginTop": 1440,
+        "width": 12240
+      }
+    }
+  ],
+  "styles": [],
+  "version": 1,
+  "warnings": [
+    {
+      "code": "skipped_destination",
+      "message": "destination \\nonshppict skipped",
+      "offset": 560
+    },
+    {
+      "code": "shape_geometry_dropped",
+      "message": "shape position, size and drawing properties are dropped",
+      "offset": 753
+    },
+    {
+      "code": "skipped_destination",
+      "message": "destination \\shprslt skipped",
+      "offset": 1156
+    },
+    {
+      "code": "object_data_dropped",
+      "message": "embedded object data dropped",
+      "offset": 1472
+    }
+  ]
+}

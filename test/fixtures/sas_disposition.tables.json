@@ -1,0 +1,566 @@
+[
+  {
+    "columnNames": [
+      "Category Subcategory",
+      "X",
+      "Y",
+      "Total"
+    ],
+    "edges": [
+      0,
+      3456,
+      5194,
+      6932,
+      8670
+    ],
+    "firstSection": 0,
+    "headerRows": [
+      {
+        "cells": [
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "bookmark",
+                    "name": "IDX",
+                    "position": "start"
+                  },
+                  {
+                    "kind": "bookmark",
+                    "name": "IDX",
+                    "position": "end"
+                  },
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Category"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 8,
+                "style": "single",
+                "width": 10
+              },
+              "left": {
+                "color": 8,
+                "style": "single",
+                "width": 10
+              },
+              "right": {
+                "color": 8,
+                "style": "single",
+                "width": 10
+              },
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 3456,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 3456
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "center",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": []
+              }
+            ],
+            "borders": {
+              "top": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 8670,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 5214
+          }
+        ],
+        "props": {
+          "align": "center",
+          "header": true,
+          "keep": true
+        }
+      },
+      {
+        "cells": [
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "indentLeft": 576,
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Subcategory"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 3456,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 3456
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "X"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 5194,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 1738
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Y"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 6932,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 1738
+          },
+          {
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "props": {
+                  "align": "left",
+                  "keepWithNext": true,
+                  "spaceAfter": 0,
+                  "spaceBefore": 0
+                },
+                "runs": [
+                  {
+                    "kind": "text",
+                    "props": {
+                      "color": 1,
+                      "font": 1,
+                      "size": 19
+                    },
+                    "text": "Total"
+                  }
+                ]
+              }
+            ],
+            "borders": {
+              "bottom": {
+                "color": 1,
+                "style": "single",
+                "width": 10
+              }
+            },
+            "right": 8670,
+            "shading": {
+              "background": 8
+            },
+            "textDirection": "lrtb",
+            "verticalAlign": "bottom",
+            "width": 1738
+          }
+        ],
+        "props": {
+          "align": "center",
+          "header": true,
+          "keep": true
+        }
+      }
+    ],
+    "id": 1,
+    "lastSection": 0,
+    "parts": [
+      {
+        "block": 0,
+        "section": 0
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Screened"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "30"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Failed screening"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "8 (26.7%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Informed consent"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "21 (70.0%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Enrolled"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "11 (36.7%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "10 (33.3%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "21 (70.0%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Completed the study"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "9 (81.8%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "8 (80.0%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "17 (81.0%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 4,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Withdrawn"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "2 (18.2%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "2 (20.0%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "4 (19.0%)"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Death"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "1 (10.0%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "1 (4.8%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "Lost to follow-up"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "2 (18.2%)"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "1 (10.0%)"
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "3 (14.3%)"
+          }
+        ],
+        "indent": 288,
+        "spacer": false
+      }
+    ]
+  }
+]

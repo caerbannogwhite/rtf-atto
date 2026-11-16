@@ -1,0 +1,1044 @@
+{
+  "codePage": 1252,
+  "colors": [
+    null,
+    {
+      "b": 0,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 0
+    },
+    {
+      "b": 255,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 255
+    },
+    {
+      "b": 0,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 255,
+      "g": 255,
+      "r": 255
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 0
+    },
+    {
+      "b": 128,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 0,
+      "r": 128
+    },
+    {
+      "b": 0,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 128,
+      "g": 128,
+      "r": 128
+    },
+    {
+      "b": 192,
+      "g": 192,
+      "r": 192
+    }
+  ],
+  "defaultFont": 0,
+  "defaultLanguage": 2057,
+  "fonts": {
+    "1": {
+      "charset": 0,
+      "family": "modern",
+      "name": "Courier New",
+      "pitch": "fixed"
+    }
+  },
+  "info": {
+    "author": "Fixture Writer",
+    "creatim": "2026-11-16T09:00:00",
+    "operator": "Fixture Writer",
+    "title": "Invented Eligibility Listing",
+    "version": "1"
+  },
+  "page": {
+    "footerDistance": 720,
+    "headerDistance": 720,
+    "height": 11905,
+    "landscape": false,
+    "marginBottom": 360,
+    "marginLeft": 1080,
+    "marginRight": 1080,
+    "marginTop": 1080,
+    "width": 16837
+  },
+  "sections": [
+    {
+      "body": [
+        {
+          "kind": "table",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "bookmark",
+                          "name": "IDX",
+                          "position": "start"
+                        },
+                        {
+                          "kind": "bookmark",
+                          "name": "IDX",
+                          "position": "end"
+                        },
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Subject"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Criterion"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 6922,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 3466
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "keepWithNext": true,
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 19
+                          },
+                          "text": "Result"
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    },
+                    "top": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "bottom",
+                  "width": 3466
+                }
+              ],
+              "props": {
+                "align": "center",
+                "header": true,
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "1001"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Age 18 to 65"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6922,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3466
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Met"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3466
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Comment: the subject brought the signed consent form to the second visit, so the site recorded the age check on that day instead of at screening."
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 10388
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "1002"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "No prior treatment"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6922,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3466
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Not met"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3466
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Comment: a course of an invented study drug was taken two years ago."
+                        },
+                        {
+                          "kind": "lineBreak"
+                        },
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "The investigator excluded the subject."
+                        },
+                        {
+                          "kind": "lineBreak"
+                        },
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "No further visits took place."
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 10388
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "1003"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 3456,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3456
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Age 18 to 65"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 6922,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3466
+                },
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Met"
+                        }
+                      ]
+                    }
+                  ],
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 3466
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            },
+            {
+              "cells": [
+                {
+                  "blocks": [
+                    {
+                      "kind": "paragraph",
+                      "props": {
+                        "align": "left",
+                        "spaceAfter": 0,
+                        "spaceBefore": 0
+                      },
+                      "runs": [
+                        {
+                          "kind": "text",
+                          "props": {
+                            "color": 1,
+                            "font": 1,
+                            "size": 18
+                          },
+                          "text": "Comment: none recorded for this subject, the form was complete at the first visit and the monitor signed it off without queries."
+                        }
+                      ]
+                    }
+                  ],
+                  "borders": {
+                    "bottom": {
+                      "color": 1,
+                      "style": "single",
+                      "width": 10
+                    }
+                  },
+                  "right": 10388,
+                  "shading": {
+                    "background": 8
+                  },
+                  "textDirection": "lrtb",
+                  "verticalAlign": "top",
+                  "width": 10388
+                }
+              ],
+              "props": {
+                "align": "center",
+                "keep": true
+              }
+            }
+          ]
+        }
+      ],
+      "break": "page",
+      "footers": {
+        "default": [
+          {
+            "kind": "paragraph",
+            "props": {
+              "align": "center"
+            },
+            "runs": []
+          },
+          {
+            "kind": "table",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Comments are shown as entered on the form."
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14674,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 14674
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "headers": {
+        "default": [
+          {
+            "kind": "table",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": "**Protocol ABC-123**"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 4862,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4862
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "center",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": "Listing 16.2.1"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 9802,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4940
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "right",
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": "Page "
+                          },
+                          {
+                            "instruction": "PAGE",
+                            "kind": "field",
+                            "result": []
+                          },
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 22
+                            },
+                            "text": " of "
+                          },
+                          {
+                            "instruction": "NUMPAGES",
+                            "kind": "field",
+                            "result": []
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14674,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4872
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              },
+              {
+                "cells": [
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "left",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "Subject Eligibility"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 4862,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4862
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "center",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": [
+                          {
+                            "kind": "text",
+                            "props": {
+                              "color": 1,
+                              "font": 1,
+                              "size": 18
+                            },
+                            "text": "All Screened Subjects"
+                          }
+                        ]
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 9802,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4940
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "kind": "paragraph",
+                        "props": {
+                          "align": "right",
+                          "keepWithNext": true,
+                          "spaceAfter": 10,
+                          "spaceBefore": 10
+                        },
+                        "runs": []
+                      }
+                    ],
+                    "padding": {
+                      "left": 10,
+                      "right": 10
+                    },
+                    "right": 14674,
+                    "shading": {
+                      "background": 8
+                    },
+                    "textDirection": "lrtb",
+                    "verticalAlign": "top",
+                    "width": 4872
+                  }
+                ],
+                "props": {
+                  "align": "center",
+                  "keep": true
+                }
+              }
+            ]
+          },
+          {
+            "kind": "paragraph",
+            "props": {},
+            "runs": []
+          }
+        ]
+      },
+      "page": {
+        "footerDistance": 360,
+        "headerDistance": 1080,
+        "height": 11905,
+        "landscape": true,
+        "marginBottom": 360,
+        "marginLeft": 1080,
+        "marginRight": 1080,
+        "marginTop": 1080,
+        "width": 16837
+      }
+    }
+  ],
+  "styles": [
+    {
+      "index": 0,
+      "name": "Normal",
+      "next": 0,
+      "type": "paragraph"
+    },
+    {
+      "index": 10,
+      "name": "Default Paragraph Font",
+      "type": "character"
+    }
+  ],
+  "version": 1,
+  "warnings": []
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "columnNames": [
+      "column_1",
+      "column_2",
+      "column_3",
+      "column_4"
+    ],
+    "edges": [
+      -108,
+      2202,
+      4512,
+      6823,
+      9134
+    ],
+    "firstSection": 0,
+    "headerRows": [],
+    "id": 1,
+    "lastSection": 0,
+    "parts": [
+      {
+        "block": 0,
+        "section": 0
+      }
+    ],
+    "rows": [
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 2,
+            "text": "These cells are merged horizontally"
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "These cells are merged vertically"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": ""
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": ""
+          }
+        ],
+        "indent": 0,
+        "spacer": true
+      },
+      {
+        "cells": [
+          {
+            "column": 0,
+            "span": 1,
+            "text": "This"
+          },
+          {
+            "column": 1,
+            "span": 1,
+            "text": "Is "
+          },
+          {
+            "column": 2,
+            "span": 1,
+            "text": "A "
+          },
+          {
+            "column": 3,
+            "span": 1,
+            "text": "Row"
+          }
+        ],
+        "indent": 0,
+        "spacer": false
+      }
+    ]
+  }
+]
