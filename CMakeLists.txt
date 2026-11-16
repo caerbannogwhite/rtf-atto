@@ -63,3 +63,16 @@ if(RTF_BUILD_TESTS)
   rtf_add_test(tables)
   rtf_add_test(goldens ${CMAKE_SOURCE_DIR}/test/fixtures)
 endif()
+
+# The text projection of the C++ reader is compared with an independent
+# extractor written in Python (test/tools/rtf_text.py).
+if(RTF_BUILD_TOOLS)
+  find_package(Python3 COMPONENTS Interpreter)
+  if(Python3_Interpreter_FOUND)
+    add_test(NAME text_coverage
+      COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/test/tools/check_text_coverage.py
+              $<TARGET_FILE:rtf2json> ${CMAKE_SOURCE_DIR}/test/fixtures)
+  else()
+    message(WARNING "Python 3 not found; the text_coverage test is not registered")
+  endif()
+endif()
