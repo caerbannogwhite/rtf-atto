@@ -504,6 +504,7 @@ class Reader {
   void finish_document(const GroupState& root);
   void close_sink(BlockSink& s, const ParaState& para);
   bool open_header_footer(std::string_view word);
+  void open_sink(std::vector<Block>* blocks);
 
   // One handler per destination kind.
   void dispatch_word(const Token& tok, const WordInfo* info);
@@ -771,11 +772,24 @@ bool Reader::open_header_footer(std::string_view word) {
   std::optional<std::vector<Block>>& slot =
       kind == 'f' ? set.first : (kind == 'l' ? set.left : (kind == 'r' ? set.right : set.default_));
   if (!slot) slot.emplace();
-  sinks_.emplace_back(&*slot);
+  open_sink(&*slot);
+  return true;
+}
+
+// A destination with its own blocks (header, footer, footnote, shape text,
+// object result) starts a new sink with default paragraph and character
+// state, as if \pard\plain had been written. Its text does not join the
+// table of the paragraph around it. The closing brace restores the
+// parent group's state.
+void Reader::open_sink(std::vector<Block>* blocks) {
+  sinks_.emplace_back(blocks);
   GroupState& g = top();
   g.sink = sinks_.size() - 1;
   g.ownsSink = true;
-  return true;
+  g.para = ParaState{};
+  g.border = BorderTarget{};
+  g.chars = CharProps{};
+  g.nestProps = false;
 }
 
 void Reader::on_end(const Token& tok) {
@@ -1289,10 +1303,11 @@ void Reader::special_word(SpecialOp op) {
 // Tables (design, "Tables")
 // ---------------------------------------------------------------------------
 
-// The paragraph's table level, capped by the group depth limit so that a
-// huge \itapN cannot make the reader allocate a level per unit.
+// The paragraph's table level, capped at kMaxTableNesting and at the group
+// depth limit, so that a huge \itapN cannot make the reader build a table
+// per unit.
 int Reader::table_level(const ParaState& p) const {
-  const int cap = static_cast<int>(std::min<std::size_t>(max_depth_, 65535));
+  const int cap = static_cast<int>(std::min<std::size_t>(max_depth_, static_cast<std::size_t>(kMaxTableNesting)));
   return std::min(paragraph_level(p), cap);
 }
 

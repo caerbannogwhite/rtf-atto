@@ -52,11 +52,9 @@ struct BlockSink {
   // Appends a break, a field or another inline item.
   void append_inline(Inline item);
 
-  // Returns the table of nesting level n, creating it. The level is at
-  // least 1 and at most one deeper than the deepest existing level (level 2
-  // is always allowed).
+  // Returns the table of nesting level n (at least 1), creating it. The
+  // reader caps n at kMaxTableNesting.
   TableLevel& table(int n);
-  int bounded(int n) const;
 
   // Ends the open paragraph (an empty one when none is open) with the
   // properties in effect at that moment. level is the table nesting level.

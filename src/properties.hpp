@@ -24,6 +24,12 @@ struct ParaState {
 // copy of the paragraph state that each '{' makes.
 constexpr std::size_t kMaxTabStops = 64;
 
+// The deepest table nesting level the reader builds. A paragraph with a
+// larger \itapN is treated as this level. The cap is far beyond what Word
+// writes. It bounds the chain of wrapper tables that a garbage \itap can
+// create.
+constexpr int kMaxTableNesting = 32;
+
 // The properties of the section being read. \sectd resets them to the
 // document's page setup (design, "Sections and page setup").
 struct SectionState {

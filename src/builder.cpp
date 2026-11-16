@@ -1,6 +1,8 @@
 #include "builder.hpp"
 
 #include <algorithm>
+#include <cstdint>
+#include <limits>
 #include <string>
 #include <utility>
 
@@ -11,6 +13,12 @@ namespace detail {
 namespace {
 
 bool is_empty(const Paragraph& p) { return p.runs.empty() && p.listText.empty(); }
+
+int clamp_to_int(std::int64_t v) {
+  constexpr std::int64_t lo = std::numeric_limits<int>::min();
+  constexpr std::int64_t hi = std::numeric_limits<int>::max();
+  return static_cast<int>(v < lo ? lo : (v > hi ? hi : v));
+}
 
 }  // namespace
 
@@ -63,18 +71,9 @@ void BlockSink::append_inline(Inline item) {
   begin_paragraph_if_needed().runs.push_back(std::move(item));
 }
 
-// A table level can be at most one deeper than the deepest level that
-// exists. Level 2 is always allowed, because a cell may start with a
-// nested table before any level-1 word. A paragraph with a large \itapN
-// and no tables around it then creates two levels, not N. This keeps the
-// model's size in proportion to the input.
-int BlockSink::bounded(int n) const {
-  const std::size_t deepest = std::max<std::size_t>(levels.size(), 2);
-  return static_cast<int>(std::min(static_cast<std::size_t>(std::max(n, 1)), deepest));
-}
-
+// The reader caps the level at kMaxTableNesting before it gets here.
 TableLevel& BlockSink::table(int n) {
-  const std::size_t i = static_cast<std::size_t>(bounded(n));
+  const std::size_t i = static_cast<std::size_t>(std::max(n, 1));
   if (levels.size() <= i) levels.resize(i + 1);
   return levels[i];
 }
@@ -95,7 +94,6 @@ void BlockSink::end_paragraph(const ParagraphProps& props, int level, std::vecto
     flush_tables(1, warnings, offset);
     target->push_back(Block{std::move(*current)});
   } else {
-    level = bounded(level);
     flush_tables(level + 1, warnings, offset);
     table(level).openCell.push_back(Block{std::move(*current)});
   }
@@ -118,7 +116,7 @@ void BlockSink::take_paragraph(const ParagraphProps& props, std::vector<Block>& 
 
 void BlockSink::end_cell(const ParagraphProps& props, int level, std::vector<Warning>& warnings,
                          std::size_t offset) {
-  level = bounded(level);
+  level = std::max(level, 1);
   // A deeper table ends inside this cell, before the cell's last paragraph.
   flush_tables(level + 1, warnings, offset);
   TableLevel& t = table(level);
@@ -132,7 +130,7 @@ void BlockSink::end_cell(const ParagraphProps& props, int level, std::vector<War
 
 void BlockSink::end_row(const ParagraphProps& props, int level, std::vector<Warning>& warnings,
                         std::size_t offset) {
-  level = bounded(level);
+  level = std::max(level, 1);
   flush_tables(level + 1, warnings, offset);
   // Text after the last \cell, or a deeper table flushed just now, makes
   // one more cell.
@@ -152,20 +150,22 @@ void BlockSink::finish_row(TableLevel& t, std::vector<Warning>& warnings, std::s
                                "row has " + std::to_string(n) + " cells and " + std::to_string(d) + " definitions",
                                offset});
   }
-  const int left = t.rowProps.left.value_or(0);
-  int lastWidth = 0;
-  if (d > 0) lastWidth = t.cellDefs[d - 1].right - (d > 1 ? t.cellDefs[d - 2].right : left);
+  // The edges use the full 32-bit range, so the sums and differences are
+  // computed in 64 bits and each stored value is clamped to the int range.
+  const std::int64_t left = t.rowProps.left.value_or(0);
+  std::int64_t lastWidth = 0;
+  if (d > 0) lastWidth = std::int64_t{t.cellDefs[d - 1].right} - (d > 1 ? t.cellDefs[d - 2].right : left);
 
   Row row;
   row.props = t.rowProps;
   row.cells.reserve(std::max(n, d));
-  int previous = left;
+  std::int64_t previous = left;
   for (std::size_t i = 0; i < std::max(n, d); ++i) {
     Cell cell;
     if (i < d) {
       cell = t.cellDefs[i];
     } else {
-      cell.right = previous + lastWidth;
+      cell.right = clamp_to_int(previous + lastWidth);
     }
     if (i < n) {
       cell.blocks = std::move(t.cells[i].blocks);
@@ -173,7 +173,7 @@ void BlockSink::finish_row(TableLevel& t, std::vector<Warning>& warnings, std::s
       cell.blocks.push_back(Block{Paragraph{}});
     }
     // Widths are kept as computed, negative ones included.
-    cell.width = cell.right - previous;
+    cell.width = clamp_to_int(cell.right - previous);
     previous = cell.right;
     row.cells.push_back(std::move(cell));
   }
@@ -186,7 +186,8 @@ void BlockSink::finish_row(TableLevel& t, std::vector<Warning>& warnings, std::s
 void BlockSink::emit_table(int level, std::vector<Warning>& warnings, std::size_t offset) {
   TableLevel& t = levels[static_cast<std::size_t>(level)];
   if (t.pending()) {
-    warnings.push_back(Warning{"row_not_closed", "a table row ends without \\row", offset});
+    warnings.push_back(Warning{
+        "row_not_closed", "a table row of level " + std::to_string(level) + " ends without \\row", offset});
     if (!t.openCell.empty()) {
       t.cells.emplace_back();
       t.cells.back().blocks = std::move(t.openCell);

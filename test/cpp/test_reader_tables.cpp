@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <limits>
 #include <string>
 #include <string_view>
 #include <variant>
@@ -105,19 +106,120 @@ static void row_not_closed() {
   auto b = parse_ok(R"({\rtf1\trowd\cellx1000\pard\intbl a\cell\pard\par})");
   CHECK_EQ(b.sections[0].body.size(), std::size_t(2)); CHECK(has_warning(b, "row_not_closed"));
 }
+// Block number i of the cell, which must be a table; nullptr otherwise.
+static const rtf::Table* table_in(const rtf::Cell& cell, std::size_t i) {
+  CHECK(i < cell.blocks.size());
+  if (i >= cell.blocks.size()) return nullptr;
+  const auto* t = std::get_if<rtf::Table>(&cell.blocks[i].value);
+  CHECK(t != nullptr);
+  return t;
+}
+// The first cell of the first row, or nullptr when the table has none.
+static const rtf::Cell* first_cell(const rtf::Table& t) {
+  CHECK(!t.rows.empty() && !t.rows[0].cells.empty());
+  if (t.rows.empty() || t.rows[0].cells.empty()) return nullptr;
+  return &t.rows[0].cells[0];
+}
 static void large_itap_is_bounded() {
-  // A level far deeper than the open tables becomes one level below them,
-  // so one paragraph cannot create millions of nested tables.
+  // A level above kMaxTableNesting is treated as level 32, so one paragraph
+  // cannot create millions of nested tables.
   auto doc = parse_ok(R"({\rtf1\pard\intbl\itap2000000000 x\par\pard y\par})");
   CHECK_EQ(doc.sections[0].body.size(), std::size_t(2));
+  // Follow the chain of tables that each first cell starts with.
+  const rtf::Table* t = &body_table(doc, 0, 0);
+  std::size_t depth = 0;
+  const rtf::Cell* deepest = nullptr;
+  while (t != nullptr && depth <= 40) {
+    ++depth;
+    deepest = first_cell(*t);
+    if (deepest == nullptr || deepest->blocks.empty()) break;
+    t = std::get_if<rtf::Table>(&deepest->blocks[0].value);
+  }
+  CHECK(depth <= std::size_t(32));
+  CHECK(deepest != nullptr && cell_plain(*deepest) == "x");
+  CHECK(count_warnings(doc, "row_not_closed") <= std::size_t(32));
+}
+static void doubly_nested_table_first_in_cell() {
+  // Word writes the innermost paragraph first: the level-3 table opens
+  // before any level-2 word.
+  auto doc = parse_ok(R"({\rtf1\trowd\cellx5000\pard\intbl\itap3 deep\nestcell{\*\nesttableprops\trowd\cellx1000\nestrow}\pard\intbl\itap2 mid\nestcell{\*\nesttableprops\trowd\cellx2000\nestrow}\pard\intbl\itap1 top\cell\row})");
+  CHECK_EQ(doc.sections[0].body.size(), std::size_t(1));
   const auto& outer = body_table(doc, 0, 0);
   CHECK_EQ(outer.rows.size(), std::size_t(1));
-  if (outer.rows.empty() || outer.rows[0].cells.empty() || outer.rows[0].cells[0].blocks.empty()) return;
-  const auto* inner = std::get_if<rtf::Table>(&outer.rows[0].cells[0].blocks[0].value);
-  CHECK(inner != nullptr);
-  if (inner == nullptr || inner->rows.empty() || inner->rows[0].cells.empty()) return;
-  CHECK_EQ(cell_plain(inner->rows[0].cells[0]), std::string("x"));
+  const rtf::Cell* c1 = first_cell(outer);
+  if (c1 == nullptr) return;
+  CHECK_EQ(outer.rows[0].cells.size(), std::size_t(1));
+  CHECK_EQ(c1->blocks.size(), std::size_t(2));
+  const rtf::Table* level2 = table_in(*c1, 0);
+  if (c1->blocks.size() > 1) {
+    const auto* p = std::get_if<rtf::Paragraph>(&c1->blocks[1].value);
+    CHECK(p != nullptr && run_text(*p) == "top");
+  }
+  if (level2 == nullptr) return;
+  CHECK_EQ(level2->rows.size(), std::size_t(1));
+  const rtf::Cell* c2 = first_cell(*level2);
+  if (c2 == nullptr) return;
+  CHECK_EQ(level2->rows[0].cells.size(), std::size_t(1));
+  CHECK_EQ(c2->right, 2000);
+  CHECK_EQ(c2->blocks.size(), std::size_t(2));
+  const rtf::Table* level3 = table_in(*c2, 0);
+  if (c2->blocks.size() > 1) {
+    const auto* p = std::get_if<rtf::Paragraph>(&c2->blocks[1].value);
+    CHECK(p != nullptr && run_text(*p) == "mid");
+  }
+  if (level3 == nullptr) return;
+  CHECK_EQ(level3->rows.size(), std::size_t(1));
+  const rtf::Cell* c3 = first_cell(*level3);
+  if (c3 == nullptr) return;
+  CHECK_EQ(level3->rows[0].cells.size(), std::size_t(1));
+  CHECK_EQ(c3->right, 1000);
+  CHECK_EQ(cell_plain(*c3), std::string("deep"));
+  CHECK(!has_warning(doc, "cell_count_mismatch"));
+  CHECK(doc.warnings.empty());
+}
+static void extreme_edges_do_not_wrap() {
+  // Edges at the ends of the 32-bit range: widths and extended edges are
+  // clamped to the int range, not wrapped.
+  auto doc = parse_ok(R"({\rtf1\trowd\trleft-2147483648\cellx2147483647\pard\intbl a\cell b\cell c\cell\row})");
+  const auto& r = body_table(doc, 0, 0).rows;
+  CHECK_EQ(r.size(), std::size_t(1));
+  if (r.empty() || r[0].cells.size() != 3) return;
+  const int max = std::numeric_limits<int>::max();
+  CHECK_EQ(r[0].cells[0].right, max); CHECK_EQ(r[0].cells[0].width, max);
+  CHECK_EQ(r[0].cells[1].right, max); CHECK_EQ(r[0].cells[1].width, 0);
+  CHECK_EQ(r[0].cells[2].right, max); CHECK_EQ(r[0].cells[2].width, 0);
+  CHECK_EQ(cell_plain(r[0].cells[2]), std::string("c"));
+}
+static void row_not_closed_names_the_level() {
+  auto doc = parse_ok(R"({\rtf1\pard\intbl\itap2 x\par\pard y\par})");
   CHECK_EQ(count_warnings(doc, "row_not_closed"), std::size_t(2));
+  bool level1 = false, level2 = false;
+  for (const auto& w : doc.warnings) {
+    if (w.code != "row_not_closed") continue;
+    if (w.message.find("level 1 ") != std::string::npos) level1 = true;
+    if (w.message.find("level 2 ") != std::string::npos) level2 = true;
+  }
+  CHECK(level1); CHECK(level2);
+}
+static void header_inside_a_table_paragraph() {
+  // A header opened inside a table paragraph starts with default state, so
+  // its paragraph does not join a table.
+  auto doc = parse_ok(R"({\rtf1\trowd\cellx1000\pard\intbl a{\header h\par}\cell\row})");
+  CHECK(doc.sections[0].headers.default_.has_value());
+  if (doc.sections[0].headers.default_) {
+    const auto& h = *doc.sections[0].headers.default_;
+    CHECK_EQ(h.size(), std::size_t(1));
+    const auto* p = h.empty() ? nullptr : std::get_if<rtf::Paragraph>(&h[0].value);
+    CHECK(p != nullptr && run_text(*p) == "h");
+  }
+  const auto& t = body_table(doc, 0, 0);
+  CHECK_EQ(t.rows.size(), std::size_t(1));
+  if (!t.rows.empty()) {
+    CHECK_EQ(t.rows[0].cells.size(), std::size_t(1));
+    if (!t.rows[0].cells.empty()) CHECK_EQ(cell_plain(t.rows[0].cells[0]), std::string("a"));
+  }
+  CHECK(!has_warning(doc, "row_not_closed"));
+  CHECK(!has_warning(doc, "cell_count_mismatch"));
 }
 
 int main() {
@@ -132,5 +234,9 @@ int main() {
   nested_table_word_style();
   row_not_closed();
   large_itap_is_bounded();
+  doubly_nested_table_first_in_cell();
+  extreme_edges_do_not_wrap();
+  row_not_closed_names_the_level();
+  header_inside_a_table_paragraph();
   return rtf_test::result();
 }
