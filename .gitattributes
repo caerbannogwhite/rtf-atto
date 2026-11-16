@@ -1,0 +1,9 @@
+*.rtf -text
+*.json text eol=lf
+*.txt text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.hpp text eol=lf
+*.cpp text eol=lf
+CMakeLists.txt text eol=lf
