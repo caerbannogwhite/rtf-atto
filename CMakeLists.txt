@@ -73,6 +73,10 @@ if(RTF_FUZZ)
   if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(FATAL_ERROR "RTF_FUZZ needs Clang")
   endif()
+  # The library must be instrumented too. Otherwise libFuzzer gets no
+  # coverage from the parser and AddressSanitizer does not check it.
+  target_compile_options(rtf_atto_flags INTERFACE -fsanitize=fuzzer-no-link,address)
+  target_link_options(rtf_atto_flags INTERFACE -fsanitize=fuzzer-no-link,address)
   add_executable(fuzz_parse test/fuzz/fuzz_parse.cpp)
   target_link_libraries(fuzz_parse PRIVATE rtf_atto)
   target_compile_options(fuzz_parse PRIVATE -fsanitize=fuzzer,address)

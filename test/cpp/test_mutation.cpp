@@ -117,6 +117,26 @@ void operator delete[](void* p, std::align_val_t, const std::nothrow_t&) noexcep
 // The time allowed for the parse and the output passes of one mutant.
 static constexpr double kBudgetSeconds = 1.0;
 
+// The memory cap is max(100 * mutant size, kMemoryFloor). The floor covers
+// a cost that does not depend on the input size: the stack of up to 1024
+// group states of about 520 bytes each, doubled while the vector grows,
+// plus slack for other standard libraries.
+static constexpr std::size_t kMemoryFloor = 4u * 1024u * 1024u;
+
+// The seed of the generator for one fixture: the run's seed mixed with an
+// FNV-1a hash of the file name, then put through the splitmix64 finaliser.
+static std::uint64_t fixture_seed(std::uint64_t seed, const std::string& name) {
+  std::uint64_t h = 0xcbf29ce484222325ull;
+  for (unsigned char c : name) {
+    h ^= c;
+    h *= 0x100000001b3ull;
+  }
+  std::uint64_t z = seed ^ h;
+  z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ull;
+  z = (z ^ (z >> 27)) * 0x94d049bb133111ebull;
+  return z ^ (z >> 31);
+}
+
 // xorshift64. The state must never be zero.
 struct Rng {
   std::uint64_t state;
@@ -250,19 +270,25 @@ int main(int argc, char** argv) {
   std::size_t count = argc > 2 ? static_cast<std::size_t>(std::strtoull(argv[2], nullptr, 10)) : 10000;
   std::uint64_t seed = argc > 3 ? std::strtoull(argv[3], nullptr, 10) : 20261116ull;
   if (const char* env = std::getenv("RTF_MUTATIONS")) count = static_cast<std::size_t>(std::strtoull(env, nullptr, 10));
+  if (count == 0) {
+    std::fprintf(stderr, "test_mutation: the count must be a number above 0\n");
+    return 1;
+  }
   const bool verbose = std::getenv("RTF_MUTATIONS_VERBOSE") != nullptr;
 
   std::vector<fs::path> fixtures = list_fixtures(argv[1]);
   CHECK(!fixtures.empty());
-  Rng rng(seed);
   std::size_t total = 0;
-  // The cap is max(100 * input size, 1 MB), so peak / cap is the memory figure that matters.
+  // The cap is max(100 * input size, kMemoryFloor), so peak / cap is the memory figure that matters.
   double worst_cap_share = 0;
   for (const auto& path : fixtures) {
     std::string original;
     CHECK(read_file(path, original));
     std::size_t n = original.size() > 64 * 1024 ? count / 10 : count;
     std::string name = path.filename().string();
+    // One generator per fixture, so the fixture, the iteration and the seed
+    // identify a mutant even when fixtures are added or the count changes.
+    Rng rng(fixture_seed(seed, name));
     double slowest = 0;
     std::size_t largest_peak = 0;
     double cap_share = 0;
@@ -270,7 +296,7 @@ int main(int argc, char** argv) {
       std::string mutant = make_mutant(rng, original);
       Outcome o = run_passes(mutant);
       ++total;
-      std::size_t cap = std::max<std::size_t>(100 * mutant.size(), 1024 * 1024);
+      std::size_t cap = std::max<std::size_t>(100 * mutant.size(), kMemoryFloor);
       slowest = std::max(slowest, o.seconds);
       largest_peak = std::max(largest_peak, o.peak);
       cap_share = std::max(cap_share, static_cast<double>(o.peak) / static_cast<double>(cap));
@@ -294,5 +320,6 @@ int main(int argc, char** argv) {
     }
   }
   if (verbose) std::printf("%zu mutants parsed, highest peak/cap %.3f\n", total, worst_cap_share);
+  CHECK(total > 0);
   return rtf_test::result();
 }
