@@ -110,10 +110,11 @@ purpose"; figures "are not relevant for now". On the renderer (2026-11-16):
   a default-hash `std::unordered_map<std::string>` (the `PortableStringHash`
   lesson in `notes/engineering/2026-06-duckdb-version-must-match-duckdb-wasm.md`).
 - Fixtures copied from the SAS-made sample files. They are synthetic, but
-  Massimo asked that they never go into a repository (2026-11-10). The
-  three files he saved from Word on 2026-11-16 are different: he allowed
-  them as committed fixtures with goldens ("you can use the W_ files as
-  golden", 2026-11-16).
+  Massimo asked that they never go into a repository (2026-11-10). Two
+  exceptions, both his (2026-11-16): the three files he saved from Word
+  ("you can use the W_ files as golden") and the one-page SAS table
+  `T_Disposition.RTF` are committed as fixtures with goldens. The other
+  eleven SAS files stay out.
 
 ## Constraints
 
@@ -484,8 +485,10 @@ Text containers: `\field` with `\*\fldinst` and `\fldrslt` (nested fields
 allowed), `\footnote` (with `\ftnalt` marking an endnote), `\*\bkmkstart`
 and `\*\bkmkend`, `\pntext` and `\listtext`, `\shp` with `\shptxt` and,
 inside `\*\shpinst`, the property `{\sp{\sn pib}{\sv{\pict ...}}}`, which
-is how Word 2016 and later write an inline picture (seen 2026-11-16); the
-rest of `\*\shpinst` is geometry and is skipped, and so is the `\shprslt`
+is one way Word 2016 and later write a picture (seen 2026-11-16; the same
+document re-saved later that day wrote the picture as `{\*\shppict{\pict
+...}}{\nonshppict{\pict ...}}` instead, so both forms occur); the rest of
+`\*\shpinst` is geometry and is skipped, and so is the `\shprslt`
 fallback. `\object` with `\result` (`\*\objdata` dropped, `\*\objclass`
 kept as `className`).
 
@@ -931,11 +934,12 @@ Acceptance is a checklist, each item a command that passes or fails:
    header and a footer with a page number, a page break, a hyperlink,
    accented, Greek and Chinese letters and an emoji; `W_Sections.rtf`, a
    landscape document with a table inside a table cell, a second section
-   and a footnote (added the same day). He allowed these three to be
-   committed, so they are also fixtures with goldens (`msword_*.rtf` in
-   the list below) and run in CI; the local check still covers the twelve
-   SAS files, which stay out of the repository. This check runs on
-   Massimo's machine only; it is not in CI.
+   and a footnote (added the same day). He allowed these three and
+   `T_Disposition.RTF` to be committed, so they are also fixtures with
+   goldens (`msword_*.rtf` and `sas_disposition.rtf` in the list below)
+   and run in CI; the local check still covers the other eleven SAS
+   files, which stay out of the repository. This check runs on Massimo's
+   machine only; it is not in CI.
 9. **DuckDB.** sqllogictest files `test/sql/read_rtf.test` and
    `test/sql/copy_rtf.test` in the-stats-duck over the submodule's
    fixtures, passing on 1.4.3 and 2.0.0 with the usual absolute-path
@@ -974,12 +978,13 @@ Fixtures to write by hand (mine; the builder adds what the tests need):
 - `pictures.rtf`: a 1-pixel PNG as hex, the same inside `\*\shppict` with
   a `\nonshppict` fallback, an EMF stub, a `\bin` payload, a shape with
   `\shptxt`, an `\object` with a `\result`.
-- `msword_disposition.rtf`, `msword_features.rtf`, `msword_sections.rtf`:
-  Massimo's three Word-saved files of 2026-11-16, copied byte for byte
-  (his permission, 2026-11-16). They are the only fixtures not written by
-  hand; their text is synthetic. `msword_features.rtf` is 565 KB because
-  Word stores the picture twice, as PNG and as a metafile fallback that
-  the reader drops.
+- `msword_disposition.rtf`, `msword_features.rtf`, `msword_sections.rtf`
+  and `sas_disposition.rtf`: Massimo's three Word-saved files of
+  2026-11-16 and his one-page SAS table `T_Disposition.RTF`, copied byte
+  for byte (his permission, 2026-11-16). They are the only fixtures not
+  written by hand; their text is synthetic. `msword_features.rtf` is
+  469 KB because Word stores the picture twice, as PNG and as a metafile
+  fallback that the reader drops.
 - `malformed_*.rtf`: missing final brace, extra braces, truncated in the
   middle of a control word, `\bin` past the end, nesting 2000 deep, a
   `\u` with a brace as fallback, a non-RTF file, an empty file, a
@@ -1035,8 +1040,9 @@ Massimo's:
   the page header and footer, Word paginates, header rows repeat.
 - A JS library with its own wasm binary, separate from the DuckDB
   extension's.
-- The SAS-made sample files stay out of every repository; the SAS fixtures
-  are written by hand. The three Word-saved files of 2026-11-16 are
+- The SAS-made sample files stay out of every repository, except
+  `T_Disposition.RTF`; the other SAS fixtures are written by hand. The
+  three Word-saved files of 2026-11-16 and `T_Disposition.RTF` are
   committed as fixtures (2026-11-16).
 
 Mine (overrule any of them):
