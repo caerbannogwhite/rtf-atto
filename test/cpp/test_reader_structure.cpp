@@ -146,6 +146,18 @@ static void par_inside_field_result_becomes_line_break() {
   }
   CHECK_EQ(count_warnings(doc, "field_result_flattened"), std::size_t(1));
 }
+static void list_text_inside_field_result_keeps_its_text() {
+  // Word writes numbered paragraphs inside INCLUDETEXT, REF and QUOTE results.
+  auto doc = parse_ok(R"({\rtf1 {\field{\*\fldinst TOC}{\fldrslt {\listtext 1.\tab}Entry\par}}\par})");
+  const auto& f = std::get<rtf::Field>(body_paragraph(doc, 0, 0).runs[0].value);
+  CHECK_EQ(f.result.size(), std::size_t(4));
+  if (f.result.size() == 4) {
+    CHECK_EQ(std::get<rtf::TextRun>(f.result[0].value).text, std::string("1."));
+    CHECK(std::holds_alternative<rtf::Tab>(f.result[1].value));
+    CHECK_EQ(std::get<rtf::TextRun>(f.result[2].value).text, std::string("Entry"));
+    CHECK(std::holds_alternative<rtf::LineBreak>(f.result[3].value));
+  }
+}
 static void stray_container_parts_keep_their_text() {
   auto doc = parse_ok(R"({\rtf1 a{\fldrslt b}{\result c}{\shptxt d}e\par})");
   CHECK_EQ(run_text(body_paragraph(doc, 0, 0)), std::string("abcde"));
@@ -171,6 +183,7 @@ int main() {
   objects();
   lists_as_text();
   par_inside_field_result_becomes_line_break();
+  list_text_inside_field_result_keeps_its_text();
   stray_container_parts_keep_their_text();
   field_instruction_keeps_escaped_symbols();
   return rtf_test::result();

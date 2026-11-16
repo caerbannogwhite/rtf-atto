@@ -1126,6 +1126,10 @@ bool Reader::open_structure(const Token& tok, DestKind kind) {
       return true;
     case DestKind::ListText:
       // The text before a list item goes to the paragraph's listText.
+      // Inside a field result or another list text it is a formatting
+      // group, so its text joins that result. Word writes numbered
+      // paragraphs inside INCLUDETEXT, REF and QUOTE results.
+      if (g.target == TextTarget::FieldResult || g.target == TextTarget::ListText) return false;
       if (g.target != TextTarget::Paragraph) break;
       sink().begin_paragraph_if_needed();
       g.target = TextTarget::ListText;
