@@ -30,17 +30,32 @@ namespace {
 // Each known control word belongs to one family. The family decides which
 // handler runs; the operation says what the handler does.
 enum class Family : std::uint8_t {
-  Destination, Document, Char, Para, Border, Special, Font, Color, Style, Info, Table, Row, CellDef
+  Destination, Document, Char, Para, Border, Special, Font, Color, Style, Info, Table, Row, CellDef,
+  Section, Picture, Frame
 };
 
 // What a destination word does when it is the first word of a group.
 // HeaderFooter opens a sink on the section's header or footer.
 // NestTableProps holds the definition of a nested row; its content is read.
-// Later marks destinations that Task 6 gives a meaning; until then they
-// follow the generic rules (a formatting group, or unknown after \*).
+// Transparent groups (\*\shppict, \*\shpinst, \*\ud) are read as if their
+// content stood in the parent. The other kinds open the structures of the
+// design's "Destinations the reader understands".
 enum class DestKind : std::uint8_t {
-  FontTable, ColorTable, StyleSheet, Info, Generator, SkipWarn, SkipSilent, HeaderFooter, NestTableProps, Later
+  FontTable, ColorTable, StyleSheet, Info, Generator, SkipWarn, SkipSilent, HeaderFooter, NestTableProps,
+  Transparent, Upr, Field, FieldInstruction, FieldResult, Footnote, BookmarkStart, BookmarkEnd, ListText,
+  Picture, Shape, ShapeText, ShapeName, ShapeValue, Object, ObjectClass, ObjectData, ObjectResult
 };
+// \sect, \sectd and the words that fill the current section.
+enum class SectionOp : std::uint8_t {
+  Sect, Sectd, PageW, PageH, MargL, MargR, MargT, MargB, Landscape, HeaderY, FooterY,
+  BreakNone, BreakColumn, BreakPage, BreakEven, BreakOdd, Columns, TitlePage, PageNumberStart, PageNumberRestart
+};
+// The format and size words of \pict.
+enum class PictOp : std::uint8_t {
+  Png, Jpeg, Emf, Wmf, Dib, Bmp, Mac, Width, Height, GoalWidth, GoalHeight, ScaleX, ScaleY
+};
+// Flags of an open footnote or field.
+enum class FrameOp : std::uint8_t { FootnoteAlt, FieldDirty, FieldLock };
 enum class DocOp : std::uint8_t {
   Rtf, Ansi, Mac, Pc, Pca, AnsiCpg, Deff, DefLang, Uc,
   PaperW, PaperH, MargL, MargR, MargT, MargB, Landscape, FacingP
@@ -102,6 +117,9 @@ constexpr WordInfo entry(const char* n, InfoOp k) { return {n, Family::Info, sta
 constexpr WordInfo entry(const char* n, TableOp k) { return {n, Family::Table, static_cast<std::uint8_t>(k)}; }
 constexpr WordInfo entry(const char* n, RowOp k) { return {n, Family::Row, static_cast<std::uint8_t>(k)}; }
 constexpr WordInfo entry(const char* n, CellOp k) { return {n, Family::CellDef, static_cast<std::uint8_t>(k)}; }
+constexpr WordInfo entry(const char* n, SectionOp k) { return {n, Family::Section, static_cast<std::uint8_t>(k)}; }
+constexpr WordInfo entry(const char* n, PictOp k) { return {n, Family::Picture, static_cast<std::uint8_t>(k)}; }
+constexpr WordInfo entry(const char* n, FrameOp k) { return {n, Family::Frame, static_cast<std::uint8_t>(k)}; }
 
 // Sorted by byte value of the name, for the binary search in find_word.
 // Words that only start a destination are listed with the destination kind.
@@ -118,8 +136,8 @@ constexpr WordInfo kWords[] = {
     entry("atnref", DestKind::SkipWarn),
     entry("b", CharOp::Bold),
     entry("background", DestKind::SkipWarn),
-    entry("bkmkend", DestKind::Later),
-    entry("bkmkstart", DestKind::Later),
+    entry("bkmkend", DestKind::BookmarkEnd),
+    entry("bkmkstart", DestKind::BookmarkStart),
     entry("blipuid", DestKind::SkipWarn),
     entry("blue", ColorOp::Blue),
     entry("box", BorderOp::OpenBox),
@@ -179,6 +197,7 @@ constexpr WordInfo kWords[] = {
     entry("clwWidth", CellOp::Width),
     entry("colorschememapping", DestKind::SkipWarn),
     entry("colortbl", DestKind::ColorTable),
+    entry("cols", SectionOp::Columns),
     entry("column", SpecialOp::Column),
     entry("cpg", FontOp::CodePage),
     entry("cs", StyleOp::Character),
@@ -189,11 +208,13 @@ constexpr WordInfo kWords[] = {
     entry("deflang", DocOp::DefLang),
     entry("defpap", DestKind::SkipWarn),
     entry("deleted", CharOp::Deleted),
+    entry("dibitmap", PictOp::Dib),
     entry("dn", CharOp::Down),
     entry("do", DestKind::SkipWarn),
     entry("ds", StyleOp::Section),
     entry("dy", InfoOp::Day),
     entry("emdash", SpecialOp::Emdash),
+    entry("emfblip", PictOp::Emf),
     entry("emspace", SpecialOp::Emspace),
     entry("endash", SpecialOp::Endash),
     entry("enspace", SpecialOp::Enspace),
@@ -204,9 +225,11 @@ constexpr WordInfo kWords[] = {
     entry("fcharset", FontOp::Charset),
     entry("fdecor", FontOp::Decor),
     entry("fi", ParaOp::Fi),
-    entry("field", DestKind::Later),
-    entry("fldinst", DestKind::Later),
-    entry("fldrslt", DestKind::Later),
+    entry("field", DestKind::Field),
+    entry("flddirty", FrameOp::FieldDirty),
+    entry("fldinst", DestKind::FieldInstruction),
+    entry("fldlock", FrameOp::FieldLock),
+    entry("fldrslt", DestKind::FieldResult),
     entry("fmodern", FontOp::Modern),
     entry("fname", DestKind::SkipSilent),
     entry("fnil", FontOp::Nil),
@@ -215,13 +238,15 @@ constexpr WordInfo kWords[] = {
     entry("footerf", DestKind::HeaderFooter),
     entry("footerl", DestKind::HeaderFooter),
     entry("footerr", DestKind::HeaderFooter),
-    entry("footnote", DestKind::Later),
+    entry("footery", SectionOp::FooterY),
+    entry("footnote", DestKind::Footnote),
     entry("fprq", FontOp::Pitch),
     entry("froman", FontOp::Roman),
     entry("fs", CharOp::Size),
     entry("fscript", FontOp::Script),
     entry("fswiss", FontOp::Swiss),
     entry("ftech", FontOp::Tech),
+    entry("ftnalt", FrameOp::FootnoteAlt),
     entry("ftnsep", DestKind::SkipWarn),
     entry("ftnsepc", DestKind::SkipWarn),
     entry("generator", DestKind::Generator),
@@ -230,6 +255,7 @@ constexpr WordInfo kWords[] = {
     entry("headerf", DestKind::HeaderFooter),
     entry("headerl", DestKind::HeaderFooter),
     entry("headerr", DestKind::HeaderFooter),
+    entry("headery", SectionOp::HeaderY),
     entry("highlight", CharOp::Highlight),
     entry("hr", InfoOp::Hour),
     entry("htmltag", DestKind::SkipWarn),
@@ -238,6 +264,7 @@ constexpr WordInfo kWords[] = {
     entry("info", DestKind::Info),
     entry("intbl", ParaOp::InTbl),
     entry("itap", ParaOp::Itap),
+    entry("jpegblip", PictOp::Jpeg),
     entry("keep", ParaOp::Keep),
     entry("keepn", ParaOp::KeepN),
     entry("landscape", DocOp::Landscape),
@@ -249,16 +276,22 @@ constexpr WordInfo kWords[] = {
     entry("line", SpecialOp::Line),
     entry("listoverridetable", DestKind::SkipWarn),
     entry("listtable", DestKind::SkipWarn),
-    entry("listtext", DestKind::Later),
+    entry("listtext", DestKind::ListText),
+    entry("lndscpsxn", SectionOp::Landscape),
     entry("lquote", SpecialOp::Lquote),
     entry("ls", ParaOp::Ls),
     entry("lsdlockedexcept", DestKind::SkipWarn),
     entry("ltrpar", ParaOp::LtrPar),
     entry("mac", DocOp::Mac),
+    entry("macpict", PictOp::Mac),
     entry("margb", DocOp::MargB),
+    entry("margbsxn", SectionOp::MargB),
     entry("margl", DocOp::MargL),
+    entry("marglsxn", SectionOp::MargL),
     entry("margr", DocOp::MargR),
+    entry("margrsxn", SectionOp::MargR),
     entry("margt", DocOp::MargT),
+    entry("margtsxn", SectionOp::MargT),
     entry("mhtmltag", DestKind::SkipWarn),
     entry("min", InfoOp::Minute),
     entry("mmathPr", DestKind::SkipWarn),
@@ -270,9 +303,9 @@ constexpr WordInfo kWords[] = {
     entry("nonshppict", DestKind::SkipWarn),
     entry("nosupersub", CharOp::NoSuperSub),
     entry("nowidctlpar", ParaOp::NoWidCtl),
-    entry("objclass", DestKind::Later),
-    entry("objdata", DestKind::SkipWarn),
-    entry("object", DestKind::Later),
+    entry("objclass", DestKind::ObjectClass),
+    entry("objdata", DestKind::ObjectData),
+    entry("object", DestKind::Object),
     entry("outl", CharOp::Outline),
     entry("page", SpecialOp::Page),
     entry("pagebb", ParaOp::PageBB),
@@ -284,12 +317,23 @@ constexpr WordInfo kWords[] = {
     entry("pc", DocOp::Pc),
     entry("pca", DocOp::Pca),
     entry("pgdsctbl", DestKind::SkipWarn),
+    entry("pghsxn", SectionOp::PageH),
+    entry("pgnrestart", SectionOp::PageNumberRestart),
+    entry("pgnstarts", SectionOp::PageNumberStart),
+    entry("pgwsxn", SectionOp::PageW),
+    entry("pich", PictOp::Height),
+    entry("pichgoal", PictOp::GoalHeight),
     entry("picprop", DestKind::SkipWarn),
-    entry("pict", DestKind::Later),
+    entry("picscalex", PictOp::ScaleX),
+    entry("picscaley", PictOp::ScaleY),
+    entry("pict", DestKind::Picture),
+    entry("picw", PictOp::Width),
+    entry("picwgoal", PictOp::GoalWidth),
     entry("plain", CharOp::Plain),
     entry("pn", DestKind::SkipWarn),
+    entry("pngblip", PictOp::Png),
     entry("pnseclvl", DestKind::SkipWarn),
-    entry("pntext", DestKind::Later),
+    entry("pntext", DestKind::ListText),
     entry("protusertbl", DestKind::SkipWarn),
     entry("qc", ParaOp::Qc),
     entry("qj", ParaOp::Qj),
@@ -298,7 +342,7 @@ constexpr WordInfo kWords[] = {
     entry("qr", ParaOp::Qr),
     entry("rdblquote", SpecialOp::Rdblquote),
     entry("red", ColorOp::Red),
-    entry("result", DestKind::Later),
+    entry("result", DestKind::ObjectResult),
     entry("revised", CharOp::Revised),
     entry("revtbl", DestKind::SkipWarn),
     entry("ri", ParaOp::Ri),
@@ -312,27 +356,37 @@ constexpr WordInfo kWords[] = {
     entry("sa", ParaOp::Sa),
     entry("sb", ParaOp::Sb),
     entry("sbasedon", StyleOp::BasedOn),
+    entry("sbkcol", SectionOp::BreakColumn),
+    entry("sbkeven", SectionOp::BreakEven),
+    entry("sbknone", SectionOp::BreakNone),
+    entry("sbkodd", SectionOp::BreakOdd),
+    entry("sbkpage", SectionOp::BreakPage),
     entry("scaps", CharOp::SmallCaps),
     entry("sec", InfoOp::Second),
+    entry("sect", SectionOp::Sect),
+    entry("sectd", SectionOp::Sectd),
     entry("shad", CharOp::Shadow),
     entry("shading", ParaOp::Shading),
-    entry("shp", DestKind::Later),
-    entry("shpinst", DestKind::Later),
-    entry("shppict", DestKind::Later),
+    entry("shp", DestKind::Shape),
+    entry("shpinst", DestKind::Transparent),
+    entry("shppict", DestKind::Transparent),
     entry("shprslt", DestKind::SkipWarn),
-    entry("shptxt", DestKind::Later),
+    entry("shptxt", DestKind::ShapeText),
     entry("sl", ParaOp::Sl),
     entry("slmult", ParaOp::SlMult),
+    entry("sn", DestKind::ShapeName),
     entry("snext", StyleOp::Next),
     entry("strike", CharOp::Strike),
     entry("striked", CharOp::DoubleStrike),
     entry("stylesheet", DestKind::StyleSheet),
     entry("sub", CharOp::Sub),
     entry("super", CharOp::Super),
+    entry("sv", DestKind::ShapeValue),
     entry("tab", SpecialOp::Tab),
     entry("tb", ParaOp::Tb),
     entry("tc", DestKind::SkipWarn),
     entry("themedata", DestKind::SkipWarn),
+    entry("titlepg", SectionOp::TitlePage),
     entry("tldot", ParaOp::TlDot),
     entry("tleq", ParaOp::TlEq),
     entry("tlhyph", ParaOp::TlHyph),
@@ -363,7 +417,7 @@ constexpr WordInfo kWords[] = {
     entry("ts", StyleOp::Table),
     entry("tx", ParaOp::Tx),
     entry("uc", DocOp::Uc),
-    entry("ud", DestKind::Later),
+    entry("ud", DestKind::Transparent),
     entry("ul", CharOp::Underline),
     entry("uld", CharOp::UlDotted),
     entry("uldash", CharOp::UlDash),
@@ -373,11 +427,13 @@ constexpr WordInfo kWords[] = {
     entry("ulw", CharOp::UlWord),
     entry("ulwave", CharOp::UlWave),
     entry("up", CharOp::Up),
-    entry("upr", DestKind::Later),
+    entry("upr", DestKind::Upr),
     entry("userprops", DestKind::SkipWarn),
     entry("v", CharOp::Hidden),
+    entry("wbitmap", PictOp::Bmp),
     entry("wgrffmtfilter", DestKind::SkipWarn),
     entry("widctlpar", ParaOp::WidCtl),
+    entry("wmetafile", PictOp::Wmf),
     entry("xe", DestKind::SkipWarn),
     entry("xmlnstbl", DestKind::SkipWarn),
     entry("yr", InfoOp::Year),
@@ -452,7 +508,40 @@ int paragraph_level(const ParaState& p) { return p.itap > 0 ? p.itap : (p.inTabl
 
 // Where a group's text goes.
 enum class Dest : std::uint8_t { Body, FontTable, ColorTable, StyleSheet, StyleEntry, Info, InfoEntry, Generator, Skip };
-enum class TextTarget : std::uint8_t { Paragraph, Buffer, ColorTable, Discard };
+// Field, Shape and Object are the group of an open frame: their own text is
+// dropped. FieldInstruction, Name and Picture collect text into a string or
+// bytes. FieldResult and ListText collect runs and inlines into a list.
+// For the frame targets, GroupState::frame names the frame.
+enum class TextTarget : std::uint8_t {
+  Paragraph, Buffer, ColorTable, Discard,
+  Field, FieldInstruction, FieldResult, ListText, Name, Picture, Shape, Object
+};
+
+// What a group finishes when its '}' arrives, besides its sink.
+enum class Owner : std::uint8_t {
+  None, Field, Footnote, Picture, Shape, Object, BookmarkStart, BookmarkEnd, ShapeName, ObjectClass
+};
+
+// The targets that take breaks, tabs, fields and other inlines.
+bool takes_inlines(TextTarget t) {
+  return t == TextTarget::Paragraph || t == TextTarget::FieldResult || t == TextTarget::ListText;
+}
+
+// An open \pict. Hex digits pair up across text tokens, so the first
+// digit of a pair waits in `half`.
+struct PictureFrame {
+  Picture picture;
+  std::size_t depth = 0;  // stack size of the \pict group; text in child groups is not data
+  int half = -1;          // the waiting digit, or -1
+  bool stopped = false;   // a bad byte ended the data
+  bool hasFormat = false;
+};
+
+// An open \shp, with the name of the property being read.
+struct ShapeFrame {
+  Shape shape;
+  std::string property;
+};
 
 // The state each '{' copies and each '}' restores (design, "Group state").
 struct GroupState {
@@ -466,8 +555,12 @@ struct GroupState {
   bool ownsEntry = false;      // this group is a style, info, colour table or generator entry
   bool ownsSink = false;       // this group opened the innermost BlockSink
   bool nestProps = false;      // inside {\*\nesttableprops ...}
+  bool uprPending = false;     // a \upr group whose first child group is still to come
+  bool pibValue = false;       // inside the \sv value of a shape's pib property
+  Owner owner = Owner::None;   // the frame or name this group finishes
   BorderTarget border;
   std::size_t sink = 0;        // index of the BlockSink this group writes to
+  std::size_t frame = 0;       // index of the field, picture, shape or object frame of the target
 };
 
 // ---------------------------------------------------------------------------
@@ -505,6 +598,19 @@ class Reader {
   void close_sink(BlockSink& s, const ParaState& para);
   bool open_header_footer(std::string_view word);
   void open_sink(std::vector<Block>* blocks);
+
+  // Sections, fields, footnotes, pictures, shapes, objects, bookmarks and
+  // lists (design, "Destinations the reader understands").
+  bool open_structure(const Token& tok, DestKind kind);
+  void close_frame(Owner owner);
+  void finish_picture(PictureFrame& frame);
+  void section_word(const Token& tok, SectionOp op);
+  void end_section();
+  void commit_section(Section& s);
+  void picture_word(const Token& tok, PictOp op);
+  void picture_text(std::string_view text, std::size_t offset);
+  void picture_binary(std::string_view bytes);
+  void frame_word(FrameOp op);
 
   // One handler per destination kind.
   void dispatch_word(const Token& tok, const WordInfo* info);
@@ -568,7 +674,17 @@ class Reader {
   std::deque<Section> sections_;
   std::vector<BlockSink> sinks_;
   SectionState section_;
-  bool section_defined_ = false;  // Task 6 sets it on \sectd
+  bool section_defined_ = false;  // a \sectd or section word has been read
+
+  // Open frames, innermost last. A frame lives as long as the group that
+  // opened it; GroupState holds only its index. Footnotes, shapes and
+  // objects are in deques because a sink points into their blocks.
+  std::vector<Field> fields_;
+  std::vector<PictureFrame> pictures_;
+  std::deque<ShapeFrame> shapes_;
+  std::deque<EmbeddedObject> objects_;
+  std::deque<Footnote> footnotes_;
+  std::string name_;  // text of a bookmark name, a shape property name or an object class
 
   // Group skipping and depth.
   bool skipping_ = false;        // inside a skipped destination
@@ -651,8 +767,10 @@ RtfDocument Reader::run() {
       case TokenKind::Unicode: on_unicode(tok); break;
       case TokenKind::Text: on_text(tok.text, tok.offset); break;
       case TokenKind::Binary:
-        // \bin outside a picture or object: its bytes are not text.
+        // \bin in a picture holds the picture's bytes. Elsewhere its
+        // bytes are not text.
         top().first = false;
+        if (top().target == TextTarget::Picture) picture_binary(tok.text);
         break;
       case TokenKind::End: break;
     }
@@ -680,11 +798,16 @@ void Reader::on_group_open(const Token& tok) {
     return;
   }
   top().first = false;
+  // \upr holds an ANSI branch and a \*\ud branch with the same content.
+  // Its first child group is the ANSI branch and is dropped.
+  const bool upr_branch = top().uprPending;
+  top().uprPending = false;
   GroupState child = top();
   child.first = true;
   child.star = false;
   child.ownsEntry = false;
   child.ownsSink = false;
+  child.owner = Owner::None;
   // Every sub-group of the style sheet is a style; every sub-group of the
   // info group is one entry.
   if (child.dest == Dest::StyleSheet) {
@@ -701,6 +824,7 @@ void Reader::on_group_open(const Token& tok) {
     buffer_.clear();
   }
   stack_.push_back(std::move(child));
+  if (upr_branch) skip_group();
 }
 
 void Reader::on_group_close() {
@@ -731,8 +855,11 @@ void Reader::close_group() {
     close_sink(sinks_.back(), g.para);
     sinks_.pop_back();
   }
+  const Owner owner = g.owner;
   if (stack_.size() == 1) finish_document(g);
   stack_.pop_back();
+  // The finished frame goes to the parent group's target.
+  if (owner != Owner::None && !stack_.empty()) close_frame(owner);
 }
 
 void Reader::finish_document(const GroupState& root) {
@@ -740,12 +867,8 @@ void Reader::finish_document(const GroupState& root) {
     close_sink(sinks_.back(), root.para);
     sinks_.pop_back();
   }
-  Section& s = sections_.back();
-  s.page = section_.page;
-  s.break_ = section_.break_;
-  s.columns = section_.columns;
-  s.titlePage = section_.titlePage;
-  s.pageNumberStart = section_.pageNumberStart;
+  // The section being read at the end of the input is always kept.
+  commit_section(sections_.back());
   doc_.sections.assign(std::make_move_iterator(sections_.begin()), std::make_move_iterator(sections_.end()));
   sections_.clear();
   finished_ = true;
@@ -889,7 +1012,7 @@ bool Reader::decide_destination(const Token& tok, const WordInfo* info, bool sta
       skip_group();
       return true;
     }
-    if (is_dest && op_of<DestKind>(*info) != DestKind::Later) return open_destination(tok, op_of<DestKind>(*info));
+    if (is_dest) return open_destination(tok, op_of<DestKind>(*info));
     std::string name(tok.word);
     warn_once(unknown_seen_, name, "unknown_destination", "unknown destination \\" + name + " skipped",
               base_ + tok.offset);
@@ -949,12 +1072,357 @@ bool Reader::open_destination(const Token& tok, DestKind kind) {
       // The table words inside target the nested level (design, "Tables").
       g.nestProps = true;
       return true;
-    case DestKind::Later:
-      // Task 6: \field, \footnote, \pict, \shp, \object, \listtext,
-      // \pntext, \upr and their parts. Until then a formatting group.
-      return false;
+    default: return open_structure(tok, kind);
   }
   return false;
+}
+
+// ---------------------------------------------------------------------------
+// Fields, footnotes, bookmarks, lists, pictures, shapes and objects
+// ---------------------------------------------------------------------------
+
+// Opens one of the text containers or pictures. They belong to the body
+// text; inside the document tables they are skipped. A part found outside
+// its container (\fldrslt outside \field, \sv outside \shp) is skipped
+// silently.
+bool Reader::open_structure(const Token& tok, DestKind kind) {
+  GroupState& g = top();
+  if (g.dest != Dest::Body) {
+    skip_group();
+    return true;
+  }
+  switch (kind) {
+    case DestKind::Transparent: return true;
+    case DestKind::Upr:
+      g.uprPending = true;
+      return true;
+    case DestKind::Field:
+      fields_.emplace_back();
+      g.owner = Owner::Field;
+      g.frame = fields_.size() - 1;
+      g.target = TextTarget::Field;
+      return true;
+    case DestKind::FieldInstruction:
+      if (g.target != TextTarget::Field) break;
+      g.target = TextTarget::FieldInstruction;
+      return true;
+    case DestKind::FieldResult:
+      if (g.target != TextTarget::Field) break;
+      g.target = TextTarget::FieldResult;
+      return true;
+    case DestKind::Footnote:
+      footnotes_.emplace_back();
+      g.owner = Owner::Footnote;
+      open_sink(&footnotes_.back().blocks);
+      g.target = TextTarget::Paragraph;
+      return true;
+    case DestKind::BookmarkStart:
+    case DestKind::BookmarkEnd:
+      g.owner = kind == DestKind::BookmarkStart ? Owner::BookmarkStart : Owner::BookmarkEnd;
+      g.target = TextTarget::Name;
+      name_.clear();
+      return true;
+    case DestKind::ListText:
+      // The text before a list item goes to the paragraph's listText.
+      if (g.target != TextTarget::Paragraph) break;
+      sink().begin_paragraph_if_needed();
+      g.target = TextTarget::ListText;
+      return true;
+    case DestKind::Picture:
+      pictures_.emplace_back();
+      pictures_.back().depth = stack_.size();
+      g.owner = Owner::Picture;
+      g.frame = pictures_.size() - 1;
+      g.target = TextTarget::Picture;
+      return true;
+    case DestKind::Shape:
+      // Only the text and the picture of a shape are kept.
+      warn_once(once_seen_, "shape_geometry_dropped", "shape_geometry_dropped",
+                "shape position, size and drawing properties are dropped", base_ + tok.offset);
+      shapes_.emplace_back();
+      g.owner = Owner::Shape;
+      g.frame = shapes_.size() - 1;
+      g.target = TextTarget::Shape;
+      return true;
+    case DestKind::ShapeText:
+      if (g.target != TextTarget::Shape || g.frame >= shapes_.size()) break;
+      open_sink(&shapes_[g.frame].shape.blocks);
+      g.target = TextTarget::Paragraph;
+      return true;
+    case DestKind::ShapeName:
+      if (g.target != TextTarget::Shape) break;
+      g.owner = Owner::ShapeName;
+      g.target = TextTarget::Name;
+      name_.clear();
+      return true;
+    case DestKind::ShapeValue:
+      // Only the value of the pib property, the shape's picture, is read.
+      if (g.target != TextTarget::Shape || g.frame >= shapes_.size() || shapes_[g.frame].property != "pib") break;
+      g.pibValue = true;
+      return true;
+    case DestKind::Object:
+      objects_.emplace_back();
+      g.owner = Owner::Object;
+      g.frame = objects_.size() - 1;
+      g.target = TextTarget::Object;
+      return true;
+    case DestKind::ObjectClass:
+      if (g.target != TextTarget::Object) break;
+      g.owner = Owner::ObjectClass;
+      g.target = TextTarget::Name;
+      name_.clear();
+      return true;
+    case DestKind::ObjectData:
+      warn_once(once_seen_, "object_data_dropped", "object_data_dropped", "embedded object data dropped",
+                base_ + tok.offset);
+      break;
+    case DestKind::ObjectResult:
+      if (g.target != TextTarget::Object || g.frame >= objects_.size()) break;
+      open_sink(&objects_[g.frame].result);
+      g.target = TextTarget::Paragraph;
+      return true;
+    default: break;
+  }
+  skip_group();
+  return true;
+}
+
+// Finishes the frame of a group that has just closed. top() is now the
+// parent group, so emit_inline sends the result to the enclosing
+// paragraph, field result or list text.
+void Reader::close_frame(Owner owner) {
+  switch (owner) {
+    case Owner::None: return;
+    case Owner::Field: {
+      if (fields_.empty()) return;
+      Field field = std::move(fields_.back());
+      fields_.pop_back();
+      field.instruction = trim(field.instruction);
+      emit_inline(Inline{std::move(field)});
+      return;
+    }
+    case Owner::Footnote: {
+      if (footnotes_.empty()) return;
+      Footnote note = std::move(footnotes_.back());
+      footnotes_.pop_back();
+      emit_inline(Inline{std::move(note)});
+      return;
+    }
+    case Owner::Picture: {
+      if (pictures_.empty()) return;
+      PictureFrame frame = std::move(pictures_.back());
+      pictures_.pop_back();
+      finish_picture(frame);
+      const GroupState& g = top();
+      // The value of a pib property is the picture of its shape.
+      if (g.pibValue && g.target == TextTarget::Shape && g.frame < shapes_.size()) {
+        shapes_[g.frame].shape.picture = std::move(frame.picture);
+      } else {
+        emit_inline(Inline{std::move(frame.picture)});
+      }
+      return;
+    }
+    case Owner::Shape: {
+      if (shapes_.empty()) return;
+      Shape shape = std::move(shapes_.back().shape);
+      shapes_.pop_back();
+      if (!shape.blocks.empty() || shape.picture) emit_inline(Inline{std::move(shape)});
+      return;
+    }
+    case Owner::Object: {
+      if (objects_.empty()) return;
+      EmbeddedObject object = std::move(objects_.back());
+      objects_.pop_back();
+      emit_inline(Inline{std::move(object)});
+      return;
+    }
+    case Owner::BookmarkStart:
+    case Owner::BookmarkEnd:
+      emit_inline(Inline{Bookmark{trim(name_), owner == Owner::BookmarkEnd}});
+      name_.clear();
+      return;
+    case Owner::ShapeName: {
+      const GroupState& g = top();
+      if (g.target == TextTarget::Shape && g.frame < shapes_.size()) shapes_[g.frame].property = trim(name_);
+      name_.clear();
+      return;
+    }
+    case Owner::ObjectClass: {
+      const GroupState& g = top();
+      if (g.target == TextTarget::Object && g.frame < objects_.size()) objects_[g.frame].className = trim(name_);
+      name_.clear();
+      return;
+    }
+  }
+}
+
+// A picture without a known format word is Unknown. A hex digit left
+// without its pair is bad data.
+void Reader::finish_picture(PictureFrame& frame) {
+  if (!frame.hasFormat) {
+    frame.picture.format = PictureFormat::Unknown;
+    warn_once(once_seen_, "unknown_picture_format", "unknown_picture_format", "picture of unknown format",
+              offset_);
+  }
+  if (!frame.stopped && frame.half >= 0) {
+    warn_once(once_seen_, "bad_picture_data", "bad_picture_data", "picture data ends with half a byte", offset_);
+  }
+}
+
+void Reader::picture_word(const Token& tok, PictOp op) {
+  const GroupState& g = top();
+  if (g.target != TextTarget::Picture || g.frame >= pictures_.size()) return;
+  PictureFrame& frame = pictures_[g.frame];
+  Picture& p = frame.picture;
+  auto format = [&](PictureFormat f) {
+    p.format = f;
+    frame.hasFormat = true;
+  };
+  auto size = [&](std::optional<int>& slot) {
+    if (tok.hasParam) slot = tok.param;
+  };
+  switch (op) {
+    case PictOp::Png: format(PictureFormat::Png); break;
+    case PictOp::Jpeg: format(PictureFormat::Jpeg); break;
+    case PictOp::Emf: format(PictureFormat::Emf); break;
+    case PictOp::Wmf: format(PictureFormat::Wmf); break;
+    case PictOp::Dib: format(PictureFormat::Dib); break;
+    case PictOp::Bmp: format(PictureFormat::Bmp); break;
+    case PictOp::Mac:
+      // A Macintosh PICT has no format in the model.
+      p.format = PictureFormat::Unknown;
+      frame.hasFormat = false;
+      break;
+    case PictOp::Width: size(p.width); break;
+    case PictOp::Height: size(p.height); break;
+    case PictOp::GoalWidth: size(p.goalWidth); break;
+    case PictOp::GoalHeight: size(p.goalHeight); break;
+    case PictOp::ScaleX: size(p.scaleX); break;
+    case PictOp::ScaleY: size(p.scaleY); break;
+  }
+}
+
+// The picture's text is hex digits. Line breaks, spaces and tabs between
+// them are ignored, and a pair may span two text tokens. A byte that is not
+// a hex digit ends the data; the bytes before it are kept. Text in a child
+// group of the picture is not data.
+void Reader::picture_text(std::string_view text, std::size_t offset) {
+  const GroupState& g = top();
+  if (g.frame >= pictures_.size()) return;
+  PictureFrame& frame = pictures_[g.frame];
+  if (stack_.size() != frame.depth || frame.stopped) return;
+  for (char c : text) {
+    if (c == ' ' || c == '\t' || c == '\r' || c == '\n') continue;
+    int digit = -1;
+    if (c >= '0' && c <= '9') digit = c - '0';
+    if (c >= 'a' && c <= 'f') digit = c - 'a' + 10;
+    if (c >= 'A' && c <= 'F') digit = c - 'A' + 10;
+    if (digit < 0) {
+      frame.stopped = true;
+      warn_once(once_seen_, "bad_picture_data", "bad_picture_data", "picture data holds a byte that is not hex",
+                base_ + offset);
+      return;
+    }
+    if (frame.half < 0) {
+      frame.half = digit;
+    } else {
+      frame.picture.data.push_back(static_cast<char>((frame.half << 4) | digit));
+      frame.half = -1;
+    }
+  }
+}
+
+// \binN in a picture gives N raw bytes of data.
+void Reader::picture_binary(std::string_view bytes) {
+  const GroupState& g = top();
+  if (g.frame >= pictures_.size()) return;
+  PictureFrame& frame = pictures_[g.frame];
+  if (stack_.size() != frame.depth || frame.stopped) return;
+  frame.picture.data.append(bytes.data(), bytes.size());
+}
+
+// \ftnalt marks the innermost footnote as an endnote. \flddirty and
+// \fldlock set the flags of the field whose group they are in.
+void Reader::frame_word(FrameOp op) {
+  const GroupState& g = top();
+  switch (op) {
+    case FrameOp::FootnoteAlt:
+      if (!footnotes_.empty()) footnotes_.back().endnote = true;
+      return;
+    case FrameOp::FieldDirty:
+    case FrameOp::FieldLock:
+      if (g.target != TextTarget::Field || g.frame >= fields_.size()) return;
+      if (op == FrameOp::FieldDirty) {
+        fields_[g.frame].dirty = true;
+      } else {
+        fields_[g.frame].locked = true;
+      }
+      return;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sections (design, "Sections and page setup")
+// ---------------------------------------------------------------------------
+
+void Reader::section_word(const Token& tok, SectionOp op) {
+  PageSetup& page = section_.page;
+  switch (op) {
+    case SectionOp::Sect: end_section(); return;
+    case SectionOp::Sectd:
+      // \sectd resets the section's properties to the document's page
+      // setup. It does not start a section and keeps the headers read.
+      section_.reset(doc_.page);
+      break;
+    case SectionOp::PageW: page.width = param_or(tok, page.width); break;
+    case SectionOp::PageH: page.height = param_or(tok, page.height); break;
+    case SectionOp::MargL: page.marginLeft = param_or(tok, page.marginLeft); break;
+    case SectionOp::MargR: page.marginRight = param_or(tok, page.marginRight); break;
+    case SectionOp::MargT: page.marginTop = param_or(tok, page.marginTop); break;
+    case SectionOp::MargB: page.marginBottom = param_or(tok, page.marginBottom); break;
+    case SectionOp::Landscape: page.landscape = true; break;  // a flag only; the sizes stay as written
+    case SectionOp::HeaderY: page.headerDistance = param_or(tok, page.headerDistance); break;
+    case SectionOp::FooterY: page.footerDistance = param_or(tok, page.footerDistance); break;
+    case SectionOp::BreakNone: section_.break_ = SectionBreak::None; break;
+    case SectionOp::BreakColumn: section_.break_ = SectionBreak::Column; break;
+    case SectionOp::BreakPage: section_.break_ = SectionBreak::Page; break;
+    case SectionOp::BreakEven: section_.break_ = SectionBreak::Even; break;
+    case SectionOp::BreakOdd: section_.break_ = SectionBreak::Odd; break;
+    case SectionOp::Columns: section_.columns = param_or(tok, 1); break;
+    case SectionOp::TitlePage: section_.titlePage = toggle(tok); break;
+    case SectionOp::PageNumberStart: if (tok.hasParam) section_.pageNumberStart = tok.param; break;
+    case SectionOp::PageNumberRestart: section_.pageNumberRestart = true; break;
+  }
+  // From now on a change of the document page does not reset the section.
+  section_defined_ = true;
+}
+
+// \sect ends the section: the open paragraph and tables end, and the next
+// section starts with the same page, break and columns and no headers.
+// Inside a header, footer, footnote, shape text or object result it acts
+// as \par.
+void Reader::end_section() {
+  if (top().sink != 0 || top().target != TextTarget::Paragraph) {
+    special_word(SpecialOp::Par);
+    return;
+  }
+  BlockSink& body = sinks_[0];
+  close_sink(body, top().para);
+  commit_section(sections_.back());
+  sections_.emplace_back();
+  body.target = &sections_.back().body;
+  section_.titlePage = false;
+  section_.pageNumberStart.reset();
+  section_.pageNumberRestart = false;
+}
+
+void Reader::commit_section(Section& s) {
+  s.page = section_.page;
+  s.break_ = section_.break_;
+  s.columns = section_.columns;
+  s.titlePage = section_.titlePage;
+  s.pageNumberStart.reset();
+  if (section_.pageNumberRestart) s.pageNumberStart = section_.pageNumberStart;
 }
 
 void Reader::dispatch_word(const Token& tok, const WordInfo* info) {
@@ -989,7 +1457,13 @@ void Reader::body_word(const Token& tok, const WordInfo* info) {
     case Family::Para: para_word(tok, op_of<ParaOp>(*info)); break;
     case Family::Border: border_word(tok, op_of<BorderOp>(*info)); break;
     case Family::Special: special_word(op_of<SpecialOp>(*info)); break;
+    case Family::Section: section_word(tok, op_of<SectionOp>(*info)); break;
+    case Family::Picture: picture_word(tok, op_of<PictOp>(*info)); break;
+    case Family::Frame: frame_word(op_of<FrameOp>(*info)); break;
     case Family::Table: {
+      // Cells and rows hold paragraphs; a field instruction, a picture or
+      // list text cannot end one.
+      if (top().target != TextTarget::Paragraph) break;
       const auto op = op_of<TableOp>(*info);
       if (op == TableOp::Trowd) {
         start_row_definition();
@@ -1265,6 +1739,7 @@ int Reader::border_slots(Border* out[4]) {
 // Breaks, tabs, \chpgn and the special characters of the design's table.
 void Reader::special_word(SpecialOp op) {
   const bool in_paragraph = top().target == TextTarget::Paragraph;
+  const bool inlines = takes_inlines(top().target);
   switch (op) {
     case SpecialOp::Par:
       if (in_paragraph) {
@@ -1273,7 +1748,7 @@ void Reader::special_word(SpecialOp op) {
       return;
     case SpecialOp::Line: emit_inline(Inline{LineBreak{}}); return;
     case SpecialOp::Tab:
-      if (in_paragraph) {
+      if (inlines) {
         emit_inline(Inline{Tab{}});
       } else {
         emit("\t");
@@ -1608,6 +2083,10 @@ void Reader::commit_info() {
 void Reader::on_text(std::string_view text, std::size_t offset) {
   GroupState& g = top();
   g.first = false;
+  if (g.target == TextTarget::Picture) {
+    picture_text(text, offset);
+    return;
+  }
   if (g.target == TextTarget::Discard) return;
   if (g.target == TextTarget::ColorTable) {
     for (char c : text) {
@@ -1667,11 +2146,24 @@ void Reader::flush_pending_surrogate() {
 // Sends UTF-8 text to the group's text target.
 void Reader::emit(std::string_view utf8) {
   if (utf8.empty()) return;
-  switch (top().target) {
-    case TextTarget::Paragraph: sink().append_run(utf8, top().chars); break;
+  const GroupState& g = top();
+  switch (g.target) {
+    case TextTarget::Paragraph: sink().append_run(utf8, g.chars); break;
     case TextTarget::Buffer: buffer_.append(utf8.data(), utf8.size()); break;
+    case TextTarget::Name: name_.append(utf8.data(), utf8.size()); break;
+    case TextTarget::FieldInstruction:
+      if (g.frame < fields_.size()) fields_[g.frame].instruction.append(utf8.data(), utf8.size());
+      break;
+    case TextTarget::FieldResult:
+      if (g.frame < fields_.size()) append_text_run(fields_[g.frame].result, utf8, g.chars);
+      break;
+    case TextTarget::ListText: append_text_run(sink().begin_paragraph_if_needed().listText, utf8, g.chars); break;
     case TextTarget::ColorTable:
-    case TextTarget::Discard: break;
+    case TextTarget::Discard:
+    case TextTarget::Field:
+    case TextTarget::Picture:
+    case TextTarget::Shape:
+    case TextTarget::Object: break;  // the text of a frame's own group is dropped
   }
 }
 
@@ -1682,8 +2174,18 @@ void Reader::emit_code_point(std::uint32_t cp) {
   emit(s);
 }
 
+// Sends a break, a field or another inline item to the group's target.
+// Targets that hold only text drop it.
 void Reader::emit_inline(Inline item) {
-  if (top().target == TextTarget::Paragraph) sink().append_inline(std::move(item));
+  const GroupState& g = top();
+  switch (g.target) {
+    case TextTarget::Paragraph: sink().append_inline(std::move(item)); break;
+    case TextTarget::FieldResult:
+      if (g.frame < fields_.size()) fields_[g.frame].result.push_back(std::move(item));
+      break;
+    case TextTarget::ListText: sink().begin_paragraph_if_needed().listText.push_back(std::move(item)); break;
+    default: break;
+  }
 }
 
 // The code page of the current font: its \cpg, else its \fcharset mapped

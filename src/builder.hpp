@@ -29,6 +29,11 @@ struct TableLevel {
   void define_cell(int right);
 };
 
+// Appends text with the given properties to a list of inlines. The text
+// joins the last item when that item is a run with the same properties.
+// Paragraph runs, list text and field results all follow this rule.
+void append_text_run(std::vector<Inline>& items, std::string_view text, const CharProps& props);
+
 // Where blocks go: a section body, a header or footer, a footnote, the text
 // of a shape, or the result of an object. The reader keeps a stack of sinks;
 // text always goes to the innermost one.

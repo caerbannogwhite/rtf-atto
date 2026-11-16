@@ -53,18 +53,22 @@ Paragraph& BlockSink::begin_paragraph_if_needed() {
   return *current;
 }
 
-void BlockSink::append_run(std::string_view text, const CharProps& props) {
+void append_text_run(std::vector<Inline>& items, std::string_view text, const CharProps& props) {
   if (text.empty()) return;
-  Paragraph& p = begin_paragraph_if_needed();
-  if (!p.runs.empty()) {
-    if (auto* last = std::get_if<TextRun>(&p.runs.back().value)) {
+  if (!items.empty()) {
+    if (auto* last = std::get_if<TextRun>(&items.back().value)) {
       if (same_char_props(last->props, props)) {
         last->text.append(text.data(), text.size());
         return;
       }
     }
   }
-  p.runs.push_back(Inline{TextRun{std::string(text), props}});
+  items.push_back(Inline{TextRun{std::string(text), props}});
+}
+
+void BlockSink::append_run(std::string_view text, const CharProps& props) {
+  if (text.empty()) return;
+  append_text_run(begin_paragraph_if_needed().runs, text, props);
 }
 
 void BlockSink::append_inline(Inline item) {

@@ -37,7 +37,10 @@ struct SectionState {
   SectionBreak break_ = SectionBreak::Page;
   std::optional<int> columns;
   bool titlePage = false;
+  // \pgnstartsN. It becomes the section's pageNumberStart only when the
+  // section also has \pgnrestart, in either order.
   std::optional<int> pageNumberStart;
+  bool pageNumberRestart = false;
 
   void reset(const PageSetup& documentPage) {
     *this = SectionState{};
