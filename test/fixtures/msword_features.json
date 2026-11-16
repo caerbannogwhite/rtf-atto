@@ -2605,7 +2605,7 @@
     },
     {
       "code": "symbol_font",
-      "message": "Symbol font bytes mapped to U+F000 plus the byte",
+      "message": "font 3 is a Symbol font; its bytes map to U+F000 plus the byte",
       "offset": 36389
     },
     {

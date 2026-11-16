@@ -30,6 +30,25 @@ static void sectd_without_sect_is_one_section() {
   CHECK(!doc.sections[0].headers.default_.has_value());
   CHECK(doc.sections[0].page.landscape);
 }
+static void page_number_restart_defaults_to_one() {
+  // \pgnrestart alone restarts at 1; \pgnstarts alone gives no start.
+  auto doc = parse_ok(R"({\rtf1\sectd\pgnrestart one\par\sect\sectd\pgnstarts7 two\par})");
+  CHECK_EQ(doc.sections.size(), std::size_t(2));
+  if (doc.sections.size() == 2) {
+    CHECK(doc.sections[0].pageNumberStart.has_value());
+    CHECK_EQ(doc.sections[0].pageNumberStart.value_or(0), 1);
+    CHECK(!doc.sections[1].pageNumberStart.has_value());
+  }
+}
+static void header_inside_font_table_is_not_a_header() {
+  // The stray group belongs to the font table: no header and no body text.
+  // No space follows the closing brace, because that space would be text.
+  auto doc = parse_ok(R"({\rtf1{\fonttbl{\f0 Arial;}{\header lost}}x\par})");
+  CHECK_EQ(doc.sections.size(), std::size_t(1));
+  CHECK(!doc.sections[0].headers.default_.has_value());
+  CHECK_EQ(doc.sections[0].body.size(), std::size_t(1));
+  CHECK_EQ(run_text(body_paragraph(doc, 0, 0)), std::string("x"));
+}
 static void headers_all_kinds() {
   auto doc = parse_ok(R"({\rtf1\sectd{\header d\par}{\headerf f\par}{\headerl l\par}{\headerr r\par}{\footer fd\par}{\footerf ff\par}{\footerl fl\par}{\footerr fr\par} body\par\sect\sectd{\headerr only\par} two\par})");
   const auto& h = doc.sections[0].headers;
@@ -181,6 +200,8 @@ static void field_instruction_keeps_escaped_symbols() {
 int main() {
   sas_page_setup_and_sections();
   sectd_without_sect_is_one_section();
+  page_number_restart_defaults_to_one();
+  header_inside_font_table_is_not_a_header();
   headers_all_kinds();
   fields_sas_and_word();
   bookmarks_and_upr();

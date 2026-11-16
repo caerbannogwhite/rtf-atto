@@ -38,7 +38,8 @@ struct SectionState {
   std::optional<int> columns;
   bool titlePage = false;
   // \pgnstartsN. It becomes the section's pageNumberStart only when the
-  // section also has \pgnrestart, in either order.
+  // section also has \pgnrestart, in either order. \pgnrestart alone
+  // gives the section a pageNumberStart of 1.
   std::optional<int> pageNumberStart;
   bool pageNumberRestart = false;
 

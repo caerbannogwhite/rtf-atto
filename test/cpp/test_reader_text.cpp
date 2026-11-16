@@ -216,6 +216,20 @@ static void flattened_group_is_transparent() {
   CHECK(!has_warning(r.document, "unknown_destination"));
   CHECK(!has_warning(r.document, "unbalanced_group"));
 }
+static void uc0_skips_nothing() {
+  // The space after \u8364 ends the control word, and \uc0 skips no fallback.
+  auto doc = parse_ok(R"({\rtf1\uc0 \u8364 x\par})");
+  CHECK_EQ(run_text(body_paragraph(doc, 0, 0)), std::string("\xE2\x82\xACx"));
+}
+static void depth_cap_with_skipped_group() {
+  // Depth 3 allows the root and two groups. The third '{' opens the \*\foo
+  // group at depth 4, so it is flattened and its text becomes ordinary text.
+  auto r = rtf::parse(std::string_view(R"({\rtf1 {{{\*\foo lost}}}kept\par})"), rtf::ParseOptions{3});
+  CHECK(r.ok);
+  CHECK_EQ(run_text(body_paragraph(r.document, 0, 0)), std::string("lostkept"));
+  CHECK_EQ(count_warnings(r.document, "depth_limit"), std::size_t(1));
+  CHECK(!has_warning(r.document, "unknown_destination"));
+}
 static void offset_at_int_min() {
   // \dn negates its parameter. INT_MIN has no int negation, so it clamps.
   auto doc = parse_ok(R"({\rtf1 {\dn-2147483648 x}{\up-2147483648 y}\par})");
@@ -250,5 +264,7 @@ int main() {
   tab_alignment_is_group_state();
   flattened_group_is_transparent();
   offset_at_int_min();
+  uc0_skips_nothing();
+  depth_cap_with_skipped_group();
   return rtf_test::result();
 }

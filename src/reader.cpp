@@ -655,6 +655,7 @@ class Reader {
   void emit_code_point(std::uint32_t cp);
   void emit_inline(Inline item);
   std::uint32_t decode(unsigned char b, std::size_t offset);
+  int current_font();
   int current_code_page();
   void flush_pending_surrogate();
 
@@ -1068,11 +1069,6 @@ bool Reader::open_destination(const Token& tok, DestKind kind) {
     case DestKind::SkipSilent:
       skip_group();
       return true;
-    case DestKind::HeaderFooter: return open_header_footer(tok.word);
-    case DestKind::NestTableProps:
-      // The table words inside target the nested level (design, "Tables").
-      g.nestProps = true;
-      return true;
     default: return open_structure(tok, kind);
   }
   return false;
@@ -1082,8 +1078,9 @@ bool Reader::open_destination(const Token& tok, DestKind kind) {
 // Fields, footnotes, bookmarks, lists, pictures, shapes and objects
 // ---------------------------------------------------------------------------
 
-// Opens one of the text containers or pictures. They belong to the body
-// text; inside the document tables they are skipped. A \fldrslt, \result
+// Opens a header or footer, the nested table properties, or one of the
+// text containers or pictures. They belong to the body text; inside the
+// document tables they are skipped. A \fldrslt, \result
 // or \shptxt found outside its container is read as a formatting group,
 // so its text stays in the enclosing paragraph. Other parts found outside
 // their container (\*\fldinst, \sn, \sv, \*\objclass) are skipped silently.
@@ -1094,6 +1091,11 @@ bool Reader::open_structure(const Token& tok, DestKind kind) {
     return true;
   }
   switch (kind) {
+    case DestKind::HeaderFooter: return open_header_footer(tok.word);
+    case DestKind::NestTableProps:
+      // The table words inside target the nested level (design, "Tables").
+      g.nestProps = true;
+      return true;
     case DestKind::Transparent: return true;
     case DestKind::Upr:
       g.uprPending = true;
@@ -1271,7 +1273,7 @@ void Reader::finish_picture(PictureFrame& frame) {
               offset_);
   }
   if (!frame.stopped && frame.half >= 0) {
-    warn_once(once_seen_, "bad_picture_data", "bad_picture_data", "picture data ends with half a byte", offset_);
+    warn_once(once_seen_, "bad_picture_data", "bad_picture_data", "picture data has an odd digit count", offset_);
   }
 }
 
@@ -1325,8 +1327,15 @@ void Reader::picture_text(std::string_view text, std::size_t offset) {
     if (c >= 'A' && c <= 'F') digit = c - 'A' + 10;
     if (digit < 0) {
       frame.stopped = true;
-      warn_once(once_seen_, "bad_picture_data", "bad_picture_data", "picture data holds a byte that is not hex",
-                base_ + offset);
+      // A printable character is named as itself, any other byte by its hex value.
+      char shown[8];
+      if (c > ' ' && c < 0x7F) {
+        std::snprintf(shown, sizeof(shown), "'%c'", c);
+      } else {
+        std::snprintf(shown, sizeof(shown), "0x%02X", static_cast<unsigned>(static_cast<unsigned char>(c)));
+      }
+      warn_once(once_seen_, "bad_picture_data", "bad_picture_data",
+                std::string("picture data holds ") + shown + ", which is not a hex digit", base_ + offset);
       return;
     }
     if (frame.half < 0) {
@@ -1439,7 +1448,8 @@ void Reader::commit_section(Section& s) {
   s.columns = section_.columns;
   s.titlePage = section_.titlePage;
   s.pageNumberStart.reset();
-  if (section_.pageNumberRestart) s.pageNumberStart = section_.pageNumberStart;
+  // \pgnrestart without \pgnstarts restarts at 1, the RTF default.
+  if (section_.pageNumberRestart) s.pageNumberStart = section_.pageNumberStart.value_or(1);
 }
 
 void Reader::dispatch_word(const Token& tok, const WordInfo* info) {
@@ -2214,12 +2224,17 @@ void Reader::emit_inline(Inline item) {
   }
 }
 
+// The number of the current font. In the font table it is the entry being read.
+int Reader::current_font() {
+  int font = top().chars.font.value_or(doc_.defaultFont);
+  if (top().dest == Dest::FontTable && font_entry_) font = *font_entry_;
+  return font;
+}
+
 // The code page of the current font: its \cpg, else its \fcharset mapped
 // through the charset table, else the document's code page.
 int Reader::current_code_page() {
-  int font = top().chars.font.value_or(doc_.defaultFont);
-  if (top().dest == Dest::FontTable && font_entry_) font = *font_entry_;
-  const auto it = doc_.fonts.find(font);
+  const auto it = doc_.fonts.find(current_font());
   if (it == doc_.fonts.end()) return doc_.codePage;
   if (it->second.codePage) return *it->second.codePage;
   return charset_to_code_page(it->second.charset, doc_.codePage);
@@ -2229,7 +2244,8 @@ std::uint32_t Reader::decode(unsigned char b, std::size_t offset) {
   if (b < 0x80) return b;
   const int cp = current_code_page();
   if (cp == kSymbolCodePage) {
-    warn_once(once_seen_, "symbol_font", "symbol_font", "Symbol font bytes mapped to U+F000 plus the byte",
+    warn_once(once_seen_, "symbol_font", "symbol_font",
+              "font " + std::to_string(current_font()) + " is a Symbol font; its bytes map to U+F000 plus the byte",
               base_ + offset);
   } else if (!code_page_supported(cp)) {
     const std::string key = std::to_string(cp);
