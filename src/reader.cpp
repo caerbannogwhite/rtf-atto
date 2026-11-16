@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <deque>
+#include <limits>
 #include <optional>
 #include <set>
 #include <string>
@@ -28,12 +29,18 @@ namespace {
 
 // Each known control word belongs to one family. The family decides which
 // handler runs; the operation says what the handler does.
-enum class Family : std::uint8_t { Destination, Document, Char, Para, Border, Special, Font, Color, Style, Info };
+enum class Family : std::uint8_t {
+  Destination, Document, Char, Para, Border, Special, Font, Color, Style, Info, Table, Row, CellDef
+};
 
 // What a destination word does when it is the first word of a group.
+// HeaderFooter opens a sink on the section's header or footer.
+// NestTableProps holds the definition of a nested row; its content is read.
 // Later marks destinations that Task 6 gives a meaning; until then they
 // follow the generic rules (a formatting group, or unknown after \*).
-enum class DestKind : std::uint8_t { FontTable, ColorTable, StyleSheet, Info, Generator, SkipWarn, SkipSilent, Later };
+enum class DestKind : std::uint8_t {
+  FontTable, ColorTable, StyleSheet, Info, Generator, SkipWarn, SkipSilent, HeaderFooter, NestTableProps, Later
+};
 enum class DocOp : std::uint8_t {
   Rtf, Ansi, Mac, Pc, Pca, AnsiCpg, Deff, DefLang, Uc,
   PaperW, PaperH, MargL, MargR, MargT, MargB, Landscape, FacingP
@@ -61,6 +68,20 @@ enum class FontOp : std::uint8_t { Nil, Roman, Swiss, Modern, Script, Decor, Tec
 enum class ColorOp : std::uint8_t { Red, Green, Blue };
 enum class StyleOp : std::uint8_t { Character, Table, Section, BasedOn, Next };
 enum class InfoOp : std::uint8_t { Year, Month, Day, Hour, Minute, Second };
+// \trowd, \cellx and the words that end cells and rows.
+enum class TableOp : std::uint8_t { Trowd, Cellx, Cell, NestCell, Row, NestRow };
+// The \tr* row words and \rtlrow.
+enum class RowOp : std::uint8_t {
+  Header, Keep, AlignLeft, AlignCenter, AlignRight, Left, GapHalf, Height,
+  PadLeft, PadTop, PadBottom, PadRight,
+  BorderTop, BorderLeft, BorderBottom, BorderRight, BorderHorizontal, BorderVertical, Rtl
+};
+// The \cl* words of the cell definition under construction.
+enum class CellOp : std::uint8_t {
+  VAlignTop, VAlignCenter, VAlignBottom, TextLrtb, TextTbrl, TextBtlr, TextLrtbv, TextTbrlv, NoWrap,
+  MergeFirst, MergeNext, VMergeFirst, VMergeNext, Background, Foreground, Percent,
+  BorderTop, BorderLeft, BorderBottom, BorderRight, PadT, PadL, PadB, PadR, Width, WidthType
+};
 
 struct WordInfo {
   const char* name;
@@ -78,6 +99,9 @@ constexpr WordInfo entry(const char* n, FontOp k) { return {n, Family::Font, sta
 constexpr WordInfo entry(const char* n, ColorOp k) { return {n, Family::Color, static_cast<std::uint8_t>(k)}; }
 constexpr WordInfo entry(const char* n, StyleOp k) { return {n, Family::Style, static_cast<std::uint8_t>(k)}; }
 constexpr WordInfo entry(const char* n, InfoOp k) { return {n, Family::Info, static_cast<std::uint8_t>(k)}; }
+constexpr WordInfo entry(const char* n, TableOp k) { return {n, Family::Table, static_cast<std::uint8_t>(k)}; }
+constexpr WordInfo entry(const char* n, RowOp k) { return {n, Family::Row, static_cast<std::uint8_t>(k)}; }
+constexpr WordInfo entry(const char* n, CellOp k) { return {n, Family::CellDef, static_cast<std::uint8_t>(k)}; }
 
 // Sorted by byte value of the name, for the binary search in find_word.
 // Words that only start a destination are listed with the destination kind.
@@ -120,11 +144,39 @@ constexpr WordInfo kWords[] = {
     entry("caps", CharOp::Caps),
     entry("cb", CharOp::Background),
     entry("cbpat", ParaOp::CbPat),
+    entry("cell", TableOp::Cell),
+    entry("cellx", TableOp::Cellx),
     entry("cf", CharOp::Color),
     entry("cfpat", ParaOp::CfPat),
     entry("chcbpat", CharOp::Background),
     entry("chftn", SpecialOp::Chftn),
     entry("chpgn", SpecialOp::Chpgn),
+    entry("clNoWrap", CellOp::NoWrap),
+    entry("clbrdrb", CellOp::BorderBottom),
+    entry("clbrdrl", CellOp::BorderLeft),
+    entry("clbrdrr", CellOp::BorderRight),
+    entry("clbrdrt", CellOp::BorderTop),
+    entry("clcbpat", CellOp::Background),
+    entry("clcfpat", CellOp::Foreground),
+    entry("clftsWidth", CellOp::WidthType),
+    entry("clmgf", CellOp::MergeFirst),
+    entry("clmrg", CellOp::MergeNext),
+    entry("clpadb", CellOp::PadB),
+    entry("clpadl", CellOp::PadL),
+    entry("clpadr", CellOp::PadR),
+    entry("clpadt", CellOp::PadT),
+    entry("clshdng", CellOp::Percent),
+    entry("cltxbtlr", CellOp::TextBtlr),
+    entry("cltxlrtb", CellOp::TextLrtb),
+    entry("cltxlrtbv", CellOp::TextLrtbv),
+    entry("cltxtbrl", CellOp::TextTbrl),
+    entry("cltxtbrlv", CellOp::TextTbrlv),
+    entry("clvertalb", CellOp::VAlignBottom),
+    entry("clvertalc", CellOp::VAlignCenter),
+    entry("clvertalt", CellOp::VAlignTop),
+    entry("clvmgf", CellOp::VMergeFirst),
+    entry("clvmrg", CellOp::VMergeNext),
+    entry("clwWidth", CellOp::Width),
     entry("colorschememapping", DestKind::SkipWarn),
     entry("colortbl", DestKind::ColorTable),
     entry("column", SpecialOp::Column),
@@ -159,10 +211,10 @@ constexpr WordInfo kWords[] = {
     entry("fname", DestKind::SkipSilent),
     entry("fnil", FontOp::Nil),
     entry("fonttbl", DestKind::FontTable),
-    entry("footer", DestKind::Later),
-    entry("footerf", DestKind::Later),
-    entry("footerl", DestKind::Later),
-    entry("footerr", DestKind::Later),
+    entry("footer", DestKind::HeaderFooter),
+    entry("footerf", DestKind::HeaderFooter),
+    entry("footerl", DestKind::HeaderFooter),
+    entry("footerr", DestKind::HeaderFooter),
     entry("footnote", DestKind::Later),
     entry("fprq", FontOp::Pitch),
     entry("froman", FontOp::Roman),
@@ -174,10 +226,10 @@ constexpr WordInfo kWords[] = {
     entry("ftnsepc", DestKind::SkipWarn),
     entry("generator", DestKind::Generator),
     entry("green", ColorOp::Green),
-    entry("header", DestKind::Later),
-    entry("headerf", DestKind::Later),
-    entry("headerl", DestKind::Later),
-    entry("headerr", DestKind::Later),
+    entry("header", DestKind::HeaderFooter),
+    entry("headerf", DestKind::HeaderFooter),
+    entry("headerl", DestKind::HeaderFooter),
+    entry("headerr", DestKind::HeaderFooter),
     entry("highlight", CharOp::Highlight),
     entry("hr", InfoOp::Hour),
     entry("htmltag", DestKind::SkipWarn),
@@ -211,7 +263,9 @@ constexpr WordInfo kWords[] = {
     entry("min", InfoOp::Minute),
     entry("mmathPr", DestKind::SkipWarn),
     entry("mo", InfoOp::Month),
-    entry("nesttableprops", DestKind::Later),
+    entry("nestcell", TableOp::NestCell),
+    entry("nestrow", TableOp::NestRow),
+    entry("nesttableprops", DestKind::NestTableProps),
     entry("nonesttables", DestKind::SkipWarn),
     entry("nonshppict", DestKind::SkipWarn),
     entry("nosupersub", CharOp::NoSuperSub),
@@ -248,10 +302,12 @@ constexpr WordInfo kWords[] = {
     entry("revised", CharOp::Revised),
     entry("revtbl", DestKind::SkipWarn),
     entry("ri", ParaOp::Ri),
+    entry("row", TableOp::Row),
     entry("rquote", SpecialOp::Rquote),
     entry("rsidtbl", DestKind::SkipWarn),
     entry("rtf", DocOp::Rtf),
     entry("rtlpar", ParaOp::RtlPar),
+    entry("rtlrow", RowOp::Rtl),
     entry("s", ParaOp::Style),
     entry("sa", ParaOp::Sa),
     entry("sb", ParaOp::Sb),
@@ -285,6 +341,25 @@ constexpr WordInfo kWords[] = {
     entry("tqc", ParaOp::Tqc),
     entry("tqdec", ParaOp::Tqdec),
     entry("tqr", ParaOp::Tqr),
+    entry("trbrdrb", RowOp::BorderBottom),
+    entry("trbrdrh", RowOp::BorderHorizontal),
+    entry("trbrdrl", RowOp::BorderLeft),
+    entry("trbrdrr", RowOp::BorderRight),
+    entry("trbrdrt", RowOp::BorderTop),
+    entry("trbrdrv", RowOp::BorderVertical),
+    entry("trgaph", RowOp::GapHalf),
+    entry("trhdr", RowOp::Header),
+    entry("trkeep", RowOp::Keep),
+    entry("trleft", RowOp::Left),
+    entry("trowd", TableOp::Trowd),
+    entry("trpaddb", RowOp::PadBottom),
+    entry("trpaddl", RowOp::PadLeft),
+    entry("trpaddr", RowOp::PadRight),
+    entry("trpaddt", RowOp::PadTop),
+    entry("trqc", RowOp::AlignCenter),
+    entry("trql", RowOp::AlignLeft),
+    entry("trqr", RowOp::AlignRight),
+    entry("trrh", RowOp::Height),
     entry("ts", StyleOp::Table),
     entry("tx", ParaOp::Tx),
     entry("uc", DocOp::Uc),
@@ -390,6 +465,7 @@ struct GroupState {
   bool star = false;           // the group started with \*
   bool ownsEntry = false;      // this group is a style, info, colour table or generator entry
   bool ownsSink = false;       // this group opened the innermost BlockSink
+  bool nestProps = false;      // inside {\*\nesttableprops ...}
   BorderTarget border;
   std::size_t sink = 0;        // index of the BlockSink this group writes to
 };
@@ -426,7 +502,8 @@ class Reader {
   bool open_destination(const Token& tok, DestKind kind);
   void skip_group();
   void finish_document(const GroupState& root);
-  void close_sink(BlockSink& s, const ParagraphProps& props);
+  void close_sink(BlockSink& s, const ParaState& para);
+  bool open_header_footer(std::string_view word);
 
   // One handler per destination kind.
   void dispatch_word(const Token& tok, const WordInfo* info);
@@ -441,9 +518,20 @@ class Reader {
   void char_word(const Token& tok, CharOp op);
   void para_word(const Token& tok, ParaOp op);
   void border_word(const Token& tok, BorderOp op);
+  void open_border(BorderTarget::Kind kind, BorderTarget::Side side);
   void border_style(BorderStyle style);
   int border_slots(Border* out[4]);
   void special_word(SpecialOp op);
+
+  // Tables.
+  int table_level(const ParaState& p) const;
+  int definition_level();
+  int nested_level();
+  void start_row_definition();
+  void end_cell_definition(const Token& tok);
+  void end_cell_or_row(TableOp op);
+  void row_word(const Token& tok, RowOp op);
+  void cell_word(const Token& tok, CellOp op);
 
   // The document tables.
   void begin_font_entry(int number);
@@ -469,6 +557,7 @@ class Reader {
 
   Tokenizer tokenizer_;
   std::size_t base_;          // offset of the tokenizer's input in the caller's bytes
+  std::size_t offset_ = 0;    // offset of the current token in the caller's bytes
   std::size_t max_depth_;
   RtfDocument doc_;
   std::vector<GroupState> stack_;
@@ -519,6 +608,7 @@ Reader::Reader(const unsigned char* data, std::size_t size, std::size_t base, co
 RtfDocument Reader::run() {
   for (;;) {
     Token tok = tokenizer_.next();
+    offset_ = base_ + tok.offset;
     note_clamped(tok);
     if (tok.kind == TokenKind::End) {
       on_end(tok);
@@ -637,7 +727,7 @@ void Reader::close_group() {
     }
   }
   if (g.ownsSink && sinks_.size() > 1) {
-    close_sink(sinks_.back(), g.para.props);
+    close_sink(sinks_.back(), g.para);
     sinks_.pop_back();
   }
   if (stack_.size() == 1) finish_document(g);
@@ -646,7 +736,7 @@ void Reader::close_group() {
 
 void Reader::finish_document(const GroupState& root) {
   while (!sinks_.empty()) {
-    close_sink(sinks_.back(), root.para.props);
+    close_sink(sinks_.back(), root.para);
     sinks_.pop_back();
   }
   Section& s = sections_.back();
@@ -661,10 +751,31 @@ void Reader::finish_document(const GroupState& root) {
 }
 
 // The paragraph that a closing container ends carries the properties in
-// effect at that moment.
-void Reader::close_sink(BlockSink& s, const ParagraphProps& props) {
-  if (s.current) s.current->props = props;
-  s.close(doc_.warnings);
+// effect at that moment. Text of a table paragraph goes into its cell, so
+// that the row closed by row_not_closed keeps it.
+void Reader::close_sink(BlockSink& s, const ParaState& para) {
+  const int level = table_level(para);
+  if (s.current && level > 0 && !(s.current->runs.empty() && s.current->listText.empty())) {
+    s.end_paragraph(para.props, level, doc_.warnings, offset_);
+  }
+  if (s.current) s.current->props = para.props;
+  s.close(doc_.warnings, offset_);
+}
+
+// \header, \footer and their f, l and r forms open a sink on the matching
+// member of the current section. A second group of the same kind appends.
+bool Reader::open_header_footer(std::string_view word) {
+  Section& section = sections_.back();
+  HeaderSet& set = word.substr(0, 6) == "header" ? section.headers : section.footers;
+  const char kind = word.size() > 6 ? word[6] : '\0';
+  std::optional<std::vector<Block>>& slot =
+      kind == 'f' ? set.first : (kind == 'l' ? set.left : (kind == 'r' ? set.right : set.default_));
+  if (!slot) slot.emplace();
+  sinks_.emplace_back(&*slot);
+  GroupState& g = top();
+  g.sink = sinks_.size() - 1;
+  g.ownsSink = true;
+  return true;
 }
 
 void Reader::on_end(const Token& tok) {
@@ -819,8 +930,13 @@ bool Reader::open_destination(const Token& tok, DestKind kind) {
     case DestKind::SkipSilent:
       skip_group();
       return true;
+    case DestKind::HeaderFooter: return open_header_footer(tok.word);
+    case DestKind::NestTableProps:
+      // The table words inside target the nested level (design, "Tables").
+      g.nestProps = true;
+      return true;
     case DestKind::Later:
-      // Task 6: \field, \header, \footnote, \pict, \shp, \object, \listtext,
+      // Task 6: \field, \footnote, \pict, \shp, \object, \listtext,
       // \pntext, \upr and their parts. Until then a formatting group.
       return false;
   }
@@ -859,7 +975,20 @@ void Reader::body_word(const Token& tok, const WordInfo* info) {
     case Family::Para: para_word(tok, op_of<ParaOp>(*info)); break;
     case Family::Border: border_word(tok, op_of<BorderOp>(*info)); break;
     case Family::Special: special_word(op_of<SpecialOp>(*info)); break;
-    default: break;  // table words outside their table, destination words not at a group start
+    case Family::Table: {
+      const auto op = op_of<TableOp>(*info);
+      if (op == TableOp::Trowd) {
+        start_row_definition();
+      } else if (op == TableOp::Cellx) {
+        end_cell_definition(tok);
+      } else {
+        end_cell_or_row(op);
+      }
+      break;
+    }
+    case Family::Row: row_word(tok, op_of<RowOp>(*info)); break;
+    case Family::CellDef: cell_word(tok, op_of<CellOp>(*info)); break;
+    default: break;  // destination words not at a group start
   }
 }
 
@@ -1032,16 +1161,7 @@ void Reader::para_word(const Token& tok, ParaOp op) {
 }
 
 void Reader::border_word(const Token& tok, BorderOp op) {
-  GroupState& g = top();
-  // A border-opening word makes its side the target of the following
-  // \brdr* words and starts that border as a single line of width 0.
-  auto open = [&](BorderTarget::Side side) {
-    g.border = BorderTarget{BorderTarget::Kind::Paragraph, side};
-    if (!g.para.props.borders) g.para.props.borders.emplace();
-    Border* slots[4] = {nullptr, nullptr, nullptr, nullptr};
-    const int n = border_slots(slots);
-    for (int i = 0; i < n; ++i) *slots[i] = Border{};
-  };
+  auto open = [&](BorderTarget::Side side) { open_border(BorderTarget::Kind::Paragraph, side); };
   auto set = [&](auto&& apply) {
     Border* slots[4] = {nullptr, nullptr, nullptr, nullptr};
     const int n = border_slots(slots);
@@ -1069,6 +1189,17 @@ void Reader::border_word(const Token& tok, BorderOp op) {
   }
 }
 
+// A border-opening word makes its side the target of the following
+// \brdr* words and starts that border as a single line of width 0.
+void Reader::open_border(BorderTarget::Kind kind, BorderTarget::Side side) {
+  GroupState& g = top();
+  g.border = BorderTarget{kind, side};
+  if (kind == BorderTarget::Kind::Paragraph && !g.para.props.borders) g.para.props.borders.emplace();
+  Border* slots[4] = {nullptr, nullptr, nullptr, nullptr};
+  const int n = border_slots(slots);
+  for (int i = 0; i < n; ++i) *slots[i] = Border{};
+}
+
 void Reader::border_style(BorderStyle style) {
   Border* slots[4] = {nullptr, nullptr, nullptr, nullptr};
   const int n = border_slots(slots);
@@ -1077,11 +1208,23 @@ void Reader::border_style(BorderStyle style) {
 
 // Returns the borders the current target names. \box names all four sides.
 // The border between paragraphs is stored as `horizontal`; the bar border
-// has no place in the model and is dropped. Cell and row borders are Task 5.
+// has no place in the model and is dropped. A cell border belongs to the
+// cell definition that the next \cellx closes; a row border to the row
+// definition.
 int Reader::border_slots(Border* out[4]) {
   GroupState& g = top();
-  if (g.border.kind != BorderTarget::Kind::Paragraph || !g.para.props.borders) return 0;
-  Borders& b = *g.para.props.borders;
+  std::optional<Borders>* target = nullptr;
+  switch (g.border.kind) {
+    case BorderTarget::Kind::None: return 0;
+    case BorderTarget::Kind::Paragraph:
+      if (!g.para.props.borders) return 0;
+      target = &g.para.props.borders;
+      break;
+    case BorderTarget::Kind::Cell: target = &sink().table(definition_level()).nextDef.borders; break;
+    case BorderTarget::Kind::Row: target = &sink().table(definition_level()).rowProps.borders; break;
+  }
+  if (!*target) target->emplace();
+  Borders& b = **target;
   auto slot = [](std::optional<Border>& o) -> Border* {
     if (!o) o.emplace();
     return &*o;
@@ -1110,7 +1253,9 @@ void Reader::special_word(SpecialOp op) {
   const bool in_paragraph = top().target == TextTarget::Paragraph;
   switch (op) {
     case SpecialOp::Par:
-      if (in_paragraph) sink().end_paragraph(top().para.props, paragraph_level(top().para));
+      if (in_paragraph) {
+        sink().end_paragraph(top().para.props, table_level(top().para), doc_.warnings, offset_);
+      }
       return;
     case SpecialOp::Line: emit_inline(Inline{LineBreak{}}); return;
     case SpecialOp::Tab:
@@ -1138,6 +1283,145 @@ void Reader::special_word(SpecialOp op) {
     case SpecialOp::Zwj: emit_code_point(0x200D); return;
     case SpecialOp::Zwnj: emit_code_point(0x200C); return;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Tables (design, "Tables")
+// ---------------------------------------------------------------------------
+
+// The paragraph's table level, capped by the group depth limit so that a
+// huge \itapN cannot make the reader allocate a level per unit.
+int Reader::table_level(const ParaState& p) const {
+  const int cap = static_cast<int>(std::min<std::size_t>(max_depth_, 65535));
+  return std::min(paragraph_level(p), cap);
+}
+
+// \trowd, \cellx, \cl*, \tr* and \row work on level 1. Inside
+// \*\nesttableprops they work on the paragraph's level, at least 2.
+int Reader::definition_level() { return top().nestProps ? nested_level() : 1; }
+
+// \nestcell and \nestrow close a cell or row of the paragraph's level, at least 2.
+int Reader::nested_level() { return std::max(2, table_level(top().para)); }
+
+// \trowd resets the row and cell definitions. Cells already closed keep
+// their text; they take the definitions in effect at \row.
+void Reader::start_row_definition() {
+  top().border = BorderTarget{};
+  sink().table(definition_level()).reset_definition();
+}
+
+// \cellxN closes one cell definition. A cell open at this level is not
+// touched: this is Word's second copy of the row definition.
+void Reader::end_cell_definition(const Token& tok) {
+  top().border = BorderTarget{};
+  sink().table(definition_level()).define_cell(param_or(tok, 0));
+}
+
+// \cell closes a level-1 cell; \nestcell a nested one. \row and \nestrow
+// close the row the same way.
+void Reader::end_cell_or_row(TableOp op) {
+  GroupState& g = top();
+  g.border = BorderTarget{};
+  const ParagraphProps& props = g.para.props;
+  switch (op) {
+    case TableOp::Cell: sink().end_cell(props, 1, doc_.warnings, offset_); break;
+    case TableOp::NestCell: sink().end_cell(props, nested_level(), doc_.warnings, offset_); break;
+    case TableOp::Row: sink().end_row(props, definition_level(), doc_.warnings, offset_); break;
+    case TableOp::NestRow: sink().end_row(props, nested_level(), doc_.warnings, offset_); break;
+    case TableOp::Trowd:
+    case TableOp::Cellx: break;  // handled by their own functions
+  }
+}
+
+void Reader::row_word(const Token& tok, RowOp op) {
+  RowProps& r = sink().table(definition_level()).rowProps;
+  const int n = param_or(tok, 0);
+  auto padding = [&]() -> Padding& {
+    if (!r.padding) r.padding.emplace();
+    return *r.padding;
+  };
+  using Side = BorderTarget::Side;
+  switch (op) {
+    case RowOp::Header: r.header = toggle(tok); break;
+    case RowOp::Keep: r.keep = toggle(tok); break;
+    case RowOp::AlignLeft: r.align = Align::Left; break;
+    case RowOp::AlignCenter: r.align = Align::Center; break;
+    case RowOp::AlignRight: r.align = Align::Right; break;
+    case RowOp::Left: r.left = n; break;
+    case RowOp::GapHalf: r.gapHalf = n; break;
+    case RowOp::Height:
+      // \trrhN: N above 0 is a minimum height, N below 0 an exact one.
+      if (n > 0) {
+        r.height = n;
+        r.heightRule = HeightRule::AtLeast;
+      } else if (n < 0) {
+        r.height = n == std::numeric_limits<int>::min() ? std::numeric_limits<int>::max() : -n;
+        r.heightRule = HeightRule::Exact;
+      } else {
+        r.height.reset();
+        r.heightRule.reset();
+      }
+      break;
+    case RowOp::PadLeft: padding().left = n; break;
+    case RowOp::PadTop: padding().top = n; break;
+    case RowOp::PadBottom: padding().bottom = n; break;
+    case RowOp::PadRight: padding().right = n; break;
+    case RowOp::BorderTop: open_border(BorderTarget::Kind::Row, Side::Top); break;
+    case RowOp::BorderLeft: open_border(BorderTarget::Kind::Row, Side::Left); break;
+    case RowOp::BorderBottom: open_border(BorderTarget::Kind::Row, Side::Bottom); break;
+    case RowOp::BorderRight: open_border(BorderTarget::Kind::Row, Side::Right); break;
+    case RowOp::BorderHorizontal: open_border(BorderTarget::Kind::Row, Side::Horizontal); break;
+    case RowOp::BorderVertical: open_border(BorderTarget::Kind::Row, Side::Vertical); break;
+    case RowOp::Rtl: r.rtl = true; break;
+  }
+}
+
+// The \cl* words describe the cell definition that the next \cellx closes.
+void Reader::cell_word(const Token& tok, CellOp op) {
+  TableLevel& t = sink().table(definition_level());
+  Cell& c = t.nextDef;
+  const int n = param_or(tok, 0);
+  auto padding = [&]() -> Padding& {
+    if (!c.padding) c.padding.emplace();
+    return *c.padding;
+  };
+  auto shading = [&]() -> Shading& {
+    if (!c.shading) c.shading.emplace();
+    return *c.shading;
+  };
+  using Side = BorderTarget::Side;
+  switch (op) {
+    case CellOp::VAlignTop: c.verticalAlign = VerticalAlign::Top; break;
+    case CellOp::VAlignCenter: c.verticalAlign = VerticalAlign::Center; break;
+    case CellOp::VAlignBottom: c.verticalAlign = VerticalAlign::Bottom; break;
+    case CellOp::TextLrtb: c.textDirection = TextDirection::Lrtb; break;
+    case CellOp::TextTbrl: c.textDirection = TextDirection::Tbrl; break;
+    case CellOp::TextBtlr: c.textDirection = TextDirection::Btlr; break;
+    case CellOp::TextLrtbv: c.textDirection = TextDirection::Lrtbv; break;
+    case CellOp::TextTbrlv: c.textDirection = TextDirection::Tbrlv; break;
+    case CellOp::NoWrap: c.noWrap = toggle(tok); break;
+    case CellOp::MergeFirst: c.mergeHorizontal = Merge::First; break;
+    case CellOp::MergeNext: c.mergeHorizontal = Merge::Continued; break;
+    case CellOp::VMergeFirst: c.mergeVertical = Merge::First; break;
+    case CellOp::VMergeNext: c.mergeVertical = Merge::Continued; break;
+    case CellOp::Background: shading().background = n; break;
+    case CellOp::Foreground: shading().foreground = n; break;
+    case CellOp::Percent: shading().percent = n; break;
+    // Word and SAS write \clpadt for the left padding and \clpadl for the
+    // top one. The reader follows the producers, not the names.
+    case CellOp::PadT: padding().left = n; break;
+    case CellOp::PadL: padding().top = n; break;
+    case CellOp::PadB: padding().bottom = n; break;
+    case CellOp::PadR: padding().right = n; break;
+    case CellOp::Width: t.nextWidth = n; break;
+    case CellOp::WidthType: t.nextWidthType = n; break;
+    case CellOp::BorderTop: open_border(BorderTarget::Kind::Cell, Side::Top); return;
+    case CellOp::BorderLeft: open_border(BorderTarget::Kind::Cell, Side::Left); return;
+    case CellOp::BorderBottom: open_border(BorderTarget::Kind::Cell, Side::Bottom); return;
+    case CellOp::BorderRight: open_border(BorderTarget::Kind::Cell, Side::Right); return;
+  }
+  // Any other cell word ends the border definition.
+  top().border = BorderTarget{};
 }
 
 void Reader::on_symbol(const Token& tok) {

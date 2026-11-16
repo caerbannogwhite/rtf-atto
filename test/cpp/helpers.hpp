@@ -59,3 +59,30 @@ inline std::size_t count_warnings(const rtf::RtfDocument& doc, const char* code)
 }
 
 inline bool has_warning(const rtf::RtfDocument& doc, const char* code) { return count_warnings(doc, code) > 0; }
+
+// Returns block number `block` of section number `section`, which must be a table.
+inline const rtf::Table& body_table(const rtf::RtfDocument& doc, std::size_t section, std::size_t block) {
+  static const rtf::Table empty;
+  CHECK(section < doc.sections.size());
+  if (section >= doc.sections.size()) return empty;
+  const auto& body = doc.sections[section].body;
+  CHECK(block < body.size());
+  if (block >= body.size()) return empty;
+  const rtf::Table* t = std::get_if<rtf::Table>(&body[block].value);
+  CHECK(t != nullptr);
+  return t != nullptr ? *t : empty;
+}
+
+// The text of the cell's paragraphs, joined with "\n".
+inline std::string cell_plain(const rtf::Cell& cell) {
+  std::string out;
+  bool first = true;
+  for (const auto& block : cell.blocks) {
+    const rtf::Paragraph* p = std::get_if<rtf::Paragraph>(&block.value);
+    if (p == nullptr) continue;
+    if (!first) out += "\n";
+    out += run_text(*p);
+    first = false;
+  }
+  return out;
+}
