@@ -31,7 +31,8 @@ else()
   endif()
 endif()
 
-add_library(rtf_atto STATIC src/version.cpp src/tokenizer.cpp src/encodings.cpp)
+add_library(rtf_atto STATIC src/version.cpp src/tokenizer.cpp src/encodings.cpp
+  src/builder.cpp src/reader.cpp)
 target_include_directories(rtf_atto PUBLIC include PRIVATE src)
 target_link_libraries(rtf_atto PUBLIC rtf_atto_flags)
 
@@ -50,4 +51,5 @@ if(RTF_BUILD_TESTS)
   rtf_add_test(model)
   rtf_add_test(tokenizer)
   rtf_add_test(encodings)
+  rtf_add_test(reader_text)
 endif()
