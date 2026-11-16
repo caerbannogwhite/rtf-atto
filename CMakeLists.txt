@@ -12,7 +12,7 @@ else()
 endif()
 
 option(RTF_BUILD_TESTS "Build the tests" ${RTF_IS_TOP_LEVEL})
-option(RTF_BUILD_TOOLS "Build the command line tools" ON)
+option(RTF_BUILD_TOOLS "Build the command line tools" ${RTF_IS_TOP_LEVEL})
 option(RTF_SANITIZE "Build with AddressSanitizer and UBSan" OFF)
 option(RTF_FUZZ "Build the libFuzzer target (needs Clang)" OFF)
 
@@ -66,6 +66,20 @@ if(RTF_BUILD_TESTS)
   set_tests_properties(mutation PROPERTIES TIMEOUT 900)
   rtf_add_test(large)
   set_tests_properties(large PROPERTIES TIMEOUT 300)
+
+  # The text projection of the C++ reader is compared with an independent
+  # extractor written in Python (test/tools/rtf_text.py). The test needs
+  # the rtf2json tool.
+  if(RTF_BUILD_TOOLS)
+    find_package(Python3 COMPONENTS Interpreter)
+    if(Python3_Interpreter_FOUND)
+      add_test(NAME text_coverage
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/test/tools/check_text_coverage.py
+                $<TARGET_FILE:rtf2json> ${CMAKE_SOURCE_DIR}/test/fixtures)
+    else()
+      message(WARNING "Python 3 not found; the text_coverage test is not registered")
+    endif()
+  endif()
 endif()
 
 # The libFuzzer target, for long runs on a developer's machine. CI does not build it.
@@ -81,17 +95,4 @@ if(RTF_FUZZ)
   target_link_libraries(fuzz_parse PRIVATE rtf_atto)
   target_compile_options(fuzz_parse PRIVATE -fsanitize=fuzzer,address)
   target_link_options(fuzz_parse PRIVATE -fsanitize=fuzzer,address)
-endif()
-
-# The text projection of the C++ reader is compared with an independent
-# extractor written in Python (test/tools/rtf_text.py).
-if(RTF_BUILD_TOOLS)
-  find_package(Python3 COMPONENTS Interpreter)
-  if(Python3_Interpreter_FOUND)
-    add_test(NAME text_coverage
-      COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/test/tools/check_text_coverage.py
-              $<TARGET_FILE:rtf2json> ${CMAKE_SOURCE_DIR}/test/fixtures)
-  else()
-    message(WARNING "Python 3 not found; the text_coverage test is not registered")
-  endif()
 endif()
