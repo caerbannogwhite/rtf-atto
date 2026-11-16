@@ -1,3 +1,5 @@
 build*/
 mutant_failed.rtf
 .superpowers/
+__pycache__/
+expected.txt

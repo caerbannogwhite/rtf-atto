@@ -1,6 +1,11 @@
 // Parses a SAS-style table of 110,000 rows built in memory and checks the
 // result and the parse time.
 // Usage: test_large [seconds=30]
+// When the argument is absent, the variable RTF_LARGE_SECONDS sets the budget.
+// MSVC marks std::getenv as unsafe. It is safe here.
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 #include <chrono>
 #include <cstddef>
 #include <cstdio>
@@ -37,7 +42,12 @@ static std::string build_input() {
 }
 
 int main(int argc, char** argv) {
-  double budget = argc > 1 ? std::strtod(argv[1], nullptr) : 30.0;
+  double budget = 30.0;
+  const char* text = argc > 1 ? argv[1] : std::getenv("RTF_LARGE_SECONDS");
+  if (text != nullptr) {
+    double value = std::strtod(text, nullptr);
+    if (value > 0.0) budget = value;
+  }
   std::string input = build_input();
 
   auto start = std::chrono::steady_clock::now();

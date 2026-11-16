@@ -8,3 +8,4 @@
 *.cpp text eol=lf
 CMakeLists.txt text eol=lf
 *.inc text eol=lf
+*.yml text eol=lf
