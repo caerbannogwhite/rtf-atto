@@ -19,8 +19,6 @@ SKIP_PLAIN = {
     "fonttbl", "colortbl", "stylesheet", "info", "pict", "nonshppict",
     "shprslt", "nonesttables", "mmathPr", "userprops",
 }
-# The nesttableprops group (written with a star) is read, not skipped. It holds
-# only control words, and the nestrow that ends a nested row stands inside it.
 # Groups that end with a line break when they emitted text after the last one.
 BLOCKS = {"header", "footer", "headerf", "footerf", "headerl", "headerr",
           "footerl", "footerr", "footnote", "shptxt", "result"}
@@ -160,6 +158,8 @@ def extract(data):
                 top.name, top.quiet = "shpinst", True
             elif word == "ud":
                 top.quiet = False
+            # nesttableprops is read: it holds only control words, and the nestrow
+            # that ends a nested row stands inside it.
             elif word not in ("shppict", "nesttableprops"):
                 top.skip = True
         elif parent is not None and parent.name == "shpinst" and word != "shptxt":
@@ -220,7 +220,13 @@ def extract(data):
             k = j + 1 if neg else j
             while k < n and is_digit(data[k]):
                 k += 1
-            param = int(data[j:k]) if k > j + (1 if neg else 0) else None
+            # Every digit is consumed, but only the first 10 are converted, then the
+            # value is clamped to 32 bits. int() raises on a run of over 4300 digits.
+            if k > j + (1 if neg else 0):
+                digits = data[j + (1 if neg else 0):k][:10]
+                param = max(-2**31, min(2**31 - 1, (-1 if neg else 1) * int(digits)))
+            else:
+                param = None
             if param is None:
                 k = j
             i = k + 1 if k < n and data[k] == 0x20 else k
@@ -271,6 +277,7 @@ def extract(data):
                 flush_high()
                 emit(decode(digits[0] * 16 + digits[1]))
         elif c in (0x0D, 0x0A):
+            # A backslash followed by CR or LF is a paragraph break.
             emit("\n")
         elif sym in SYMBOLS:
             flush_high()
