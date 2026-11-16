@@ -99,6 +99,14 @@ static void picture_hex_with_line_breaks_and_odd_digit() {
   CHECK_EQ(std::get<rtf::Picture>(p.runs[1].value).data, std::string("\x89"));
   CHECK_EQ(count_warnings(doc, "bad_picture_data"), std::size_t(1));
 }
+static void picture_hex_odd_digit_count() {
+  // The last digit has no pair: the full bytes are kept and the half byte is bad data.
+  auto doc = parse_ok(R"({\rtf1 {\pict\pngblip 895}\par})");
+  const auto& p = body_paragraph(doc, 0, 0);
+  CHECK_EQ(p.runs.size(), std::size_t(1));
+  if (p.runs.size() == 1) CHECK_EQ(std::get<rtf::Picture>(p.runs[0].value).data, std::string("\x89"));
+  CHECK_EQ(count_warnings(doc, "bad_picture_data"), std::size_t(1));
+}
 static void shapes_word_style() {
   auto doc = parse_ok(R"({\rtf1 {\shp{\*\shpinst\shpleft290\shptop219\shpwr2{\sp{\sn shapeType}{\sv 75}}{\sp{\sn pib}{\sv{\pict\pngblip\picw7093\pich6484 8950}}}{\sp{\sn fLine}{\sv 0}}}{\shprslt{\pict\wmetafile8 0102}}}x{\shp{\*\shpinst{\shptxt in a box\par}}}{\shp{\*\shpinst\shpz0}}\par})");
   const auto& p = body_paragraph(doc, 0, 0);
@@ -179,6 +187,7 @@ int main() {
   footnotes();
   pictures_hex_shppict_and_bin();
   picture_hex_with_line_breaks_and_odd_digit();
+  picture_hex_odd_digit_count();
   shapes_word_style();
   objects();
   lists_as_text();
