@@ -25,7 +25,7 @@
 - Canonical JSON is exactly what Python prints for `json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True) + "\n"`: two-space indentation, keys sorted by byte value, `[]` and `{}` for empty containers, raw UTF-8 for non-ASCII, the escapes `\"`, `\\`, `\n`, `\r`, `\t`, `\b`, `\f` and `\u00XX` (lower-case hex) for the other control characters.
 - Eleven of the twelve SAS-made files in `C:\Users\massi\Downloads\RTF` are never copied into the repository, neither bytes nor text. Structure learned from them (which control words, in which order) may be used, and every hand-written fixture's text is invented. The three Word-saved files `W_Disposition.rtf`, `W_Features.rtf` and `W_Sections.rtf` and the SAS file `T_Disposition.RTF` are copied byte for byte as fixtures (Massimo's permission, 2026-11-16).
 - Fixture files are binary for git: `.gitattributes` says `*.rtf -text`; goldens and scripts are `text eol=lf`.
-- Commit messages: one imperative sentence in plain English, no type prefix, an optional body, and the line `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` at the end. Commits go to `main` during plan 1; nothing is pushed until Massimo says so.
+- Commit messages: one imperative sentence in plain English, no type prefix, an optional body, and at the end the `Co-Authored-By: Claude ... <noreply@anthropic.com>` line naming the Claude model that made the commit (the controller's line reads `Claude Fable 5.1`; a subagent uses the line its harness gives it). Commits go to `main` during plan 1; nothing is pushed until Massimo says so.
 
 ## Review focus
 
