@@ -93,3 +93,16 @@ UBSan on Windows (12 of 12 with `RTF_MUTATIONS=2000`, 44 s); the fuzzer ran
 79,818 executions in 180 s seeded with the fixtures (coverage 3,353 edges,
 corpus 2,185 inputs) with no finding. The README has the commands. CI still
 has no Clang entry; the fuzzer stays a developer-machine tool.
+
+## 2026-11-17: text lost at the depth limit (found by plan 2)
+
+The deep-nesting test of the npm package feeds 1000 nested fields,
+`{\field{\*\fldinst F}{\fldrslt ...}}` around `x`. With `maxDepth` at
+1024 groups the reader flattens the 512th field's inner groups into the
+field group and warns `depth_limit`. The innermost `x` is then absent from
+the model. A likely cause: the flattened `\*\fldinst` destination takes
+the rest of the field group with it. The warning's text says deeper groups
+are flattened into their parent, which suggests their text survives. Both
+the native reader and the wasm agree, so this is a reader question for the
+first plan that edits `reader.cpp`: either keep the text of a flattened
+group or say in the warning that it is dropped.

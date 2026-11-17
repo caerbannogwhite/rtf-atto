@@ -449,3 +449,32 @@ Rules of the wrapper (the implementer writes the bodies from these):
 - Type consistency: `rtf_parse`, `rtf_logical_tables`, `rtf_free`, `rtf_version` (T1) are the names in `-sEXPORTED_FUNCTIONS` (T2) and in `rtf.d.ts` with the leading underscore (T3) and the ones `index.ts` calls (T4). `createRtfModule` is `-sEXPORT_NAME` (T2) and the default export in `rtf.d.ts` (T3). `RtfDocument` and `LogicalTable` (T3) are what `parse` and `logicalTables` return (T4) and what the shape files import (T3). `NOT_RTF` text is the one `regen_goldens.py` writes.
 - Review focus: items 1 and 2 have their tests in T4 (`growth_then_second_parse`, `deep_nesting_parses`), item 3 is exercised by every node test and by `wasm/smoke.mjs` (T2), item 4 in T1 (`not_rtf_and_empty_input`, `invalid_arguments`) and T4 (`empty_input_is_not_rtf`), item 5 is T3's shape check.
 - Proportion: five tasks, two short code blocks of configuration, the rest signatures, rules and test names. The plan is shorter than the code it asks for.
+
+## Amendments during execution (2026-11-17)
+
+Rulings the controller took while the plan ran. Each one is a decision
+Massimo can overrule.
+
+1. **The deep-field test asserts the depth limit, not a 1000-deep chain.**
+   `maxDepth` is 1024 groups and each nested field opens two groups, so the
+   reader flattens the 512th field's inner groups and adds the warning
+   `depth_limit`; the native `rtf2json` gives the same JSON. The test
+   `deep_nesting_parses` keeps the 1000-field input and asserts a field
+   depth of 512, an empty innermost result and the warning, which pins the
+   wasm to the native reader on the depth-limit path. The 1000 nested
+   footnotes (one group each) still recurse 1000 levels deep, so the stack
+   check of decision 4 stands. The core was not changed.
+2. **The factory call is `{ wasmBinary, onAbort, printErr }`.** `printErr`
+   swallows the lines Emscripten writes to stderr; without it a failed
+   load printed two lines in the consumer's process. The `load_failed`
+   message carries the same text. Every stderr line of the glue is dropped
+   for the life of the instance; the core prints nothing.
+3. **Two small extras in `load()` and the call path.** A rejected shared
+   `load()` promise is dropped, so the next `load()` retries; a zero
+   pointer from `_malloc` throws `RtfError('out_of_memory')`.
+4. **Decision 3 held.** The glue built for `web,worker` imported in Node
+   without an environment error; the fallback rule was not used.
+5. **Measured.** `rtf.wasm` is 185,053 bytes (decision 7's target was under
+   300 KB); the goldens test over the 19 fixtures takes 84 ms on Node 26;
+   a 1.6 MB input with 20,000 table rows takes the wasm memory from 21 MB
+   to 91 MB during the call.
