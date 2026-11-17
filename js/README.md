@@ -93,8 +93,8 @@ Every method throws `RtfError` and nothing else.
 When the wasm aborts, the instance is unusable.
 The method throws `wasm_aborted`, and the next `load()` builds a new instance.
 The input is copied into wasm memory, and the model and the JSON live there too.
-A file of 1.6 MB with 20,000 table rows took the wasm memory from 21 MB to 91 MB.
-A 10 MB file needs tens of megabytes.
+A file of 1.6 MB with 20,000 table rows took the wasm memory from 21 MB to 91 MB during the call.
+Memory grows with the size of the document.
 
 ## Size and speed
 
@@ -105,14 +105,16 @@ golden files took 84 ms on Node 26 on Windows.
 ## Building from source
 
 The wasm needs Emscripten. The author builds with 3.1.71. CI builds with 6.0.13.
-With `emcmake` on the PATH:
+You need Emscripten (with `emcmake` on the PATH) and CMake.
+On Windows you also need Ninja on the PATH.
 
     cd js
     npm install
     npm run build
     npm test
 
-`npm run build` compiles `wasm/` with `emcmake` and CMake (with `-G Ninja` on Windows), then runs `tsc`.
+`npm run build` compiles `wasm/` with `emcmake` and CMake. Then it runs `tsc`.
+On Windows it passes `-G Ninja` to CMake.
 `npm test` checks the model types against the golden files, then runs the node tests.
 The C++ core and its tests are in the repository root.
 

@@ -1,6 +1,8 @@
 // Builds the WebAssembly reader with Emscripten and copies it into dist/src.
 // The build directory is RTF_WASM_BUILD_DIR, else <root>/build-wasm.
-// Emscripten (emcmake), CMake and Ninja must be on PATH.
+// Emscripten (emcmake) and CMake must be on PATH. On Windows, Ninja must be
+// on PATH too, because the default Visual Studio generator does not work
+// with emcmake. Other platforms use the default CMake generator.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -25,7 +27,8 @@ function run(result) {
   }
 }
 
-const configureArgs = ['cmake', '-S', sourceDir, '-B', buildDir, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release'];
+const generator = process.platform === 'win32' ? ['-G', 'Ninja'] : [];
+const configureArgs = ['cmake', '-S', sourceDir, '-B', buildDir, ...generator, '-DCMAKE_BUILD_TYPE=Release'];
 const buildArgs = ['--build', buildDir];
 
 if (process.platform === 'win32') {

@@ -26,7 +26,8 @@ jobs:
           cache: npm
           cache-dependency-path: js/package-lock.json
       - name: Check that the tag matches the package version
-        run: node -e "const v='v'+require('./js/package.json').version; const t=process.env.GITHUB_REF_NAME; console.log('package: '+v+', tag: '+t); if(v!==t) process.exit(1)"
+        run: |
+          node -e "const v='v'+require('./js/package.json').version; const t=process.env.GITHUB_REF_NAME; console.log('package: '+v+', tag: '+t); if(v!==t) process.exit(1)"
       - run: npm ci
         working-directory: js
       - run: npm run build

@@ -78,7 +78,8 @@ or a file that cannot be read.
 The package `rtf-atto` on npm is the reader compiled to WebAssembly.
 `js/` holds the TypeScript wrapper, the model types and the node tests.
 `wasm/` holds the C ABI and the Emscripten build.
-With `emcmake` on the PATH:
+You need Emscripten (with `emcmake` on the PATH) and CMake.
+On Windows you also need Ninja on the PATH.
 
     cd js
     npm install
