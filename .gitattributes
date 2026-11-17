@@ -9,3 +9,6 @@
 CMakeLists.txt text eol=lf
 *.inc text eol=lf
 *.yml text eol=lf
+*.h text eol=lf
+*.ts text eol=lf
+*.mjs text eol=lf

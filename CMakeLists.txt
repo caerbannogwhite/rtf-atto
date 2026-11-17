@@ -45,6 +45,11 @@ add_library(rtf_atto STATIC src/version.cpp src/tokenizer.cpp src/encodings.cpp
 target_include_directories(rtf_atto PUBLIC include PRIVATE src)
 target_link_libraries(rtf_atto PUBLIC rtf_atto_flags)
 
+# The C ABI used by the wasm build. Built natively too, so the tests cover it.
+add_library(rtf_atto_abi STATIC wasm/exports.cpp)
+target_include_directories(rtf_atto_abi PUBLIC wasm)
+target_link_libraries(rtf_atto_abi PUBLIC rtf_atto)
+
 if(RTF_BUILD_TOOLS)
   add_executable(rtf2json tools/rtf2json.cpp)
   target_link_libraries(rtf2json PRIVATE rtf_atto rtf_atto_flags)
@@ -75,6 +80,8 @@ if(RTF_BUILD_TESTS)
   set_tests_properties(mutation PROPERTIES TIMEOUT 900)
   rtf_add_test(large)
   set_tests_properties(large PROPERTIES TIMEOUT 300)
+  rtf_add_test(abi ${CMAKE_SOURCE_DIR}/test/fixtures)
+  target_link_libraries(test_abi PRIVATE rtf_atto_abi)
 
   # The text projection of the C++ reader is compared with an independent
   # extractor written in Python (test/tools/rtf_text.py). The test needs
