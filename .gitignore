@@ -8,3 +8,9 @@ oom-*
 .superpowers/
 __pycache__/
 expected.txt
+# npm package (js/)
+js/node_modules/
+js/dist/
+js/build/
+js/LICENSE
+*.tgz

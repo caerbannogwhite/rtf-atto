@@ -1,0 +1,30 @@
+{
+  "name": "rtf-atto",
+  "version": "0.1.0",
+  "description": "RTF reader: the document model and the logical tables of an RTF file as JSON, from a C++ core compiled to WebAssembly",
+  "license": "Apache-2.0",
+  "repository": { "type": "git", "url": "git+https://github.com/caerbannogwhite/rtf-atto.git", "directory": "js" },
+  "homepage": "https://github.com/caerbannogwhite/rtf-atto#readme",
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/src/index.d.ts", "default": "./dist/src/index.js" },
+    "./rtf.wasm": "./dist/src/rtf.wasm",
+    "./package.json": "./package.json"
+  },
+  "files": ["dist/src"],
+  "sideEffects": false,
+  "engines": { "node": ">=20" },
+  "keywords": ["rtf", "rtf-parser", "wasm", "webassembly", "sas", "clinical-trials", "tables"],
+  "scripts": {
+    "build:wasm": "node scripts/build-wasm.mjs",
+    "build:ts": "tsc -p tsconfig.json",
+    "build": "npm run build:wasm && npm run build:ts",
+    "test:shape": "node scripts/shape-check.mjs",
+    "test:unit": "node --test \"dist/test/*.test.js\"",
+    "test": "npm run test:shape && npm run test:unit",
+    "prepack": "node scripts/prepack.mjs"
+  },
+  "devDependencies": { "typescript": "^5.9.0", "@types/node": "^24.0.0" }
+}
