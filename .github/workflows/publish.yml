@@ -1,0 +1,39 @@
+# Publishes the npm package when a tag such as v0.1.0 is pushed.
+# NPM_TOKEN is a repository secret that Massimo creates from his npm account.
+# Once the package exists on npm, trusted publishing can replace the token.
+name: publish
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 6.0.13
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+      - name: Check that the tag matches the package version
+        run: node -e "const v='v'+require('./js/package.json').version; const t=process.env.GITHUB_REF_NAME; console.log('package: '+v+', tag: '+t); if(v!==t) process.exit(1)"
+      - run: npm ci
+        working-directory: js
+      - run: npm run build
+        working-directory: js
+      - run: npm test
+        working-directory: js
+      - run: npm publish --provenance --access public
+        working-directory: js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

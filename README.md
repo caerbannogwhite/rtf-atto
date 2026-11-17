@@ -2,7 +2,7 @@
 
 rtf-atto is an RTF reader in C++17.
 It targets clinical tables made by SAS and also reads general RTF.
-A writer, a WebAssembly build and a TypeScript renderer will come later.
+A writer and a TypeScript renderer will come later.
 
 ## Build and test
 
@@ -73,6 +73,20 @@ default compiler, or pass `-DCMAKE_CXX_COMPILER=clang++`.
 Exit codes: 0 for success, 1 when the file is not RTF, 2 for a usage error
 or a file that cannot be read.
 
+## npm package
+
+The package `rtf-atto` on npm is the reader compiled to WebAssembly.
+`js/` holds the TypeScript wrapper, the model types and the node tests.
+`wasm/` holds the C ABI and the Emscripten build.
+With `emcmake` on the PATH:
+
+    cd js
+    npm install
+    npm run build
+    npm test
+
+See `js/README.md` for the API, the model and the error codes.
+
 ## Fixtures and goldens
 
 The files in `test/fixtures` are the test inputs. There are 19.
@@ -109,8 +123,9 @@ and is never committed.
 ## Status
 
 Plan 1 is complete. It delivers the reader, the JSON model, the logical
-tables and the text projection. The writer, the npm package, the renderer
-and the DuckDB integration belong to later plans. See `docs/plans/`.
+tables and the text projection. Plan 2 is complete. It delivers the npm
+package. The renderer, the writer and the DuckDB integration belong to
+later plans. See `docs/plans/`.
 
 ## Licence
 
