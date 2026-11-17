@@ -29,6 +29,36 @@ The tests need Python 3 for the text comparison against `test/tools/rtf_text.py`
 The environment variable `RTF_MUTATIONS` sets the number of mutations in the
 mutation test. `RTF_LARGE_SECONDS` sets the time budget of the large-input test.
 
+## Sanitizers and fuzzing
+
+On Linux and macOS, `-DRTF_SANITIZE=ON` builds everything with
+AddressSanitizer and UBSan under GCC or Clang. CI runs that build on Ubuntu.
+
+On Windows the MSVC compiler ignores `RTF_SANITIZE`. Use the Clang that
+Visual Studio installs (the component "C++ Clang tools for Windows"). CMake
+needs the compiler and a resource compiler from the same directory:
+
+    CLANG="C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin"
+    cmake -S . -B build-asan -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DRTF_SANITIZE=ON -DCMAKE_CXX_COMPILER="$CLANG/clang++.exe" -DCMAKE_RC_COMPILER="$CLANG/llvm-rc.exe"
+    cmake --build build-asan
+    RTF_MUTATIONS=2000 ctest --test-dir build-asan --output-on-failure
+
+In that build the mutation test does not enforce its memory cap, because
+AddressSanitizer on Windows provides `operator new` itself. Its other checks
+run.
+
+The fuzzer needs Clang on every platform. Build it alone and seed it with the
+fixtures. Crash inputs land in the current directory as `crash-*` files,
+which git ignores:
+
+    cmake -S . -B build-fuzz -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DRTF_FUZZ=ON -DRTF_BUILD_TESTS=OFF -DRTF_BUILD_TOOLS=OFF -DCMAKE_CXX_COMPILER="$CLANG/clang++.exe" -DCMAKE_RC_COMPILER="$CLANG/llvm-rc.exe"
+    cmake --build build-fuzz
+    mkdir -p build-fuzz/corpus
+    build-fuzz/fuzz_parse -max_total_time=600 -max_len=20000 -timeout=5 build-fuzz/corpus test/fixtures
+
+On Linux and macOS leave out the two compiler options when `clang++` is the
+default compiler, or pass `-DCMAKE_CXX_COMPILER=clang++`.
+
 ## The command
 
     rtf2json [--json|--text|--tables|--summary] [--version] <file>

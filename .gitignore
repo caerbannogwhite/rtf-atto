@@ -1,5 +1,10 @@
 build*/
 mutant_failed.rtf
+# libFuzzer writes these into the current directory
+crash-*
+leak-*
+timeout-*
+oom-*
 .superpowers/
 __pycache__/
 expected.txt

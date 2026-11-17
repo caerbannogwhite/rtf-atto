@@ -31,6 +31,19 @@
 
 namespace fs = std::filesystem;
 
+// AddressSanitizer on Windows provides operator new and delete itself, and
+// the COFF linker refuses a second definition. That build keeps every other
+// check of this test and ASan's own, but it does not count memory, so the
+// cap is not enforced there.
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+#if defined(_WIN32) && (defined(__SANITIZE_ADDRESS__) || __has_feature(address_sanitizer))
+#define RTF_COUNTS_MEMORY 0
+#else
+#define RTF_COUNTS_MEMORY 1
+#endif
+
 // ---------------------------------------------------------------------------
 // Allocation accounting. Every global allocation goes through these
 // replacements. Each block carries a 16-byte header with its size, so the
@@ -39,6 +52,7 @@ namespace fs = std::filesystem;
 static std::size_t g_live = 0;
 static std::size_t g_peak = 0;
 
+#if RTF_COUNTS_MEMORY
 static constexpr std::size_t kHeader = 16;
 
 static void count_alloc(std::size_t size) {
@@ -110,6 +124,7 @@ void operator delete(void* p, std::size_t, std::align_val_t) noexcept { aligned_
 void operator delete[](void* p, std::size_t, std::align_val_t) noexcept { aligned_free(p); }
 void operator delete(void* p, std::align_val_t, const std::nothrow_t&) noexcept { aligned_free(p); }
 void operator delete[](void* p, std::align_val_t, const std::nothrow_t&) noexcept { aligned_free(p); }
+#endif  // RTF_COUNTS_MEMORY
 
 // ---------------------------------------------------------------------------
 // Mutants.
@@ -275,6 +290,9 @@ int main(int argc, char** argv) {
     return 1;
   }
   const bool verbose = std::getenv("RTF_MUTATIONS_VERBOSE") != nullptr;
+#if !RTF_COUNTS_MEMORY
+  if (verbose) std::printf("memory is not counted in this build: AddressSanitizer on Windows owns operator new\n");
+#endif
 
   std::vector<fs::path> fixtures = list_fixtures(argv[1]);
   CHECK(!fixtures.empty());

@@ -12,7 +12,7 @@ what it costs if it turns out wrong.
 
 - Ruling: implementation commits go to `main` in the dedicated clone, without a worktree — the approved plan says "Commits go to main during plan 1", the clone holds nothing else, and nothing is pushed until Massimo says so — if wrong, the commits are local and move to a branch with one reset.
 - Ruling: JSON omission rule stated for T7's dispatch: every field that is neither `std::optional` nor `bool` is always written (so `version`, `break`, `kind`, `right`, `width`, `instruction`, `name`, `position`, `format`, `data`, `text`, `index`, `type`, `code`, `message`, `offset` always appear); optionals when set; bools when true; `landscape` always; `listText` and `tabs` only when non-empty; `facingPages` only when true — this is what the plan's expected JSON and its examples imply — if wrong, the goldens are regenerated once.
-- Task 1: minor (deferred): RTF_SANITIZE is silently ignored on MSVC (CMakeLists.txt else-branch); consider a message(WARNING).
+- Task 1: minor (deferred): RTF_SANITIZE is silently ignored on MSVC (CMakeLists.txt else-branch); consider a message(WARNING). Done 2026-11-17: CMake warns and the README names the Clang that Visual Studio installs.
 - Task 1: minor (deferred): check.hpp has no CHECK_EQ overloads for unsigned, long long, char (Task 3 adds unsigned/uint32_t).
 - Task 1: minor (deferred): test_model.cpp checks only some PageSetup defaults.
 - Task 2: minor (deferred): parameter digit count includes leading zeros, so 12+ digits with leading zeros clamp wrongly (src/tokenizer.cpp:165-172).
@@ -55,7 +55,7 @@ what it costs if it turns out wrong.
 - Ruling: the mutation test's memory cap floor rises from 1 MiB to 4 MiB with a comment (depth memory is a design constant that the 100-times-input rule cannot express; another standard library could tip the 8 percent margin) — cost if wrong: a looser floor for inputs under 40 KB.
 - Ruling: two minors promoted into fix round 1 because they decide whether a failure can be reproduced or noticed: one RNG per fixture seeded from the seed and the file name; a zero or non-numeric RTF_MUTATIONS is a usage error and the test checks it parsed more than zero mutants — cost if wrong: a slightly larger fix diff.
 - Task 11: minor (deferred): size + kHeader can wrap near SIZE_MAX in the allocation replacement (unreachable through containers); the timed window also covers destructors (uncommented); fuzz_parse.cpp uses uint8_t and size_t without std::.
-- Task 11: minor (deferred): the zero-count usage message does not name RTF_MUTATIONS; under RTF_FUZZ the flags also instrument tests and tools (harmless); the fuzz build itself has never been compiled (no Clang here).
+- Task 11: minor (deferred): the zero-count usage message does not name RTF_MUTATIONS; under RTF_FUZZ the flags also instrument tests and tools (harmless); the fuzz build itself has never been compiled (no Clang here). Compiled and run 2026-11-17 with Visual Studio's Clang; see the last section.
 - Ruling: test_large also honours an environment variable RTF_LARGE_SECONDS so the CI sanitizer job can widen its budget — cost if wrong: none.
 - Ruling: the privacy rule wins over the dispatch wording: compare_text.py gains --quiet (index only) and the script prints only 'text <name>: differ at line N' — cost if wrong: less detail when a private sample disagrees; the user can run the two tools by hand.
 - Ruling: two minors promoted (tool exit codes checked in the script; RTF_LARGE_SECONDS=240 in CI so the test's own message precedes the CTest timeout) — cost if wrong: none.
@@ -64,3 +64,32 @@ what it costs if it turns out wrong.
 ## Final adjudication
 
 - Adjudication of residuals: every deferred minor the final reviewer marked 'may wait' is parked for later plans — Ruling: parked, real but nothing downstream builds on them before plan 2; the fuzz target gets its first Clang compile when Massimo has Clang or CI gets a Linux Clang entry. The 'declined to judge' items (fields at the depth cap, text directly inside a field/shp/object group, header inside a header, sectd inside a header, 100x amplification for par-only streams, double-byte pages, styles not applied) — Ruling: parked, outside the design or non-producer input, no crash in any probe.
+
+## 2026-11-17: the first fuzz run and the sanitizer build on Windows
+
+Massimo pointed out that Visual Studio installs Clang (component "C++ Clang
+tools for Windows": clang 19.1.5 with the AddressSanitizer, UBSan and
+libFuzzer runtimes). Three changes made the sanitizer and fuzzer builds work
+there, all in one commit after this note's date:
+
+- `CMakeLists.txt` selects the static release C runtime for those builds on
+  Windows, because Clang's runtimes are built against it, and warns when
+  `RTF_SANITIZE` is set with the MSVC compiler, which ignores it.
+- The libFuzzer build turns off the MSVC STL's container annotations
+  (`_DISABLE_STRING_ANNOTATION`, `_DISABLE_VECTOR_ANNOTATION`). The prebuilt
+  runtime was compiled without them and the linker folds its `std::string`
+  code with ours; the mixed state produced one false container-overflow
+  report in `logical_tables` after about 2,000 executions. The same input
+  passed with the container check off, under a fuzzer built without the
+  annotations, and under the plain sanitizer build, so it was not a reader
+  bug. The plain sanitizer build keeps the annotations.
+- `test_mutation.cpp` leaves `operator new` and `operator delete` to
+  AddressSanitizer on Windows (`RTF_COUNTS_MEMORY` is 0 there), because the
+  COFF linker refuses the second definition. The memory cap is not enforced
+  in that one build; Linux ASan and every other build are unchanged.
+
+Results on Massimo's machine: the full suite passes under Clang ASan and
+UBSan on Windows (12 of 12 with `RTF_MUTATIONS=2000`, 44 s); the fuzzer ran
+79,818 executions in 180 s seeded with the fixtures (coverage 3,353 edges,
+corpus 2,185 inputs) with no finding. The README has the commands. CI still
+has no Clang entry; the fuzzer stays a developer-machine tool.

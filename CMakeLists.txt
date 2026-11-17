@@ -16,6 +16,15 @@ option(RTF_BUILD_TOOLS "Build the command line tools" ${RTF_IS_TOP_LEVEL})
 option(RTF_SANITIZE "Build with AddressSanitizer and UBSan" OFF)
 option(RTF_FUZZ "Build the libFuzzer target (needs Clang)" OFF)
 
+if(RTF_SANITIZE AND MSVC)
+  message(WARNING "RTF_SANITIZE does nothing with the MSVC compiler; use clang++ (see the README)")
+endif()
+# On Windows, Clang's sanitizer and fuzzer runtimes are built against the
+# static release C runtime, so these builds select it for every configuration.
+if(WIN32 AND (RTF_SANITIZE OR RTF_FUZZ))
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+endif()
+
 # Flags shared by the library, the tools and the tests.
 add_library(rtf_atto_flags INTERFACE)
 if(MSVC)
@@ -91,6 +100,14 @@ if(RTF_FUZZ)
   # coverage from the parser and AddressSanitizer does not check it.
   target_compile_options(rtf_atto_flags INTERFACE -fsanitize=fuzzer-no-link,address)
   target_link_options(rtf_atto_flags INTERFACE -fsanitize=fuzzer-no-link,address)
+  if(WIN32)
+    # The prebuilt libFuzzer runtime was compiled without the MSVC STL's
+    # AddressSanitizer container annotations, and the linker folds its
+    # std::string code with ours. Mixed annotation state produced a false
+    # container-overflow report on 2026-11-17, so this build turns the
+    # annotations off. The plain sanitizer build (RTF_SANITIZE) keeps them.
+    target_compile_definitions(rtf_atto_flags INTERFACE _DISABLE_STRING_ANNOTATION _DISABLE_VECTOR_ANNOTATION)
+  endif()
   add_executable(fuzz_parse test/fuzz/fuzz_parse.cpp)
   target_link_libraries(fuzz_parse PRIVATE rtf_atto)
   target_compile_options(fuzz_parse PRIVATE -fsanitize=fuzzer,address)
