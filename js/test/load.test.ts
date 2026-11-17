@@ -4,10 +4,10 @@ import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { load, RtfError } from '../src/index.js';
 import type { RtfAtto } from '../src/index.js';
-import { distFile, readFixture, readGolden } from './helpers.js';
+import { distFile, packageJson, readFixture, readGolden } from './helpers.js';
 
 function assertWorks(rtf: RtfAtto): void {
-  assert.equal(rtf.version, '0.1.0');
+  assert.equal(rtf.version, packageJson().version);
   assert.equal(rtf.parseToJson(readFixture('word_minimal')), readGolden('word_minimal', '.json'));
 }
 

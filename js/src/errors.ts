@@ -15,8 +15,9 @@ export type RtfErrorCode =
 export class RtfError extends Error {
   readonly code: RtfErrorCode;
 
-  constructor(code: RtfErrorCode, message: string) {
-    super(message);
+  // options.cause keeps the original error when one is wrapped.
+  constructor(code: RtfErrorCode, message: string, options?: { cause?: unknown }) {
+    super(message, options);
     this.name = 'RtfError';
     this.code = code;
   }

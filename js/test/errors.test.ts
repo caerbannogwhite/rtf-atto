@@ -26,8 +26,8 @@ test('text_is_not_rtf', async () => {
 });
 
 test('wrong_input_type_is_invalid_argument', async () => {
-  // A fresh instance, so that a call into the wasm could not hide behind
-  // the other tests. The type check throws before any allocation.
+  // A fresh instance, used only by this test. The test checks that each
+  // wrong type throws invalid_argument and that the instance still works.
   const rtf = await load({});
   const isInvalid = (e: unknown): boolean => e instanceof RtfError && e.code === 'invalid_argument';
   assert.throws(() => rtf.parse('x' as unknown as Uint8Array), isInvalid);

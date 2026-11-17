@@ -16,6 +16,7 @@ const shapeDir = path.join(jsDir, 'build', 'shape');
 
 const NOT_RTF = '{"error": "not_rtf"}\n';
 
+fs.rmSync(shapeDir, { recursive: true, force: true });
 fs.mkdirSync(shapeDir, { recursive: true });
 
 let count = 0;

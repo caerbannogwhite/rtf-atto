@@ -478,3 +478,16 @@ Massimo can overrule.
    300 KB); the goldens test over the 19 fixtures takes 84 ms on Node 26;
    a 1.6 MB input with 20,000 table rows takes the wasm memory from 21 MB
    to 91 MB during the call.
+6. **The default wasm URL is the literal `new URL('./rtf.wasm',
+   import.meta.url)` in `index.ts`.** Bundlers detect only that form. The
+   Task 4 `readWasm` rule, which resolved `source ?? './rtf.wasm'` against
+   a `base` argument, was the defect: a bundled browser app resolved the
+   file against the bundle's URL and `load()` failed with `load_failed`.
+7. **`RtfError` carries the original error as `cause`.** The wrapper sets
+   it where it wraps a caught error as `wasm_aborted` or `load_failed`.
+8. **`rtf_atto_abi` is not defined under Emscripten.** The wasm build
+   compiles `exports.cpp` itself, so the archive was built and not used.
+9. **The workflows use `actions/checkout@v5` and `actions/setup-node@v5`
+   instead of the plan's `@v4`.** The `@v4` majors run on Node 20, which
+   GitHub is retiring. The wasm size is 184,396 bytes with emsdk 6.0.13 in
+   CI and 185,053 bytes with 3.1.71 locally.

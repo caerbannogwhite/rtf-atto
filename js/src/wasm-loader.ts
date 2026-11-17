@@ -19,9 +19,10 @@ function messageOf(e: unknown): string {
 }
 
 // Returns the wasm bytes. Bytes are used as they are. A URL or a string is
-// resolved against base, which is the URL of index.js; the default is
-// rtf.wasm next to it. A file: URL is read from disk, any other URL is
-// fetched. Every failure is an RtfError with the code load_failed.
+// resolved against base, which is the URL of index.js. index.js passes the
+// default URL itself, in the form bundlers detect. A file: URL is read from
+// disk, any other URL is fetched. Every failure is an RtfError with the
+// code load_failed.
 export async function readWasm(source: LoadOptions['wasm'], base: string): Promise<Uint8Array> {
   if (source instanceof Uint8Array) return source;
   if (source instanceof ArrayBuffer) return new Uint8Array(source);
@@ -42,6 +43,6 @@ export async function readWasm(source: LoadOptions['wasm'], base: string): Promi
     return new Uint8Array(await response.arrayBuffer());
   } catch (e) {
     if (e instanceof RtfError) throw e;
-    throw new RtfError('load_failed', messageOf(e));
+    throw new RtfError('load_failed', messageOf(e), { cause: e });
   }
 }

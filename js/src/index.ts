@@ -97,8 +97,12 @@ class Instance implements RtfAtto {
     } catch (e) {
       if (e instanceof RtfError) throw e;
       // A trap or an abort leaves the instance in an unknown state.
+      // Any other exception counts, because V8 reports a wasm stack overflow
+      // as a RangeError and not as a WebAssembly.RuntimeError. The rare false
+      // positive: a RangeError from decoding an output above V8's string
+      // limit marks a healthy instance as dead.
       this.#life.die();
-      throw new RtfError('wasm_aborted', String(e));
+      throw new RtfError('wasm_aborted', String(e), { cause: e });
     }
   }
 
@@ -135,7 +139,9 @@ class Instance implements RtfAtto {
 }
 
 async function create(source: LoadOptions['wasm'], onDeath: () => void): Promise<RtfAtto> {
-  const wasmBinary = await readWasm(source, import.meta.url);
+  // Bundlers detect only this literal form and copy rtf.wasm as an asset.
+  // The glue's own new URL("rtf.wasm", import.meta.url) is not what we read.
+  const wasmBinary = await readWasm(source ?? new URL('./rtf.wasm', import.meta.url), import.meta.url);
   const life: Life = {
     dead: false,
     die() {
@@ -146,15 +152,16 @@ async function create(source: LoadOptions['wasm'], onDeath: () => void): Promise
   };
   let module: RtfWasmModule;
   try {
-    // The glue writes a line to stderr before it aborts. The rejection or
-    // the RtfError carries the same text, so printErr drops the line.
+    // printErr drops every line the glue writes to stderr, for the life of
+    // the instance. The glue writes such a line before it aborts. The
+    // rejection or the RtfError carries the same text.
     module = await createRtfModule({
       wasmBinary,
       onAbort: () => life.die(),
       printErr: () => {},
     });
   } catch (e) {
-    throw new RtfError('load_failed', e instanceof Error ? e.message : String(e));
+    throw new RtfError('load_failed', e instanceof Error ? e.message : String(e), { cause: e });
   }
   return new Instance(module, life);
 }

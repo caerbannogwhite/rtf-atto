@@ -46,9 +46,12 @@ target_include_directories(rtf_atto PUBLIC include PRIVATE src)
 target_link_libraries(rtf_atto PUBLIC rtf_atto_flags)
 
 # The C ABI used by the wasm build. Built natively too, so the tests cover it.
-add_library(rtf_atto_abi STATIC wasm/exports.cpp)
-target_include_directories(rtf_atto_abi PUBLIC wasm)
-target_link_libraries(rtf_atto_abi PUBLIC rtf_atto)
+# The wasm build compiles exports.cpp itself in wasm/CMakeLists.txt.
+if(NOT EMSCRIPTEN)
+  add_library(rtf_atto_abi STATIC wasm/exports.cpp)
+  target_include_directories(rtf_atto_abi PUBLIC wasm)
+  target_link_libraries(rtf_atto_abi PUBLIC rtf_atto)
+endif()
 
 if(RTF_BUILD_TOOLS)
   add_executable(rtf2json tools/rtf2json.cpp)

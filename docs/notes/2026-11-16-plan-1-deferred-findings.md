@@ -106,3 +106,7 @@ are flattened into their parent, which suggests their text survives. Both
 the native reader and the wasm agree, so this is a reader question for the
 first plan that edits `reader.cpp`: either keep the text of a flattened
 group or say in the warning that it is dropped.
+
+The final review of plan 2 added one observation. The innermost field also
+has `instruction: ""`. So the `F` of its `\*\fldinst` is lost together with
+the `x`. This supports the likely cause above.
