@@ -8,11 +8,12 @@ import type { RenderContext } from './options.js';
 function paragraphStyle(ctx: RenderContext, props: ParagraphProps): string[] {
   const out: string[] = [];
   if (props.align !== undefined && props.align !== 'left') out.push(`text-align: ${props.align}`);
-  if (props.indentLeft !== undefined) out.push(`margin-left: ${ctx.px(props.indentLeft)}`);
-  if (props.indentRight !== undefined) out.push(`margin-right: ${ctx.px(props.indentRight)}`);
-  if (props.indentFirst !== undefined) out.push(`text-indent: ${ctx.px(props.indentFirst)}`);
-  if (props.spaceBefore !== undefined) out.push(`margin-top: ${ctx.px(props.spaceBefore)}`);
-  if (props.spaceAfter !== undefined) out.push(`margin-bottom: ${ctx.px(props.spaceAfter)}`);
+  // Zero indents and spacing are the CSS defaults, so they are not written.
+  if (props.indentLeft !== undefined && props.indentLeft !== 0) out.push(`margin-left: ${ctx.px(props.indentLeft)}`);
+  if (props.indentRight !== undefined && props.indentRight !== 0) out.push(`margin-right: ${ctx.px(props.indentRight)}`);
+  if (props.indentFirst !== undefined && props.indentFirst !== 0) out.push(`text-indent: ${ctx.px(props.indentFirst)}`);
+  if (props.spaceBefore !== undefined && props.spaceBefore !== 0) out.push(`margin-top: ${ctx.px(props.spaceBefore)}`);
+  if (props.spaceAfter !== undefined && props.spaceAfter !== 0) out.push(`margin-bottom: ${ctx.px(props.spaceAfter)}`);
   const spacing = props.lineSpacing;
   if (spacing !== undefined && spacing !== 0) {
     out.push(props.lineSpacingMultiple

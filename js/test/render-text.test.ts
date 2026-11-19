@@ -129,3 +129,11 @@ test('output_is_deterministic', () => {
   assert.ok(first.length > 0);
   assert.equal(first, second);
 });
+
+test('zero_indents_and_spacing_are_not_written', () => {
+  const zeros = { indentLeft: 0, indentRight: 0, indentFirst: 0, spaceBefore: 0, spaceAfter: 0 };
+  const html = renderHtml(doc([para(['x'], zeros)]));
+  assert.ok(html.includes('<p class="rtf-p">x</p>\n'));
+  const negative = renderHtml(doc([para(['x'], { ...zeros, indentFirst: -360 })]));
+  assert.ok(negative.includes('<p class="rtf-p" style="text-indent: -24px">x</p>\n'));
+});
