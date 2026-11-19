@@ -1,6 +1,8 @@
 // A small static server for the demo page in js/demo. It serves the
-// repository root read-only. It answers GET only, lists no directories, and
-// answers GET /api/fixtures with the names of the .rtf files in test/fixtures.
+// repository root read-only. It answers GET only, lists no directories,
+// serves no path with a segment that starts with a dot, and answers only
+// requests whose Host is 127.0.0.1 or localhost. GET /api/fixtures answers
+// with the names of the .rtf files in test/fixtures.
 // Run as a script, it listens on 127.0.0.1 and prints the URL of the page.
 import fs from 'node:fs/promises';
 import http from 'node:http';
@@ -61,13 +63,33 @@ async function resolveFile(realRoot, target) {
   } catch {
     return undefined;
   }
-  if (!isInside(realRoot, real)) return undefined;
+  if (!isInside(realRoot, real) || hasDotSegment(path.relative(realRoot, real))) return undefined;
   const stat = await fs.stat(real);
   if (stat.isDirectory()) return resolveFile(realRoot, path.join(real, 'index.html'));
   return stat.isFile() ? real : undefined;
 }
 
+// True when the Host header names this server on the loopback address:
+// 127.0.0.1 or localhost, with no port or with the port the request came
+// in on. Any other name, as a rebinding DNS name sends, is refused.
+function isLocalHost(request) {
+  const host = (request.headers.host ?? '').toLowerCase();
+  const port = request.socket.localPort;
+  return host === '127.0.0.1' || host === 'localhost'
+    || host === `127.0.0.1:${port}` || host === `localhost:${port}`;
+}
+
+// True when a segment of the path starts with a dot. This covers .git,
+// .gitignore and the parent segment "..".
+function hasDotSegment(relative) {
+  return relative.split(/[\\/]/).some((segment) => segment.startsWith('.'));
+}
+
 async function handle(root, request, response) {
+  if (!isLocalHost(request)) {
+    send(response, 400, TEXT, 'bad request\n');
+    return;
+  }
   if (request.method !== 'GET') {
     send(response, 405, TEXT, 'method not allowed\n', { Allow: 'GET' });
     return;
@@ -86,6 +108,11 @@ async function handle(root, request, response) {
   }
   if (decoded.includes('\0')) {
     send(response, 400, TEXT, 'bad request\n');
+    return;
+  }
+  // Dot files and dot directories, such as .git, are never served.
+  if (hasDotSegment(decoded)) {
+    notFound(response);
     return;
   }
   // A backslash is a separator on Windows, so it is read as a slash before

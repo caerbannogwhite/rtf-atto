@@ -98,3 +98,37 @@ test('demo_server_serves_the_root_only', async () => {
     await new Promise<void>((resolve) => server.close(() => resolve()));
   }
 });
+
+// Sends a GET with the given Host header and resolves with the status.
+function statusWithHost(port: number, path: string, host: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const request = http.get({ host: '127.0.0.1', port, path, headers: { Host: host } }, (response) => {
+      response.resume();
+      response.on('end', () => resolve(response.statusCode ?? 0));
+    });
+    request.on('error', reject);
+  });
+}
+
+test('demo_server_refuses_dot_paths_and_other_hosts', async () => {
+  const server = createDemoServer(root);
+  await new Promise<void>((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => resolve());
+  });
+  try {
+    const port = (server.address() as AddressInfo).port;
+    for (const dotted of ['/.git/config', '/.git/', '/%2Egit/config', '/.gitignore', '/.github/dependabot.yml']) {
+      assert.equal(await rawStatus(port, dotted), 404, dotted);
+    }
+    for (const host of [`127.0.0.1:${port}`, `localhost:${port}`, '127.0.0.1', 'localhost']) {
+      assert.equal(await statusWithHost(port, '/js/demo/index.html', host), 200, host);
+    }
+    for (const host of ['evil.example', `evil.example:${port}`, `127.0.0.1:${port + 1}`]) {
+      assert.equal(await statusWithHost(port, '/js/demo/index.html', host), 400, host);
+      assert.equal(await statusWithHost(port, '/api/fixtures', host), 400, host);
+    }
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  }
+});
