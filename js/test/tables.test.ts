@@ -63,7 +63,7 @@ test('column_names_prefix_and_dedupe', () => {
 
 test('blank_cells_make_a_spacer_row', () => {
   const t = table([
-    row([cell(3000, ['']), cell(6000, [' '])]),
+    row([cell(3000, ['']), cell(6000, ['\u00a0'])]),
     row([cell(3000, ['a']), cell(6000, [''])]),
   ]);
   const rows = logicalTables(doc([t]))[0]!.rows;

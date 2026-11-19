@@ -241,7 +241,7 @@ export interface RowProps {
 }
 
 export interface Cell {
-  right: number;                      // \cellx, twips from the row's left
+  right: number;                      // \cellx, twips, in the same coordinate as the row's left
   width: number;                      // derived: right minus the previous cell's right (or left)
   preferredWidth?: { type: 'auto' | 'percent' | 'twips'; value: number };   // \clwWidth \clftsWidth
   borders?: Borders;                  // \clbrdr*

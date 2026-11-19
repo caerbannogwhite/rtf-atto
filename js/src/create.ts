@@ -122,7 +122,6 @@ class Instance implements RtfAtto {
   }
 }
 
-
 // Builds one instance over the current factory. onDeath runs once when the
 // instance dies.
 export async function createInstance(source: LoadOptions['wasm'], onDeath: () => void): Promise<RtfAtto> {

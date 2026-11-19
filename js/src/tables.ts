@@ -22,7 +22,7 @@ function trim(s: string): string {
 // True when the text is empty after trimming ASCII whitespace and U+00A0.
 function isBlank(s: string): boolean {
   for (const c of s) {
-    if (!isAsciiSpace(c) && c !== ' ') return false;
+    if (!isAsciiSpace(c) && c !== '\u00a0') return false;
   }
   return true;
 }

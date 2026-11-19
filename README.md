@@ -107,6 +107,11 @@ To regenerate the goldens after a deliberate change:
 Review the diff of the goldens like code. A changed golden means the
 output of the reader changed.
 
+The npm package has 17 HTML goldens in `js/test/goldens`, one for each
+fixture that parses. They are the output of the HTML renderer. To
+regenerate them after a deliberate change to the renderer, run
+`npm run regen:html` in `js`, after `npm run build`.
+
 ## Local samples
 
 The owner keeps private SAS files outside the repository.

@@ -33,7 +33,7 @@ function shownText(inline: Inline): string | undefined {
 // The list text shows the Symbol-font bullet U+F0B7 as U+2022.
 function listInlines(listText: Inline[] | undefined): Inline[] {
   return (listText ?? []).map((inline) =>
-    inline.kind === 'text' ? { ...inline, text: inline.text.replace(//g, '•') } : inline);
+    inline.kind === 'text' ? { ...inline, text: inline.text.replace(/\uf0b7/g, '\u2022') } : inline);
 }
 
 function shownCells(blocks: Block[], visit: (cellBlocks: Block[]) => void): void {
@@ -111,7 +111,7 @@ test('html_contains_every_text_run_in_order', async () => {
       for (const first of firsts) {
         const found = text.indexOf(first, position);
         assert.ok(found >= 0, `${name}: ${JSON.stringify(first)} is not at or after position ${position}`);
-        position = found;
+        position = found + first.length;
       }
     }
   }

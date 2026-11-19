@@ -90,7 +90,7 @@ const html = renderHtml(rtf.parse(bytes));
 
 - `renderHtml(doc: RtfDocument, options?: RenderOptions): string` returns the document as HTML with inline styles, one `<section>` per page. It needs neither the wasm nor the DOM, so it also runs in Node.
 - `mount(doc: RtfDocument, container: Element, options?: RenderOptions): MountResult` sets `container.innerHTML` to `renderHtml(doc, options)`. It returns `{ pages }`, the page elements in order. It touches the DOM only through `innerHTML` and `querySelectorAll`.
-- `rtf-atto/rtf.css` holds the page frame: the page box, its shadow on screen, and a page break after each page in print. Everything that comes from the document is an inline style.
+- `rtf-atto/rtf.css` is needed for the layout, not only for the frame. It holds the page box, its shadow on screen, and a page break after each page in print. It also sets `.rtf-p` to no margin and `white-space: pre-wrap`, and resets the padding, the vertical alignment, the weight and the text alignment of `td` and `th`. Without it, paragraphs get the browser's margins, runs of spaces collapse, and header cells turn bold and centred. Everything that comes from the document is an inline style.
 
 The fields of `RenderOptions`, all optional:
 
@@ -165,7 +165,7 @@ The shared instance keeps its peak size, such as 91 MB after the file above, for
 ## Size and speed
 
 The size of `rtf.wasm` depends on the Emscripten version.
-The published file is built in CI with emsdk 6.0.13 and is 184,396 bytes.
+The published file is built in CI with emsdk 6.0.13 and is 163,440 bytes.
 A local build with Emscripten 3.1.71 is 165,604 bytes.
 Parsing all 19 test fixtures through the wasm and comparing the JSON with the
 golden files took 84 ms on Node 26 on Windows.
@@ -198,7 +198,9 @@ the result with Word. From `js`:
 
 The script prints `http://127.0.0.1:8787/js/demo/`. Set `PORT` to use
 another port. The server listens on 127.0.0.1 only and serves the
-repository read-only.
+repository read-only. It serves no path with a segment that starts with a
+dot, such as `.git`, and answers only requests whose `Host` header is
+`127.0.0.1` or `localhost`.
 
 Choose a fixture from the list, or open your own `.rtf` files. The page
 shows the rendered pages and a status line with the core version, the parse

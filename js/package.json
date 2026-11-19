@@ -1,7 +1,7 @@
 {
   "name": "rtf-atto",
   "version": "0.1.0",
-  "description": "RTF reader: the document model and the logical tables of an RTF file as JSON, from a C++ core compiled to WebAssembly",
+  "description": "RTF reader: the document model and the logical tables of an RTF file as JSON, from a C++ core compiled to WebAssembly, and an HTML renderer for the model",
   "license": "Apache-2.0",
   "repository": { "type": "git", "url": "git+https://github.com/caerbannogwhite/rtf-atto.git", "directory": "js" },
   "homepage": "https://github.com/caerbannogwhite/rtf-atto#readme",
