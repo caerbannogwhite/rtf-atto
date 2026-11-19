@@ -32,6 +32,9 @@ jobs:
         run: ctest --test-dir build --output-on-failure
 
   wasm:
+    strategy:
+      matrix:
+        node: [22, 24]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -40,7 +43,7 @@ jobs:
           version: 6.0.13
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: ${{ matrix.node }}
           cache: npm
           cache-dependency-path: js/package-lock.json
       - run: npm ci

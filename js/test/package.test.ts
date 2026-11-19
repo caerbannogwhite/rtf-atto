@@ -34,3 +34,7 @@ test('exports_point_at_existing_files', () => {
     assert.ok(existsSync(file), `${path} does not exist`);
   }
 });
+
+test('engines_is_node_22_or_later', () => {
+  assert.equal(packageJson().engines.node, '>=22');
+});

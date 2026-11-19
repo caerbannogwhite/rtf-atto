@@ -121,6 +121,17 @@ its block and reports `new` for files without one. It also compares the text
 of every file with `rtf_text.py`. `expected.txt` stays next to the samples
 and is never committed.
 
+## Releasing
+
+The version lives in `js/package.json`, in `include/rtf/version.hpp` and in the
+`rtf_version()` string, and a test pins the three to the same text. A release
+is a plain tag `vX.Y.Z` on `main`. The codename goes in the title of the
+GitHub release, not in the version, because npm reads a suffix such as
+`-mortician` as a pre-release that `^` ranges skip. The first version of the
+package is published by hand from `js` with `npm publish`. After that the
+`publish` workflow publishes every tag with provenance through npm's trusted
+publishing. A tag whose version is already on npm publishes nothing.
+
 ## Status
 
 Plan 1 is complete. It delivers the reader, the JSON model, the logical

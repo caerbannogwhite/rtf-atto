@@ -29,7 +29,7 @@ export function rtfBytes(text: string): Uint8Array {
   return new TextEncoder().encode(text);
 }
 
-export function packageJson(): { version: string; exports: unknown } {
+export function packageJson(): { version: string; exports: unknown; engines: { node: string } } {
   return JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
 }
 

@@ -1,6 +1,10 @@
 # Publishes the npm package when a tag such as v0.1.0 is pushed.
-# NPM_TOKEN is a repository secret that Massimo creates from his npm account.
-# Once the package exists on npm, trusted publishing can replace the token.
+# The first version is published by hand from a developer machine. After
+# that, Massimo registers this workflow as the package's trusted publisher
+# on npmjs.com (package settings, GitHub Actions, repository
+# caerbannogwhite/rtf-atto, workflow publish.yml). From then on a tag
+# publishes with provenance and no token. A tag whose version is already on
+# npm publishes nothing and the run stays green.
 name: publish
 
 on:
@@ -16,9 +20,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: mymindstorm/setup-emsdk@v14
-        with:
-          version: 6.0.13
       - uses: actions/setup-node@v5
         with:
           node-version: 24
@@ -28,13 +29,32 @@ jobs:
       - name: Check that the tag matches the package version
         run: |
           node -e "const v='v'+require('./js/package.json').version; const t=process.env.GITHUB_REF_NAME; console.log('package: '+v+', tag: '+t); if(v!==t) process.exit(1)"
-      - run: npm ci
+      - name: Check whether this version is already on npm
+        id: check
+        run: |
+          v=$(node -p "require('./js/package.json').version")
+          if npm view "rtf-atto@$v" version > /dev/null 2>&1; then
+            echo "rtf-atto@$v is already on npm; nothing to publish"
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: mymindstorm/setup-emsdk@v14
+        if: steps.check.outputs.published != 'true'
+        with:
+          version: 6.0.13
+      - name: Update npm, because trusted publishing needs 11.5.1 or later
+        if: steps.check.outputs.published != 'true'
+        run: |
+          npm install -g npm@latest
+          npm --version
+      - if: steps.check.outputs.published != 'true'
         working-directory: js
-      - run: npm run build
+        run: |
+          npm ci
+          npm run build
+          npm test
+      - if: steps.check.outputs.published != 'true'
         working-directory: js
-      - run: npm test
-        working-directory: js
-      - run: npm publish --provenance --access public
-        working-directory: js
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --provenance --access public

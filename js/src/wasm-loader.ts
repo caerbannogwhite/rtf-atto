@@ -2,16 +2,16 @@
 import { RtfError } from './errors.js';
 import type { LoadOptions } from './index.js';
 
-type NodeFs = typeof import('node:fs/promises');
+interface FsPromisesLike { readFile(path: URL): Promise<Uint8Array>; }
+interface ProcessLike { getBuiltinModule?(id: string): unknown; }
 
 // Reaches node:fs/promises without a static import, so that a bundler that
 // builds for the browser sees no Node built-in.
-async function nodeFs(): Promise<NodeFs> {
-  if (typeof process !== 'undefined' && typeof process.getBuiltinModule === 'function') {
-    return process.getBuiltinModule('node:fs/promises');
-  }
-  const spec = 'node:fs/promises';
-  return (await import(spec)) as NodeFs;
+async function nodeFs(): Promise<FsPromisesLike> {
+  const proc = (globalThis as { process?: ProcessLike }).process;
+  if (proc?.getBuiltinModule) return proc.getBuiltinModule('node:fs/promises') as FsPromisesLike;
+  const spec = 'node:fs/promises';   // a variable, so a bundler does not resolve it
+  return (await import(spec)) as FsPromisesLike;
 }
 
 function messageOf(e: unknown): string {

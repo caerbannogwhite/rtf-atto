@@ -8,7 +8,7 @@ This package returns the document model and the logical tables of a file.
 The package has no renderer yet. It has no writer yet.
 It returns the bytes of pictures in the model as base64 text, but it does not render figures.
 The package is ESM only and has no runtime dependencies.
-It runs on Node 20 or later and in current browsers.
+It runs on Node 22 or later and in current browsers.
 
 ## Install
 
@@ -132,8 +132,7 @@ On Windows you also need Ninja on the PATH.
 `npm run build` compiles `wasm/` with `emcmake` and CMake. Then it runs `tsc`.
 On Windows it passes `-G Ninja` to CMake.
 `npm test` checks the model types against the golden files, then runs the node tests.
-The tests need Node 22 or later, because `node --test` selects the files with a glob.
-The package itself runs on Node 20 or later.
+The package and its tests need Node 22 or later.
 The C++ core and its tests are in the repository root.
 
 ## Licence
