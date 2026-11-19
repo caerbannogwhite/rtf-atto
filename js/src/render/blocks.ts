@@ -1,9 +1,10 @@
 // Block content: paragraphs and tables. Each block ends with a newline.
-import type { Block, Inline, ParagraphProps, Table } from '../model.js';
+import type { Block, Inline, ParagraphProps } from '../model.js';
 import { borderCss, colorOf, fmt, lookup } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import { listTextInlines, newTabState, renderInlines } from './inlines.js';
 import type { RenderContext } from './options.js';
+import { renderTable } from './tables.js';
 
 const ALIGNS: Readonly<Record<string, string>> = Object.freeze({
   center: 'center',
@@ -55,17 +56,6 @@ export function renderParagraph(
   content += renderInlines(ctx, runs, tabs);
   if (content === '') content = '<br>';
   return `<p class="${escapeHtml(ctx.cls('p'))}"${styleAttr(paragraphStyle(ctx, props))}>${content}</p>\n`;
-}
-
-// A plain grid of the cells' blocks, with no spans and no styles.
-function renderTable(ctx: RenderContext, table: Table): string {
-  let out = `<table class="${escapeHtml(ctx.cls('table'))}">\n`;
-  for (const row of table.rows) {
-    out += '<tr>';
-    for (const cell of row.cells) out += `<td>${renderBlocks(ctx, cell.blocks)}</td>`;
-    out += '</tr>\n';
-  }
-  return out + '</table>\n';
 }
 
 // A block outside the page flow: in a header, a footer or a table cell.
