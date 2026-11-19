@@ -2,7 +2,7 @@
 // styles. The grid's edges are the union of every row's left and every
 // cell's right, so rows with different cell edges share one set of columns.
 import type { Border, Borders, Cell, Row, Table } from '../model.js';
-import { borderCss, colorOf, lookup, num } from './css.js';
+import { borderCss, colorOf, isObject, list, lookup, num } from './css.js';
 import { renderBlocks, renderParagraph } from './blocks.js';
 import { escapeHtml, styleAttr } from './html.js';
 import type { RenderContext } from './options.js';
@@ -39,7 +39,7 @@ function gridEdges(rows: Row[]): number[] {
   const edges = new Set<number>();
   for (const row of rows) {
     edges.add(rowLeft(row));
-    for (const cell of row.cells) edges.add(num(cell.right));
+    for (const cell of list(row.cells)) edges.add(num(cell.right));
   }
   return [...edges].sort((a, b) => a - b);
 }
@@ -49,7 +49,7 @@ function gridEdges(rows: Row[]): number[] {
 function rowSlots(row: Row, columnOf: Map<number, number>): Slot[] {
   const slots: Slot[] = [];
   let left = rowLeft(row);
-  for (const cell of row.cells) {
+  for (const cell of list(row.cells)) {
     const right = num(cell.right);
     // A right edge below the left edge gives a span of 1, never less.
     const span = Math.max(1, columnOf.get(right)! - columnOf.get(left)!);
@@ -107,7 +107,7 @@ function cellStyle(ctx: RenderContext, cell: Cell, row: Row): string[] {
   const rowBorders: Borders | undefined = row.props.borders;
   for (const name of SIDES) {
     const border: Border | undefined = cellBorders?.[name] ?? rowBorders?.[name];
-    if (border !== undefined) out.push(`border-${name}: ${borderCss(ctx, border)}`);
+    if (isObject(border)) out.push(`border-${name}: ${borderCss(ctx, border)}`);
   }
   if (cell.noWrap === true) out.push('white-space: nowrap');
   return out;
@@ -118,9 +118,10 @@ function renderCell(ctx: RenderContext, slot: Slot, row: Row, tag: 'td' | 'th'):
   if (slot.span > 1) attrs += ` colspan="${slot.span}"`;
   if (slot.rowspan > 1) attrs += ` rowspan="${slot.rowspan}"`;
   attrs += styleAttr(cellStyle(ctx, slot.cell, row));
-  const content = slot.cell.blocks.length === 0
+  const blocks = list(slot.cell.blocks);
+  const content = blocks.length === 0
     ? renderParagraph(ctx, {}, undefined, [])
-    : renderBlocks(ctx, slot.cell.blocks);
+    : renderBlocks(ctx, blocks);
   return `<${tag}${attrs}>${content}</${tag}>`;
 }
 
@@ -134,7 +135,7 @@ function renderRow(ctx: RenderContext, row: Row, slots: Slot[], tag: 'td' | 'th'
 }
 
 export function renderTable(ctx: RenderContext, table: Table): string {
-  const rows = table.rows;
+  const rows = list(table.rows);
   const edges = gridEdges(rows);
   const columnOf = new Map(edges.map((edge, index) => [edge, index]));
   const first = edges[0] ?? 0;

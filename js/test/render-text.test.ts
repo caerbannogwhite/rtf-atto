@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { renderHtml } from '../src/index.js';
 import type { Paragraph, RtfDocument, TabStop } from '../src/model.js';
-import { doc, para, run } from './builders.js';
+import { cell, doc, para, row, run, table } from './builders.js';
 import { readGolden } from './helpers.js';
 import { stripTags } from './html-helpers.js';
 
@@ -165,4 +165,21 @@ test('hostile_model_values_never_reach_markup_or_css', () => {
   assert.ok(html.includes('data-page="1"'));
   assert.ok(html.includes('<p class="rtf-p" style="border-top: 1px solid">'));
   assert.ok(html.includes('<span style="text-decoration-line: underline">x</span>'));
+
+  // Null borders and arrays of the wrong type render as absent, never throw.
+  const shapes = JSON.parse(JSON.stringify(doc([
+    para(['p'], { borders: { top: { style: 'single', width: 15 } } }),
+    table([row([cell(3000, ['c'], { borders: { left: { style: 'single', width: 15 } } })])]),
+  ])));
+  shapes.sections[0].body[0].props.borders.top = null;
+  shapes.sections[0].body[1].rows[0].cells[0].borders.left = null;
+  shapes.sections[0].body[1].rows[0].cells[0].blocks = 'not an array';
+  const shaped = renderHtml(shapes);
+  assert.ok(shaped.includes('<p class="rtf-p">p</p>'));
+  assert.ok(shaped.includes('<td style="padding: 0px 7.2px 0px 7.2px"><p class="rtf-p"><br></p>\n</td>'));
+  shapes.sections[0].body[1].rows = { length: 1 };
+  shapes.sections[0].body[0].runs = null;
+  assert.doesNotThrow(() => renderHtml(shapes));
+  shapes.sections = 'none';
+  assert.equal(renderHtml(shapes), '');
 });

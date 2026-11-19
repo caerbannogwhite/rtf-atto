@@ -4,7 +4,7 @@
 // once the page count is known for NUMPAGES.
 import type { Block, HeaderSet, Inline, Paragraph, ParagraphProps } from '../model.js';
 import { renderBlock, renderBlocks, renderParagraph } from './blocks.js';
-import { fontFamily } from './css.js';
+import { fontFamily, list } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import type { RenderContext } from './options.js';
 
@@ -37,7 +37,7 @@ export function paginate(ctx: RenderContext): Page[] {
     return page;
   };
 
-  ctx.doc.sections.forEach((section, index) => {
+  list(ctx.doc.sections).forEach((section, index) => {
     if (current === undefined || section.break !== 'none') {
       current = startPage(index, true, section.pageNumberStart);
     }
@@ -45,7 +45,7 @@ export function paginate(ctx: RenderContext): Page[] {
     const breakPage = (): void => {
       current = startPage(index, false);
     };
-    for (const block of section.body) {
+    for (const block of list(section.body)) {
       if (block.kind === 'table') {
         current.body.push({ kind: 'block', block });
         continue;
@@ -66,7 +66,7 @@ function addParagraph(
   breakPage: () => void,
 ): void {
   const sides: Inline[][] = [[]];
-  for (const inline of paragraph.runs) {
+  for (const inline of list(paragraph.runs)) {
     if (inline.kind === 'pageBreak') sides.push([]);
     else sides[sides.length - 1]!.push(inline);
   }
@@ -77,24 +77,27 @@ function addParagraph(
   sides.forEach((side, index) => {
     if (index > 0) breakPage();
     const listText = index === 0 ? paragraph.listText : undefined;
-    if (side.length === 0 && (listText === undefined || listText.length === 0)) return;
+    if (side.length === 0 && list(listText).length === 0) return;
     page().body.push({ kind: 'part', props: paragraph.props, listText, runs: side });
   });
 }
 
-// The header or footer of a page: the first candidate that is present.
-function chooseArea(ctx: RenderContext, set: HeaderSet, page: Page): Block[] | undefined {
-  const candidates: Array<Block[] | undefined> = [];
-  if (ctx.doc.sections[page.section]!.titlePage && page.firstOfSection) candidates.push(set.first);
-  if (ctx.doc.page.facingPages) candidates.push(page.number % 2 === 0 ? set.left : set.right);
-  candidates.push(set.default, set.right, set.left);
-  return candidates.find((blocks) => blocks !== undefined);
+// The header or footer of a page, as Word chooses it. On the first page
+// of a section with a title page: the first set, else nothing. With facing
+// pages: the set of the page's parity (left on an even number, right on an
+// odd one), else the default set, else nothing. Otherwise: the default
+// set, else the right set, else the left set, else nothing.
+function chooseArea(ctx: RenderContext, set: HeaderSet, page: Page): Block[] {
+  const area: HeaderSet = typeof set === 'object' && set !== null ? set : {};
+  if (ctx.doc.sections[page.section]!.titlePage && page.firstOfSection) return area.first ?? [];
+  if (ctx.doc.page.facingPages) {
+    return (page.number % 2 === 0 ? area.left : area.right) ?? area.default ?? [];
+  }
+  return area.default ?? area.right ?? area.left ?? [];
 }
 
-function renderArea(ctx: RenderContext, name: string, style: string[], blocks: Block[] | undefined): string {
-  let out = `<div class="${escapeHtml(ctx.cls(name))}"${styleAttr(style)}>\n`;
-  for (const block of blocks ?? []) out += renderBlock(ctx, block);
-  return out + '</div>\n';
+function renderArea(ctx: RenderContext, name: string, style: string[], blocks: Block[]): string {
+  return `<div class="${escapeHtml(ctx.cls(name))}"${styleAttr(style)}>\n${renderBlocks(ctx, blocks)}</div>\n`;
 }
 
 function renderItem(ctx: RenderContext, item: PageItem): string {

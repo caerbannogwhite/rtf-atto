@@ -152,3 +152,22 @@ test('page_numbers_count_pages', () => {
     { pageNumberStart: 5, body: [para(['B'])] },
   ]))), ['1', '2', '5']);
 });
+
+test('a_title_page_without_a_first_header_is_empty', () => {
+  const twoPages = [para(['A', BREAK, 'B'])];
+
+  const title = pagesOf(renderHtml(doc([
+    { titlePage: true, headers: { default: [para(['D'])] }, footers: { default: [para(['FD'])] }, body: twoPages },
+  ])));
+  assert.deepEqual(title.map((p) => areaText(p, 'header')), ['', 'D']);
+  assert.deepEqual(title.map((p) => areaText(p, 'footer')), ['', 'FD']);
+
+  // With facing pages, an even page without a left set shows the default
+  // set, and with no default set it shows nothing.
+  const facing = (headers: Record<string, ReturnType<typeof para>[]>) => pagesOf(renderHtml(doc(
+    [{ headers, body: twoPages }],
+    { page: { ...LETTER, facingPages: true } },
+  )));
+  assert.deepEqual(facing({ right: [para(['R'])] }).map((p) => areaText(p, 'header')), ['R', '']);
+  assert.deepEqual(facing({ right: [para(['R'])], default: [para(['D'])] }).map((p) => areaText(p, 'header')), ['R', 'D']);
+});

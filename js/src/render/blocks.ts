@@ -1,6 +1,6 @@
 // Block content: paragraphs and tables. Each block ends with a newline.
 import type { Block, Inline, ParagraphProps } from '../model.js';
-import { borderCss, colorOf, fmt, lookup } from './css.js';
+import { borderCss, colorOf, fmt, isObject, list, lookup } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import { listTextInlines, newTabState, renderInlines } from './inlines.js';
 import type { RenderContext } from './options.js';
@@ -31,11 +31,11 @@ function paragraphStyle(ctx: RenderContext, props: ParagraphProps): string[] {
   }
   if (props.rtl) out.push('direction: rtl');
   const borders = props.borders;
-  if (borders !== undefined) {
-    if (borders.top !== undefined) out.push(`border-top: ${borderCss(ctx, borders.top)}`);
-    if (borders.right !== undefined) out.push(`border-right: ${borderCss(ctx, borders.right)}`);
-    if (borders.bottom !== undefined) out.push(`border-bottom: ${borderCss(ctx, borders.bottom)}`);
-    if (borders.left !== undefined) out.push(`border-left: ${borderCss(ctx, borders.left)}`);
+  if (isObject(borders)) {
+    if (isObject(borders.top)) out.push(`border-top: ${borderCss(ctx, borders.top)}`);
+    if (isObject(borders.right)) out.push(`border-right: ${borderCss(ctx, borders.right)}`);
+    if (isObject(borders.bottom)) out.push(`border-bottom: ${borderCss(ctx, borders.bottom)}`);
+    if (isObject(borders.left)) out.push(`border-left: ${borderCss(ctx, borders.left)}`);
   }
   const background = colorOf(ctx, props.shading?.background);
   if (background !== undefined) out.push(`background-color: ${background}`);
@@ -75,6 +75,6 @@ export function renderBlock(ctx: RenderContext, block: Block): string {
 
 export function renderBlocks(ctx: RenderContext, blocks: Block[]): string {
   let out = '';
-  for (const block of blocks) out += renderBlock(ctx, block);
+  for (const block of list(blocks)) out += renderBlock(ctx, block);
   return out;
 }

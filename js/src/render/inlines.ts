@@ -13,7 +13,7 @@ import type {
   TextRun,
 } from '../model.js';
 import { renderBlocks } from './blocks.js';
-import { colorOf, fmt, fontFamily, lookup, num } from './css.js';
+import { colorOf, fmt, fontFamily, isObject, list, lookup, num } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import type { RenderContext } from './options.js';
 
@@ -88,11 +88,13 @@ function renderRun(ctx: RenderContext, run: TextRun): string {
 // splitting of body paragraphs happens in pages.ts before this call.
 export function renderInlines(ctx: RenderContext, inlines: Inline[], tabs: TabState): string {
   let out = '';
-  for (const inline of inlines) out += renderInline(ctx, inline, tabs);
+  list(inlines).forEach((inline, index, all) => {
+    out += renderInline(ctx, inline, tabs, all, index);
+  });
   return out;
 }
 
-function renderInline(ctx: RenderContext, inline: Inline, tabs: TabState): string {
+function renderInline(ctx: RenderContext, inline: Inline, tabs: TabState, siblings: Inline[], index: number): string {
   switch (inline.kind) {
     case 'text':
       return renderRun(ctx, inline);
@@ -106,9 +108,9 @@ function renderInline(ctx: RenderContext, inline: Inline, tabs: TabState): strin
       ])}></span>`;
     case 'bookmark':
       if (inline.position !== 'start') return '';
-      return `<a id="${escapeHtml(ctx.cls('bm-') + encodeURIComponent(inline.name))}"></a>`;
+      return `<a id="${escapeHtml(ctx.cls('bm-') + bookmarkId(inline.name))}"></a>`;
     case 'field':
-      return renderField(ctx, inline, tabs);
+      return renderField(ctx, inline, tabs, siblings, index);
     case 'footnote':
       return renderFootnoteRef(ctx, inline);
     case 'picture':
@@ -131,15 +133,66 @@ function fieldName(instruction: unknown): string {
   return (instruction.trim().split(/\s+/)[0] ?? '').toUpperCase();
 }
 
-// A PAGE or NUMPAGES field with no result shows the page number or the
-// page count when pageNumbers is 'sections'. Every other field shows its
-// result. The instruction is compared, never written.
-function renderField(ctx: RenderContext, field: Field, tabs: TabState): string {
+// A bookmark name as part of an id. encodeURIComponent throws on a lone
+// surrogate; such a name is used as it is, and the caller escapes it.
+function bookmarkId(name: unknown): string {
+  try {
+    return encodeURIComponent(String(name));
+  } catch {
+    return String(name);
+  }
+}
+
+function isTextRun(inline: unknown): inline is TextRun {
+  return isObject(inline) && (inline as Inline).kind === 'text';
+}
+
+// The props of the nearest text run before the field in the same inline
+// list, else of the nearest one after it, else no props. A computed page
+// number takes them, so it looks like the text around it. The hidden flag
+// is not taken, so the number stays visible.
+function neighbourProps(siblings: Inline[], index: number): CharProps {
+  let found: TextRun | undefined;
+  for (let i = index - 1; i >= 0 && found === undefined; i -= 1) {
+    const inline = siblings[i];
+    if (isTextRun(inline)) found = inline;
+  }
+  for (let i = index + 1; i < siblings.length && found === undefined; i += 1) {
+    const inline = siblings[i];
+    if (isTextRun(inline)) found = inline;
+  }
+  const props = found?.props;
+  if (!isObject(props)) return {};
+  const { hidden: _hidden, ...shown } = props;
+  return shown;
+}
+
+// The page number or the page count for a PAGE or NUMPAGES field, or
+// undefined for any other field.
+function pageValue(ctx: RenderContext, field: Field): number | undefined {
+  const name = fieldName(field.instruction);
+  if (name === 'PAGE') return num(ctx.state.pageNumber);
+  if (name === 'NUMPAGES') return num(ctx.state.pageCount);
+  return undefined;
+}
+
+// With pageNumbers 'sections', a PAGE or NUMPAGES field shows the page
+// number or the page count. With no result, the number takes the style of
+// the text run next to the field. A result of one text run of digits is
+// the value Word cached when it saved, so the number replaces the digits
+// and keeps that run's style. Every other result renders as given. The
+// instruction is compared, never written.
+function renderField(ctx: RenderContext, field: Field, tabs: TabState, siblings: Inline[], index: number): string {
   const result = Array.isArray(field.result) ? field.result : [];
-  if (result.length === 0 && ctx.options.pageNumbers === 'sections') {
-    const name = fieldName(field.instruction);
-    if (name === 'PAGE') return escapeHtml(String(num(ctx.state.pageNumber)));
-    if (name === 'NUMPAGES') return escapeHtml(String(num(ctx.state.pageCount)));
+  const value = ctx.options.pageNumbers === 'sections' ? pageValue(ctx, field) : undefined;
+  if (value !== undefined) {
+    if (result.length === 0) {
+      return renderRun(ctx, { kind: 'text', text: String(value), props: neighbourProps(siblings, index) });
+    }
+    const only = result[0];
+    if (result.length === 1 && isTextRun(only) && typeof only.text === 'string' && /^[0-9]+$/.test(only.text)) {
+      return renderRun(ctx, { kind: 'text', text: String(value), props: isObject(only.props) ? only.props : {} });
+    }
   }
   return renderInlines(ctx, result, tabs);
 }
@@ -174,13 +227,18 @@ const FORMAT_NAMES: Readonly<Record<string, string>> = Object.freeze({
 const MAX_BASE64 = 4_194_304;
 const BASE64 = /^[A-Za-z0-9+/]*={0,2}$/;
 
+// A scale in percent. A value that is not a positive finite number is 100.
+function scale(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : 100;
+}
+
 // The picture's size as width and height declarations, or undefined when
 // no size is known. Goal sizes are twips scaled by percent; plain sizes
 // are pixels.
 function pictureSize(ctx: RenderContext, picture: Picture): string[] | undefined {
   if (picture.goalWidth !== undefined && picture.goalHeight !== undefined) {
-    const width = num(picture.goalWidth) * num(picture.scaleX ?? 100) / 100;
-    const height = num(picture.goalHeight) * num(picture.scaleY ?? 100) / 100;
+    const width = num(picture.goalWidth) * scale(picture.scaleX) / 100;
+    const height = num(picture.goalHeight) * scale(picture.scaleY) / 100;
     return [`width: ${ctx.px(width)}`, `height: ${ctx.px(height)}`];
   }
   if (picture.width !== undefined && picture.height !== undefined) {
@@ -220,7 +278,8 @@ function renderObject(ctx: RenderContext, object: EmbeddedObject): string {
 
 // The list text with the Symbol-font bullet U+F0B7 shown as U+2022.
 export function listTextInlines(listText: Inline[]): Inline[] {
-  return listText.map((inline) =>
-    inline.kind === 'text' ? { ...inline, text: inline.text.replace(/\uf0b7/g, '\u2022') } : inline,
+  return list(listText).map((inline) =>
+    isTextRun(inline) && typeof inline.text === 'string'
+      ? { ...inline, text: inline.text.replace(/\uf0b7/g, '\u2022') } : inline,
   );
 }

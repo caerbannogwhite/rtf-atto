@@ -11,6 +11,17 @@ export function num(value: unknown): number {
   return typeof value === 'number' && Number.isFinite(value) ? value : 0;
 }
 
+// The value when it is an array, else an empty array. Every model array
+// that a render function walks goes through it.
+export function list<T>(value: T[] | undefined): T[] {
+  return Array.isArray(value) ? value : [];
+}
+
+// True when the value is an object and not null, such as a border.
+export function isObject(value: unknown): value is object {
+  return typeof value === 'object' && value !== null;
+}
+
 // The entry of a fixed table for a key that the table itself holds. Keys
 // that come from the prototype, such as "constructor", give undefined.
 export function lookup<T>(table: Readonly<Record<string, T>>, key: unknown): T | undefined {
@@ -75,8 +86,9 @@ const BORDER_STYLES: Readonly<Record<Border['style'], string>> = Object.freeze({
 });
 
 // A CSS border value, such as "1px solid rgb(0, 0, 0)". An unknown style
-// is solid.
+// is solid. A border that is not an object is no border.
 export function borderCss(ctx: RenderContext, border: Border): string {
+  if (!isObject(border)) return 'none';
   const style = lookup(BORDER_STYLES, border.style) ?? 'solid';
   if (style === 'none') return 'none';
   const width = Math.max(1, Math.round(num(border.width) * num(ctx.options.pxPerTwip)));

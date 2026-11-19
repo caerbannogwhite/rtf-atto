@@ -149,6 +149,12 @@ test('pictures_outside_the_rules_become_boxes', () => {
   assert.ok(proto.includes('>UNKNOWN</span>'));
   assert.equal(count(proto, '<img'), 0);
 
+  // A scale that is not a positive number counts as 100 percent.
+  for (const scaleX of [0, -50, Number.NaN]) {
+    const scaled = renderHtml(doc([para([picture({ format: 'emf', goalWidth: 1500, goalHeight: 1500, scaleX, scaleY: 0 })])]));
+    assert.ok(scaled.includes('width: 100px; height: 100px">EMF</span>'), String(scaleX));
+  }
+
   // pictures: false renders nothing, not even the box.
   const off = renderHtml(doc([para([fixturePng(), picture({ format: 'emf', data: 'AQAAAA==' })])]), { pictures: false });
   assert.equal(count(off, '<img'), 0);
@@ -189,6 +195,10 @@ test('bookmarks_are_anchors', () => {
   ])]));
   assert.ok(html.includes('<p class="rtf-p"><a id="rtf-bm-a%20b"></a>x</p>\n'));
   assert.equal(count(html, '<a '), 1);
+
+  // A lone surrogate cannot be URI-encoded: the name is escaped as it is.
+  const lone = renderHtml(doc([para([{ kind: 'bookmark', name: '<\ud800>', position: 'start' }, 'y'])]));
+  assert.ok(lone.includes('<a id="rtf-bm-&lt;\ud800&gt;"></a>y'));
 });
 
 test('hyperlink_fields_render_their_result_only', () => {
@@ -216,4 +226,33 @@ test('mount_sets_inner_html_and_returns_pages', () => {
   assert.equal(result.pages.length, 2);
   assert.equal(result.pages[0], p1 as unknown as Element);
   assert.ok(Array.isArray(result.pages));
+});
+
+test('page_fields_take_the_style_of_the_text_around_them', () => {
+  const courier = { font: 1, size: 22 };
+  const span = '<span style="font-family: &quot;Courier New&quot;, monospace; font-size: 14.67px">';
+  const footer = [para([run('Page ', courier), field('PAGE'), run(' of ', courier), field('NUMPAGES')])];
+  const html = renderHtml(doc([{ body: [para(['A'])], footers: { default: footer } }]));
+  assert.ok(html.includes(`${span}Page </span>${span}1</span>${span} of </span>${span}1</span>`));
+
+  // A field with no text run before it takes the style of the run after it.
+  const after = renderHtml(doc([para([field('PAGE'), run(' of', courier)])]));
+  assert.ok(after.includes(`${span}1</span>${span} of</span>`));
+
+  // Word caches its last value as digits: the page's own number replaces them.
+  const courierOnly = '<span style="font-family: &quot;Courier New&quot;, monospace">';
+  const cached = pagesOf(renderHtml(doc([para(['A', BREAK, 'B', field('PAGE', [run('2', { font: 1 })])])])));
+  assert.ok(cached[0]!.includes('A</p>'));
+  assert.ok(cached[1]!.includes(`B${courierOnly}2</span>`));
+  const first = renderHtml(doc([para([field('PAGE', [run('2', { font: 1 })])])]));
+  assert.ok(first.includes(`${courierOnly}1</span>`));
+  assert.ok(!first.includes('>2<'));
+
+  // Any other result renders as given, and so does every result with
+  // pageNumbers 'none'.
+  assert.ok(renderHtml(doc([para([field('PAGE', [run('IX')])])])).includes('<p class="rtf-p">IX</p>'));
+  const two = renderHtml(doc([para([field('PAGE', [run('1'), run('2')])])]));
+  assert.ok(two.includes('<p class="rtf-p">12</p>'));
+  const none = renderHtml(doc([para([field('PAGE', [run('2', { font: 1 })])])]), { pageNumbers: 'none' });
+  assert.ok(none.includes(`${courierOnly}2</span>`));
 });
