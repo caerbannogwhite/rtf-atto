@@ -47,3 +47,14 @@ Before the first `v0.1.0` tag, the repository needs the `NPM_TOKEN`
 secret, or the publish workflow needs npm's trusted publishing, which can
 be set up only once the package exists on npm. The name `rtf-atto` was
 free on the registry on 2026-11-17.
+
+## Decisions of 2026-11-18
+
+Massimo decided: the Node floor rises to 22; the `src`-only type check is
+added; the actions keep their major tags and Dependabot moves them, with
+npm's trusted publishing instead of a token; the dead-instance test is
+added; the catch-all and the depth-limit text loss stay as they are. Plan 2's
+decision 1 is overruled: `logicalTables` must not parse the bytes a second
+time, so the stitching rules are ported to TypeScript. Publishing waits until
+the end of plan 3. All of this is carried out by
+`docs/plans/2026-11-18-rtf-renderer.md`.
