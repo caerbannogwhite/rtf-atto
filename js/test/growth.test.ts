@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { load } from '../src/index.js';
+import { load, logicalTables } from '../src/index.js';
 import { readFixture, readGolden, rtfBytes } from './helpers.js';
 
 // A large table makes the wasm memory grow during the call. The next call
@@ -14,7 +14,7 @@ test('growth_then_second_parse', async () => {
     );
   }
   parts.push('}');
-  const tables = rtf.logicalTables(rtfBytes(parts.join('')));
+  const tables = logicalTables(rtf.parse(rtfBytes(parts.join(''))));
   assert.equal(tables.length, 1);
   const rows = tables[0]!.rows;
   assert.equal(rows.length, 20000);

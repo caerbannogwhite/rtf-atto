@@ -1,9 +1,10 @@
 // The public API: load() gives an RtfAtto instance over the wasm reader.
 import { createInstance } from './create.js';
-import type { LogicalTable, RtfDocument } from './model.js';
+import type { RtfDocument } from './model.js';
 
 export type * from './model.js';
 export { RtfError } from './errors.js';
+export { logicalTables } from './tables.js';
 export type { RtfErrorCode } from './errors.js';
 
 export interface LoadOptions {
@@ -18,8 +19,6 @@ export interface RtfAtto {
   parse(bytes: Uint8Array | ArrayBuffer): RtfDocument;
   // The canonical JSON, the same bytes as the rtf2json tool writes.
   parseToJson(bytes: Uint8Array | ArrayBuffer): string;
-  logicalTables(bytes: Uint8Array | ArrayBuffer): LogicalTable[];
-  logicalTablesJson(bytes: Uint8Array | ArrayBuffer): string;
 }
 
 let shared: Promise<RtfAtto> | undefined;

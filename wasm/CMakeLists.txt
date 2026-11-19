@@ -23,6 +23,6 @@ target_link_options(rtf PRIVATE
   -sALLOW_MEMORY_GROWTH=1
   -sFILESYSTEM=0
   -sSTACK_SIZE=4194304
-  -sEXPORTED_FUNCTIONS=_rtf_parse,_rtf_logical_tables,_rtf_free,_rtf_version,_malloc,_free
+  -sEXPORTED_FUNCTIONS=_rtf_parse,_rtf_free,_rtf_version,_malloc,_free
   -sEXPORTED_RUNTIME_METHODS=HEAPU8,HEAPU32
   -sINCOMING_MODULE_JS_API=wasmBinary,onAbort,print,printErr)

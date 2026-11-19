@@ -18,14 +18,14 @@ It runs on Node 22 or later and in current browsers.
 
 ```js
 import { readFile } from 'node:fs/promises';
-import { load, RtfError } from 'rtf-atto';
+import { load, logicalTables, RtfError } from 'rtf-atto';
 
 const rtf = await load();
 try {
   const bytes = await readFile('table.rtf');
   const doc = rtf.parse(bytes);
   console.log(doc.sections.length, 'sections');
-  const tables = rtf.logicalTables(bytes);
+  const tables = logicalTables(doc);
   console.log(tables.length, 'logical tables');
 } catch (e) {
   if (e instanceof RtfError && e.code === 'not_rtf') {
@@ -43,8 +43,7 @@ try {
 - `RtfAtto.version: string` is the version of the C++ core.
 - `RtfAtto.parse(bytes): RtfDocument` returns the document model.
 - `RtfAtto.parseToJson(bytes): string` returns the same model as a JSON string.
-- `RtfAtto.logicalTables(bytes): LogicalTable[]` returns the logical tables. It takes the RTF bytes, not a document, and parses them again in the core.
-- `RtfAtto.logicalTablesJson(bytes): string` returns the logical tables as a JSON string.
+- `logicalTables(doc: RtfDocument): LogicalTable[]` returns the logical tables of a document. It is a function over the model and needs no wasm. It applies the same rules as the C++ core, and the tests pin it to the core's output for every fixture.
 - `RtfError` extends `Error`. Its `name` is `'RtfError'` and its `code` is an `RtfErrorCode`.
 
 `bytes` is a `Uint8Array` or an `ArrayBuffer`.
@@ -114,7 +113,7 @@ The shared instance keeps its peak size, such as 91 MB after the file above, for
 
 The size of `rtf.wasm` depends on the Emscripten version.
 The published file is built in CI with emsdk 6.0.13 and is 184,396 bytes.
-A local build with Emscripten 3.1.71 is 185,053 bytes.
+A local build with Emscripten 3.1.71 is 165,604 bytes.
 Parsing all 19 test fixtures through the wasm and comparing the JSON with the
 golden files took 84 ms on Node 26 on Windows.
 

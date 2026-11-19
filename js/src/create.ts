@@ -5,7 +5,7 @@ import type { RtfWasmModule, RtfWasmModuleOptions } from './rtf.js';
 import { RtfError } from './errors.js';
 import type { RtfErrorCode } from './errors.js';
 import { readWasm } from './wasm-loader.js';
-import type { LogicalTable, RtfDocument } from './model.js';
+import type { RtfDocument } from './model.js';
 import type { LoadOptions, RtfAtto } from './index.js';
 
 export type ModuleFactory = (options: RtfWasmModuleOptions) => Promise<RtfWasmModule>;
@@ -47,7 +47,7 @@ interface Life {
   die(): void;
 }
 
-type Entry = '_rtf_parse' | '_rtf_logical_tables';
+type Entry = '_rtf_parse';
 
 class Instance implements RtfAtto {
   readonly version: string;
@@ -70,14 +70,6 @@ class Instance implements RtfAtto {
 
   parseToJson(bytes: Uint8Array | ArrayBuffer): string {
     return this.#call('_rtf_parse', bytes);
-  }
-
-  logicalTables(bytes: Uint8Array | ArrayBuffer): LogicalTable[] {
-    return JSON.parse(this.logicalTablesJson(bytes)) as LogicalTable[];
-  }
-
-  logicalTablesJson(bytes: Uint8Array | ArrayBuffer): string {
-    return this.#call('_rtf_logical_tables', bytes);
   }
 
   // Every ABI call goes through here.

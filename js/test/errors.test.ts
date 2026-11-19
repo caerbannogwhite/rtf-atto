@@ -16,13 +16,11 @@ test('empty_input_is_not_rtf', async () => {
   const rtf = await load();
   assert.throws(() => rtf.parse(new Uint8Array(0)), assertNotRtf);
   assert.throws(() => rtf.parse(new ArrayBuffer(0)), assertNotRtf);
-  assert.throws(() => rtf.logicalTables(new Uint8Array(0)), assertNotRtf);
 });
 
 test('text_is_not_rtf', async () => {
   const rtf = await load();
   assert.throws(() => rtf.parse(rtfBytes('hello')), assertNotRtf);
-  assert.throws(() => rtf.logicalTablesJson(rtfBytes('hello')), assertNotRtf);
 });
 
 test('wrong_input_type_is_invalid_argument', async () => {
@@ -32,7 +30,6 @@ test('wrong_input_type_is_invalid_argument', async () => {
   const isInvalid = (e: unknown): boolean => e instanceof RtfError && e.code === 'invalid_argument';
   assert.throws(() => rtf.parse('x' as unknown as Uint8Array), isInvalid);
   assert.throws(() => rtf.parseToJson(null as unknown as Uint8Array), isInvalid);
-  assert.throws(() => rtf.logicalTables([1, 2] as unknown as Uint8Array), isInvalid);
   // The instance still works afterwards.
   assert.equal(rtf.parseToJson(readFixture('word_minimal')), readGolden('word_minimal', '.json'));
 });

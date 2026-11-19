@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { load, RtfError } from '../src/index.js';
+import { load, logicalTables, RtfError } from '../src/index.js';
 import { listFixtures, NOT_RTF, readFixture, readGolden } from './helpers.js';
 
 const isNotRtf = (e: unknown): boolean => e instanceof RtfError && e.code === 'not_rtf';
@@ -15,13 +15,11 @@ test('every_fixture_matches_its_goldens', async () => {
     const tablesGolden = readGolden(name, '.tables.json');
     if (golden === NOT_RTF) {
       assert.throws(() => rtf.parse(bytes), isNotRtf, name);
-      assert.throws(() => rtf.logicalTablesJson(bytes), isNotRtf, name);
       continue;
     }
     assert.equal(rtf.parseToJson(bytes), golden, name);
-    assert.equal(rtf.logicalTablesJson(bytes), tablesGolden, name);
     assert.deepEqual(rtf.parse(bytes), JSON.parse(golden), name);
-    assert.deepEqual(rtf.logicalTables(bytes), JSON.parse(tablesGolden), name);
+    assert.deepEqual(logicalTables(rtf.parse(bytes)), JSON.parse(tablesGolden), name);
   }
 });
 

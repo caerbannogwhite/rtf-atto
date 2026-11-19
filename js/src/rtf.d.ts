@@ -4,7 +4,6 @@ export interface RtfWasmModule {
   _malloc(size: number): number;
   _free(ptr: number): void;
   _rtf_parse(data: number, size: number, out: number, outLen: number): number;
-  _rtf_logical_tables(data: number, size: number, out: number, outLen: number): number;
   _rtf_free(ptr: number): void;
   _rtf_version(): number;
 }
