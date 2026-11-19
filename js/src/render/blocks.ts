@@ -1,13 +1,21 @@
 // Block content: paragraphs and tables. Each block ends with a newline.
 import type { Block, Inline, ParagraphProps, Table } from '../model.js';
-import { borderCss, colorOf, fmt } from './css.js';
+import { borderCss, colorOf, fmt, lookup } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import { listTextInlines, newTabState, renderInlines } from './inlines.js';
 import type { RenderContext } from './options.js';
 
+const ALIGNS: Readonly<Record<string, string>> = Object.freeze({
+  center: 'center',
+  right: 'right',
+  justify: 'justify',
+});
+
 function paragraphStyle(ctx: RenderContext, props: ParagraphProps): string[] {
   const out: string[] = [];
-  if (props.align !== undefined && props.align !== 'left') out.push(`text-align: ${props.align}`);
+  // Left and any unknown value give no declaration.
+  const align = lookup(ALIGNS, props.align);
+  if (align !== undefined) out.push(`text-align: ${align}`);
   // Zero indents and spacing are the CSS defaults, so they are not written.
   if (props.indentLeft !== undefined && props.indentLeft !== 0) out.push(`margin-left: ${ctx.px(props.indentLeft)}`);
   if (props.indentRight !== undefined && props.indentRight !== 0) out.push(`margin-right: ${ctx.px(props.indentRight)}`);

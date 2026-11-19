@@ -91,17 +91,17 @@ test('tabs_take_the_stop_widths', () => {
 });
 
 test('list_text_comes_first_and_the_symbol_bullet_shows_as_a_bullet', () => {
-  const p: Paragraph = { ...para(['x']), listText: [run(''), { kind: 'tab' }] };
+  const p: Paragraph = { ...para(['x']), listText: [run('\uf0b7'), { kind: 'tab' }] };
   const html = renderHtml(doc([p]));
   const text = stripTags(html);
-  assert.ok(!text.includes(''));
-  assert.ok(text.includes('•'));
-  assert.ok(text.indexOf('•') < text.indexOf('x'));
+  assert.ok(!text.includes('\uf0b7'));
+  assert.ok(text.includes('\u2022'));
+  assert.ok(text.indexOf('\u2022') < text.indexOf('x'));
 });
 
 test('nbsp_is_kept', () => {
-  const html = renderHtml(doc([para(['a b'])]));
-  assert.ok(html.includes('a b'));
+  const html = renderHtml(doc([para(['a\u00a0b'])]));
+  assert.ok(html.includes('a\u00a0b'));
 });
 
 test('fonts_option_overrides_a_name', () => {
@@ -136,4 +136,33 @@ test('zero_indents_and_spacing_are_not_written', () => {
   assert.ok(html.includes('<p class="rtf-p">x</p>\n'));
   const negative = renderHtml(doc([para(['x'], { ...zeros, indentFirst: -360 })]));
   assert.ok(negative.includes('<p class="rtf-p" style="text-indent: -24px">x</p>\n'));
+});
+
+test('hostile_model_values_never_reach_markup_or_css', () => {
+  // renderHtml takes a plain object, so a document from another source
+  // can hold any value where the types say number or a fixed word.
+  const hostile = {
+    pageNumberStart: '1"><img src=x onerror=alert(1)>',
+    align: 'center; background-image: url(http://x/y)',
+    underline: 'constructor',
+    borderStyle: 'toString',
+  } as unknown as {
+    pageNumberStart: number;
+    align: 'center';
+    underline: 'single';
+    borderStyle: 'single';
+  };
+  const html = renderHtml(doc([{
+    pageNumberStart: hostile.pageNumberStart,
+    body: [para([run('x', { underline: hostile.underline })], {
+      align: hostile.align,
+      borders: { top: { style: hostile.borderStyle, width: 15 } },
+    })],
+  }]));
+  for (const needle of ['<img', 'onerror', 'url(', 'function', 'background-image']) {
+    assert.ok(!html.includes(needle), needle);
+  }
+  assert.ok(html.includes('data-page="1"'));
+  assert.ok(html.includes('<p class="rtf-p" style="border-top: 1px solid">'));
+  assert.ok(html.includes('<span style="text-decoration-line: underline">x</span>'));
 });

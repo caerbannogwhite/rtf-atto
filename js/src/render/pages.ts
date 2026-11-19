@@ -21,7 +21,9 @@ export function paginate(ctx: RenderContext): Page[] {
 
   const startPage = (section: number, firstOfSection: boolean, restart?: number): Page => {
     const previous = pages[pages.length - 1];
-    const number = restart ?? (previous === undefined ? 1 : previous.number + 1);
+    // A start that is not a finite number counts as absent.
+    const start = typeof restart === 'number' && Number.isFinite(restart) ? restart : undefined;
+    const number = start ?? (previous === undefined ? 1 : previous.number + 1);
     const page: Page = { number, section, firstOfSection, body: [] };
     pages.push(page);
     return page;
@@ -102,7 +104,7 @@ export function renderPage(ctx: RenderContext, page: Page): string {
   if (family !== undefined) style.push(`font-family: ${family}`);
   style.push(`font-size: ${ctx.px(24 * 10)}`);
 
-  let out = `<section class="${escapeHtml(classes)}" data-page="${page.number}" data-section="${page.section}"`
+  let out = `<section class="${escapeHtml(classes)}" data-page="${escapeHtml(String(page.number))}" data-section="${escapeHtml(String(page.section))}"`
     + `${styleAttr(style)}>\n`;
   out += renderArea(ctx, 'header', [
     `min-height: ${ctx.px(setup.marginTop)}`,

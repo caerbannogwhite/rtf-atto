@@ -10,7 +10,7 @@ const ESCAPES: Record<string, string> = {
 };
 
 export function escapeHtml(text: string): string {
-  return text.replace(/[&<>"']/g, (c) => ESCAPES[c]!);
+  return String(text).replace(/[&<>"']/g, (c) => ESCAPES[c]!);
 }
 
 // The style attribute with a leading space, such as ' style="a: 1; b: 2"',

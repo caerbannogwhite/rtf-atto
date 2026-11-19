@@ -1,6 +1,6 @@
 // Inline content: text runs, tabs, breaks, bookmarks and field results.
 import type { CharProps, Inline, TabStop, TextRun } from '../model.js';
-import { colorOf, fontFamily } from './css.js';
+import { colorOf, fontFamily, lookup, num } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import type { RenderContext } from './options.js';
 
@@ -22,17 +22,18 @@ function tabWidth(state: TabState): number {
   state.count += 1;
   const stop = state.stops[state.count - 1];
   if (stop === undefined) return DEFAULT_TAB;
-  const width = Math.max(0, stop.position - state.previous);
-  state.previous = stop.position;
+  const position = num(stop.position);
+  const width = Math.max(0, position - state.previous);
+  state.previous = position;
   return width;
 }
 
-const DECORATION_STYLES: Partial<Record<NonNullable<CharProps['underline']>, string>> = {
+const DECORATION_STYLES: Readonly<Record<string, string>> = Object.freeze({
   double: 'double',
   dotted: 'dotted',
   dash: 'dashed',
   wave: 'wavy',
-};
+});
 
 function runStyle(ctx: RenderContext, props: CharProps): string[] {
   const out: string[] = [];
@@ -46,7 +47,7 @@ function runStyle(ctx: RenderContext, props: CharProps): string[] {
   if (underline) lines.push('underline');
   if (props.strike || props.doubleStrike) lines.push('line-through');
   if (lines.length > 0) out.push(`text-decoration-line: ${lines.join(' ')}`);
-  const decoration = underline ? DECORATION_STYLES[props.underline!] : undefined;
+  const decoration = underline ? lookup(DECORATION_STYLES, props.underline) : undefined;
   if (decoration !== undefined) out.push(`text-decoration-style: ${decoration}`);
   const color = colorOf(ctx, props.color);
   if (color !== undefined) out.push(`color: ${color}`);
@@ -107,6 +108,6 @@ function renderInline(ctx: RenderContext, inline: Inline, tabs: TabState): strin
 // The list text with the Symbol-font bullet U+F0B7 shown as U+2022.
 export function listTextInlines(listText: Inline[]): Inline[] {
   return listText.map((inline) =>
-    inline.kind === 'text' ? { ...inline, text: inline.text.replace(//g, '•') } : inline,
+    inline.kind === 'text' ? { ...inline, text: inline.text.replace(/\uf0b7/g, '\u2022') } : inline,
   );
 }
