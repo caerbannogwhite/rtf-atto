@@ -1,0 +1,68 @@
+/* The demo page around the rendered pages. rtf.css styles the pages. */
+body {
+  margin: 0;
+  background: #e8e8e8;
+  color: #1a1a1a;
+  font: 14px/1.4 system-ui, sans-serif;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  padding: 8px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.status {
+  margin: 0;
+  padding: 6px 16px;
+  font-family: ui-monospace, monospace;
+}
+
+.status.error {
+  color: #a40000;
+}
+
+.warnings {
+  padding: 0 16px 8px;
+}
+
+#pages {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.tables {
+  margin: 0 16px 32px;
+  padding: 16px;
+  background: #fff;
+  overflow-x: auto;
+}
+
+.tables table {
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+.tables caption {
+  text-align: left;
+  font-weight: bold;
+  padding-bottom: 4px;
+}
+
+.tables th,
+.tables td {
+  border: 1px solid #c8c8c8;
+  padding: 2px 6px;
+  text-align: left;
+  vertical-align: top;
+  white-space: pre-wrap;
+}
+
+.tables tr.spacer td {
+  background: #e0e0e0;
+  color: #808080;
+}

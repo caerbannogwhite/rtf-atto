@@ -187,6 +187,28 @@ On Windows it passes `-G Ninja` to CMake.
 The package and its tests need Node 22 or later.
 The C++ core and its tests are in the repository root.
 
+## Demo
+
+The demo page renders a document in the browser, so that you can compare
+the result with Word. From `js`:
+
+    npm install
+    npm run build
+    npm run demo
+
+The script prints `http://127.0.0.1:8787/js/demo/`. Set `PORT` to use
+another port. The server listens on 127.0.0.1 only and serves the
+repository read-only.
+
+Choose a fixture from the list, or open your own `.rtf` files. The page
+shows the rendered pages and a status line with the core version, the parse
+time, the render time, the page count and the warning count. The warnings
+are listed below the status line. The controls switch the page numbers and
+the pictures, set the zoom, and show the logical tables below the pages.
+Spacer rows are grey.
+
+Files you open stay in the browser; nothing is uploaded or stored.
+
 ## Licence
 
 Apache-2.0.

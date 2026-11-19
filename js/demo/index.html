@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rtf-atto demo</title>
+<link rel="stylesheet" href="../dist/src/rtf.css">
+<link rel="stylesheet" href="demo.css">
+<script type="module" src="demo.js"></script>
+</head>
+<body>
+<header class="toolbar">
+  <label>Document
+    <select id="document">
+      <optgroup id="fixtures" label="Fixtures"></optgroup>
+      <optgroup id="local" label="Your files" hidden></optgroup>
+    </select>
+  </label>
+  <label>Open files <input id="files" type="file" multiple accept=".rtf"></label>
+  <label><input id="page-numbers" type="checkbox" checked> Page numbers</label>
+  <label><input id="pictures" type="checkbox" checked> Pictures</label>
+  <label>Zoom
+    <select id="zoom">
+      <option value="50">50%</option>
+      <option value="75">75%</option>
+      <option value="100" selected>100%</option>
+      <option value="125">125%</option>
+      <option value="150">150%</option>
+    </select>
+  </label>
+  <label><input id="show-tables" type="checkbox"> Show logical tables</label>
+</header>
+<p id="status" class="status">Loading the reader.</p>
+<details id="warnings" class="warnings">
+  <summary id="warnings-summary">Warnings</summary>
+  <ul id="warnings-list"></ul>
+</details>
+<main id="pages"></main>
+<section id="tables" class="tables" hidden></section>
+</body>
+</html>

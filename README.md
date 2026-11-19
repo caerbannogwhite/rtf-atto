@@ -88,6 +88,9 @@ On Windows you also need Ninja on the PATH.
 
 See `js/README.md` for the API, the model and the error codes.
 
+The package also renders a document to HTML. `npm run demo` in `js` starts
+a page that shows the fixtures and local files in the browser.
+
 ## Fixtures and goldens
 
 The files in `test/fixtures` are the test inputs. There are 19.
@@ -136,8 +139,9 @@ publishing. A tag whose version is already on npm publishes nothing.
 
 Plan 1 is complete. It delivers the reader, the JSON model, the logical
 tables and the text projection. Plan 2 is complete. It delivers the npm
-package. The renderer, the writer and the DuckDB integration belong to
-later plans. See `docs/plans/`.
+package. Plan 3 is complete. It delivers the HTML renderer and the demo
+page. The writer and the DuckDB integration remain. They belong to later
+plans. See `docs/plans/`.
 
 ## Licence
 
