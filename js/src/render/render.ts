@@ -6,7 +6,9 @@ import { paginate, renderPage } from './pages.js';
 
 export function renderHtml(doc: RtfDocument, options?: RenderOptions): string {
   const ctx = createContext(doc, options);
+  const pages = paginate(ctx);
+  ctx.state.pageCount = pages.length;
   let out = '';
-  for (const page of paginate(ctx)) out += renderPage(ctx, page);
+  for (const page of pages) out += renderPage(ctx, page);
   return out;
 }

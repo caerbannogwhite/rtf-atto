@@ -1,16 +1,24 @@
 // Pagination and the page frame: which blocks go on which page, the page
-// numbers, the header and footer of each page, and the page markup.
-import type { Block, HeaderSet, Inline, Paragraph } from '../model.js';
-import { renderBlock, renderParagraph } from './blocks.js';
+// numbers, the header and footer of each page, the footnote list and the
+// page markup. paginate only places the blocks. renderPage renders them,
+// once the page count is known for NUMPAGES.
+import type { Block, HeaderSet, Inline, Paragraph, ParagraphProps } from '../model.js';
+import { renderBlock, renderBlocks, renderParagraph } from './blocks.js';
 import { fontFamily } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import type { RenderContext } from './options.js';
+
+// One item of a page's body: a whole block, or the part of a paragraph
+// between page breaks.
+export type PageItem =
+  | { kind: 'block'; block: Block }
+  | { kind: 'part'; props: ParagraphProps; listText: Inline[] | undefined; runs: Inline[] };
 
 export interface Page {
   number: number;            // decision 3: counts pages, restarts at pageNumberStart
   section: number;           // the section whose page setup, header and footer the page uses
   firstOfSection: boolean;   // the first page of that section
-  body: string[];            // the rendered body blocks, each ending with a newline
+  body: PageItem[];          // what goes in the page's body, in order
 }
 
 // Splits the sections into pages. A section with break 'none' continues
@@ -39,11 +47,11 @@ export function paginate(ctx: RenderContext): Page[] {
     };
     for (const block of section.body) {
       if (block.kind === 'table') {
-        current.body.push(renderBlock(ctx, block));
+        current.body.push({ kind: 'block', block });
         continue;
       }
       if (block.props.pageBreakBefore && current.body.length > 0) breakPage();
-      addParagraph(ctx, block, () => current!, breakPage);
+      addParagraph(block, () => current!, breakPage);
     }
   });
   return pages;
@@ -53,7 +61,6 @@ export function paginate(ctx: RenderContext): Page[] {
 // side keeps the paragraph's props; an empty side gives no paragraph. A
 // paragraph with no page break is always emitted, even when empty.
 function addParagraph(
-  ctx: RenderContext,
   paragraph: Paragraph,
   page: () => Page,
   breakPage: () => void,
@@ -64,14 +71,14 @@ function addParagraph(
     else sides[sides.length - 1]!.push(inline);
   }
   if (sides.length === 1) {
-    page().body.push(renderParagraph(ctx, paragraph.props, paragraph.listText, paragraph.runs));
+    page().body.push({ kind: 'block', block: paragraph });
     return;
   }
   sides.forEach((side, index) => {
     if (index > 0) breakPage();
     const listText = index === 0 ? paragraph.listText : undefined;
     if (side.length === 0 && (listText === undefined || listText.length === 0)) return;
-    page().body.push(renderParagraph(ctx, paragraph.props, listText, side));
+    page().body.push({ kind: 'part', props: paragraph.props, listText, runs: side });
   });
 }
 
@@ -90,7 +97,32 @@ function renderArea(ctx: RenderContext, name: string, style: string[], blocks: B
   return out + '</div>\n';
 }
 
+function renderItem(ctx: RenderContext, item: PageItem): string {
+  if (item.kind === 'block') return renderBlock(ctx, item.block);
+  return renderParagraph(ctx, item.props, item.listText, item.runs);
+}
+
+// The notes referenced on the page, in the order of their numbers. A note
+// referenced inside another note joins the list while the list renders.
+function renderNotes(ctx: RenderContext): string {
+  const notes = ctx.state.notes;
+  if (notes.length === 0) return '';
+  let out = `<div class="${escapeHtml(ctx.cls('footnotes'))}">\n`;
+  for (let i = 0; i < notes.length; i += 1) {
+    const note = notes[i]!;
+    out += `<div class="${escapeHtml(ctx.cls('footnote'))}"><sup>${escapeHtml(String(note.number))}</sup>`
+      + `${renderBlocks(ctx, note.blocks)}</div>\n`;
+  }
+  return out + '</div>\n';
+}
+
+// Renders one page. ctx.state.pageCount must hold the number of pages.
+// The header, the body and the footer render in that order, so the
+// footnote numbers follow that order. The notes of all three are listed
+// at the end of the body.
 export function renderPage(ctx: RenderContext, page: Page): string {
+  ctx.state.pageNumber = page.number;
+  ctx.state.notes = [];
   const section = ctx.doc.sections[page.section]!;
   const setup = section.page;
   const classes = setup.landscape ? `${ctx.cls('page')} ${ctx.cls('landscape')}` : ctx.cls('page');
@@ -110,10 +142,12 @@ export function renderPage(ctx: RenderContext, page: Page): string {
     `min-height: ${ctx.px(setup.marginTop)}`,
     `padding-top: ${ctx.px(setup.headerDistance)}`,
   ], chooseArea(ctx, section.headers, page));
-  out += `<div class="${escapeHtml(ctx.cls('body'))}">\n${page.body.join('')}</div>\n`;
-  out += renderArea(ctx, 'footer', [
+  let body = '';
+  for (const item of page.body) body += renderItem(ctx, item);
+  const footer = renderArea(ctx, 'footer', [
     `min-height: ${ctx.px(setup.marginBottom)}`,
     `padding-bottom: ${ctx.px(setup.footerDistance)}`,
   ], chooseArea(ctx, section.footers, page));
-  return out + '</section>\n';
+  out += `<div class="${escapeHtml(ctx.cls('body'))}">\n${body}${renderNotes(ctx)}</div>\n`;
+  return out + footer + '</section>\n';
 }

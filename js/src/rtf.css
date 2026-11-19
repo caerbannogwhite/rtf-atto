@@ -1,0 +1,12 @@
+/* The page frame of rtf-atto's renderer. Everything that comes from the
+   document is an inline style; this file holds only the frame. */
+.rtf-page { box-sizing: border-box; display: flex; flex-direction: column; margin: 16px auto; background: #fff; color: #000; box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); }
+.rtf-header, .rtf-footer { box-sizing: border-box; }
+.rtf-footer { display: flex; flex-direction: column; justify-content: flex-end; }
+.rtf-body { flex: 1 0 auto; }
+.rtf-p { margin: 0; white-space: pre-wrap; }
+.rtf-table { border-collapse: collapse; }
+.rtf-table td, .rtf-table th { padding: 0; vertical-align: top; font-weight: inherit; text-align: inherit; }
+.rtf-footnotes { border-top: 1px solid #000; margin-top: 8px; padding-top: 4px; }
+.rtf-picture-box { border: 1px dashed #888; font: 10px sans-serif; text-align: center; vertical-align: middle; }
+@media print { .rtf-page { margin: 0; box-shadow: none; break-after: page; } }

@@ -1,6 +1,19 @@
-// Inline content: text runs, tabs, breaks, bookmarks and field results.
-import type { CharProps, Inline, TabStop, TextRun } from '../model.js';
-import { colorOf, fontFamily, lookup, num } from './css.js';
+// Inline content: text runs, tabs, breaks, bookmarks, fields, footnote
+// marks and pictures. Shapes and objects are blocks: they render here but
+// go after the paragraph, through ctx.state.after.
+import type {
+  CharProps,
+  EmbeddedObject,
+  Field,
+  Footnote,
+  Inline,
+  Picture,
+  Shape,
+  TabStop,
+  TextRun,
+} from '../model.js';
+import { renderBlocks } from './blocks.js';
+import { colorOf, fmt, fontFamily, lookup, num } from './css.js';
 import { escapeHtml, styleAttr } from './html.js';
 import type { RenderContext } from './options.js';
 
@@ -95,14 +108,114 @@ function renderInline(ctx: RenderContext, inline: Inline, tabs: TabState): strin
       if (inline.position !== 'start') return '';
       return `<a id="${escapeHtml(ctx.cls('bm-') + encodeURIComponent(inline.name))}"></a>`;
     case 'field':
-      return renderInlines(ctx, inline.result, tabs);
-    case 'pageBreak':
+      return renderField(ctx, inline, tabs);
     case 'footnote':
+      return renderFootnoteRef(ctx, inline);
     case 'picture':
+      return renderPicture(ctx, inline);
     case 'shape':
+      ctx.state.after.push(renderShape(ctx, inline));
+      return '';
     case 'object':
+      ctx.state.after.push(renderObject(ctx, inline));
+      return '';
+    case 'pageBreak':
       return '';
   }
+}
+
+// The field name: the first word of the instruction, upper-cased. Word
+// writes switches after it, as in "PAGE \* MERGEFORMAT".
+function fieldName(instruction: unknown): string {
+  if (typeof instruction !== 'string') return '';
+  return (instruction.trim().split(/\s+/)[0] ?? '').toUpperCase();
+}
+
+// A PAGE or NUMPAGES field with no result shows the page number or the
+// page count when pageNumbers is 'sections'. Every other field shows its
+// result. The instruction is compared, never written.
+function renderField(ctx: RenderContext, field: Field, tabs: TabState): string {
+  const result = Array.isArray(field.result) ? field.result : [];
+  if (result.length === 0 && ctx.options.pageNumbers === 'sections') {
+    const name = fieldName(field.instruction);
+    if (name === 'PAGE') return escapeHtml(String(num(ctx.state.pageNumber)));
+    if (name === 'NUMPAGES') return escapeHtml(String(num(ctx.state.pageCount)));
+  }
+  return renderInlines(ctx, result, tabs);
+}
+
+// The reference mark. The note itself is listed at the end of the page.
+function renderFootnoteRef(ctx: RenderContext, note: Footnote): string {
+  ctx.state.noteCount += 1;
+  const number = ctx.state.noteCount;
+  ctx.state.notes.push({ number, blocks: Array.isArray(note.blocks) ? note.blocks : [] });
+  return `<sup class="${escapeHtml(ctx.cls('footnote-ref'))}">${escapeHtml(String(number))}</sup>`;
+}
+
+// The formats that get a data URL, with their mime types.
+const MIME_TYPES: Readonly<Record<string, string>> = Object.freeze({
+  png: 'image/png',
+  jpeg: 'image/jpeg',
+});
+
+// The names shown in the box of a picture that is not drawn.
+const FORMAT_NAMES: Readonly<Record<string, string>> = Object.freeze({
+  png: 'PNG',
+  jpeg: 'JPEG',
+  emf: 'EMF',
+  wmf: 'WMF',
+  dib: 'DIB',
+  bmp: 'BMP',
+  unknown: 'UNKNOWN',
+});
+
+// Decision 11: the longest base64 text that becomes a data URL, about
+// 3 MB of bytes.
+const MAX_BASE64 = 4_194_304;
+const BASE64 = /^[A-Za-z0-9+/]*={0,2}$/;
+
+// The picture's size as width and height declarations, or undefined when
+// no size is known. Goal sizes are twips scaled by percent; plain sizes
+// are pixels.
+function pictureSize(ctx: RenderContext, picture: Picture): string[] | undefined {
+  if (picture.goalWidth !== undefined && picture.goalHeight !== undefined) {
+    const width = num(picture.goalWidth) * num(picture.scaleX ?? 100) / 100;
+    const height = num(picture.goalHeight) * num(picture.scaleY ?? 100) / 100;
+    return [`width: ${ctx.px(width)}`, `height: ${ctx.px(height)}`];
+  }
+  if (picture.width !== undefined && picture.height !== undefined) {
+    return [`width: ${fmt(num(picture.width))}px`, `height: ${fmt(num(picture.height))}px`];
+  }
+  return undefined;
+}
+
+// A PNG or JPEG within the rules is an <img> with a data URL. Anything
+// else is a box with the format name. pictures: false renders nothing.
+function renderPicture(ctx: RenderContext, picture: Picture): string {
+  if (!ctx.options.pictures) return '';
+  const size = pictureSize(ctx, picture);
+  const mime = lookup(MIME_TYPES, picture.format);
+  const data = picture.data;
+  if (mime !== undefined && typeof data === 'string' && data.length <= MAX_BASE64 && BASE64.test(data)) {
+    const src = `data:${mime};base64,${data}`;
+    return `<img class="${escapeHtml(ctx.cls('picture'))}" src="${escapeHtml(src)}" alt=""${styleAttr(size ?? [])}>`;
+  }
+  const name = lookup(FORMAT_NAMES, picture.format) ?? 'UNKNOWN';
+  const box = ['display: inline-block', ...(size ?? ['width: 100px', 'height: 100px'])];
+  return `<span class="${escapeHtml(ctx.cls('picture-box'))}"${styleAttr(box)}>${escapeHtml(name)}</span>`;
+}
+
+// A shape is a block after its paragraph: its text blocks, then its picture.
+function renderShape(ctx: RenderContext, shape: Shape): string {
+  const blocks = Array.isArray(shape.blocks) ? renderBlocks(ctx, shape.blocks) : '';
+  const picture = shape.picture !== undefined && shape.picture !== null ? renderPicture(ctx, shape.picture) : '';
+  return `<div class="${escapeHtml(ctx.cls('shape'))}">${blocks}${picture}</div>\n`;
+}
+
+// An object is a block after its paragraph with its result blocks.
+function renderObject(ctx: RenderContext, object: EmbeddedObject): string {
+  const blocks = Array.isArray(object.result) ? renderBlocks(ctx, object.result) : '';
+  return `<div class="${escapeHtml(ctx.cls('object'))}">${blocks}</div>\n`;
 }
 
 // The list text with the Symbol-font bullet U+F0B7 shown as U+2022.

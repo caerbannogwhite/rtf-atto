@@ -3,10 +3,10 @@
 rtf-atto reads RTF files.
 It is aimed at clinical tables made by SAS and also reads general RTF.
 The reader is a C++17 core compiled to WebAssembly.
-This package returns the document model and the logical tables of a file.
+This package returns the document model, the logical tables and an HTML rendering of a file.
 
-The package has no renderer yet. It has no writer yet.
-It returns the bytes of pictures in the model as base64 text, but it does not render figures.
+The package has no writer yet.
+The model holds the bytes of pictures as base64 text. The HTML shows PNG and JPEG pictures; other formats show as a box.
 The package is ESM only and has no runtime dependencies.
 It runs on Node 22 or later and in current browsers.
 
@@ -72,8 +72,61 @@ The full shape of the model is in `src/model.ts`, shipped as `dist/src/model.d.t
 A viewer has one rule to follow.
 SAS writes `PAGE` and `NUMPAGES` fields with no result at all.
 The reader reports `instruction: "PAGE"` and `result: []`.
-A viewer that shows one section per page puts the number of the section in place of `PAGE`.
-It puts the number of sections in place of `NUMPAGES`.
+A viewer puts the number of the page in place of `PAGE`.
+Pages count from 1 across the document.
+A section with `pageNumberStart` restarts the count on its first page.
+A viewer puts the number of pages in place of `NUMPAGES`.
+SAS output has one section per page, so the page number is the section number there.
+
+## Rendering
+
+```js
+import { load, renderHtml } from 'rtf-atto';
+import 'rtf-atto/rtf.css';
+
+const rtf = await load();
+const html = renderHtml(rtf.parse(bytes));
+```
+
+- `renderHtml(doc: RtfDocument, options?: RenderOptions): string` returns the document as HTML with inline styles, one `<section>` per page. It needs neither the wasm nor the DOM, so it also runs in Node.
+- `mount(doc: RtfDocument, container: Element, options?: RenderOptions): MountResult` sets `container.innerHTML` to `renderHtml(doc, options)`. It returns `{ pages }`, the page elements in order. It touches the DOM only through `innerHTML` and `querySelectorAll`.
+- `rtf-atto/rtf.css` holds the page frame: the page box, its shadow on screen, and a page break after each page in print. Everything that comes from the document is an inline style.
+
+The fields of `RenderOptions`, all optional:
+
+- `pageNumbers: 'sections' | 'none'`, default `'sections'`. With `'none'`, `PAGE` and `NUMPAGES` fields with no result show nothing.
+- `fonts: Record<string, string>`, default `{}`. It maps an RTF font name to a CSS `font-family` value. The value is written as given, so it must be trusted.
+- `pxPerTwip: number`, default `1 / 15`, which is 96 pixels per inch.
+- `pictures: boolean`, default `true`. With `false`, pictures render nothing, not even a box.
+- `classPrefix: string`, default `'rtf-'`. It renames the classes only. `rtf.css` is written for the default prefix.
+
+The page model:
+
+- Each section starts a page. A page break inside a section starts a page too.
+- A section with `break: 'none'` continues the current page. That page keeps the header and footer of the section that started it.
+- The renderer does not re-flow text. A page with more content than its height grows; nothing is cut off.
+- The header and footer of a page follow the first page, left page and right page rules of the section.
+- `PAGE` and `NUMPAGES` follow the rule in the model section above. A field with a result shows its result.
+- Footnotes and endnotes are numbered across the document from 1. Each note is listed at the bottom of the page that holds its reference.
+
+Untrusted input:
+
+- Every text and every attribute value is HTML-escaped.
+- Style values are built from numbers and from fixed lists of words. The one document string that reaches CSS is a font name. It is cleaned to letters, digits, spaces and hyphens and then quoted.
+- The output has no `<script>`, no event attributes and no external URLs. A hyperlink field shows its result as plain text.
+- A picture becomes a data URL only when it is PNG or JPEG and its base64 text is valid and at most 4,194,304 characters long (about 3 MB of bytes). Any other picture is a box with the format name.
+
+What is not rendered:
+
+- Pictures in EMF, WMF, DIB, BMP or an unknown format. They show as a box with the format name.
+- A column break shows as a line break. Columns are ignored.
+- `even`, `odd` and `column` section breaks start a new page. No blank page is inserted.
+- Deleted and inserted text shows without a revision style.
+- Text direction in cells, preferred cell widths, shading patterns, the border `space`, tab leaders, the `keep` properties and widow control are ignored.
+- The geometry of shapes is dropped. A shape shows its text and its picture as a block after its paragraph. An embedded object shows its result the same way.
+
+On Node 26 on Windows, `renderHtml` took 1.0 ms for the fixture `sas_table_3pages` (3 pages) after one warm-up call.
+The HTML of that fixture is 31,933 bytes.
 
 ## Loading the wasm
 

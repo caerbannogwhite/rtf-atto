@@ -44,22 +44,30 @@ function paragraphStyle(ctx: RenderContext, props: ParagraphProps): string[] {
 
 // One paragraph from its parts. pages.ts calls this for each side of a
 // paragraph that a page break splits; the list text goes on the first side.
+// The paragraph's shapes and objects follow it as blocks, in order, since
+// a block inside a <p> is not valid HTML.
 export function renderParagraph(
   ctx: RenderContext,
   props: ParagraphProps,
   listText: Inline[] | undefined,
   runs: Inline[],
 ): string {
+  const outer = ctx.state.after;
+  const after: string[] = [];
+  ctx.state.after = after;
   const tabs = newTabState(props.tabs);
   let content = '';
   if (listText !== undefined) content += renderInlines(ctx, listTextInlines(listText), tabs);
   content += renderInlines(ctx, runs, tabs);
+  ctx.state.after = outer;
   if (content === '') content = '<br>';
-  return `<p class="${escapeHtml(ctx.cls('p'))}"${styleAttr(paragraphStyle(ctx, props))}>${content}</p>\n`;
+  return `<p class="${escapeHtml(ctx.cls('p'))}"${styleAttr(paragraphStyle(ctx, props))}>${content}</p>\n`
+    + after.join('');
 }
 
-// A block outside the page flow: in a header, a footer or a table cell.
-// Page breaks there render nothing.
+// A whole block. Page breaks render nothing here: pages.ts splits the
+// body paragraphs at their page breaks before this call, and a page break
+// in a header, a footer or a table cell is ignored.
 export function renderBlock(ctx: RenderContext, block: Block): string {
   if (block.kind === 'table') return renderTable(ctx, block);
   return renderParagraph(ctx, block.props, block.listText, block.runs);
