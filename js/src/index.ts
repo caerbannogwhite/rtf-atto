@@ -5,6 +5,8 @@ import type { RtfDocument } from './model.js';
 export type * from './model.js';
 export { RtfError } from './errors.js';
 export { logicalTables } from './tables.js';
+export { renderHtml } from './render/render.js';
+export type { RenderOptions } from './render/options.js';
 export type { RtfErrorCode } from './errors.js';
 
 export interface LoadOptions {
